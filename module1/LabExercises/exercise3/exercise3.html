@@ -14,9 +14,9 @@ initial-scale=1.0">
         <div class="column" id="column1">
             <h1 id="heading1">98/99 squad</h1>
             <button class="chooseteambtn" type="button" id="chooseteam1" onclick="chooseteam1()">
-  Activate Squad</button>
+                Activate Squad</button>
             <img src="../9899manutdsquad.jpg" alt="Manchester United 98/99 Squad" width="600">
-           <br>
+            <br>
             <form>
                 <label class="dreamplayerlabel" for="dreamplayer1">Add ONE dream player only:</label><br>
                 <input class="dreamplayerinput" type="text" id="dreamplayer1" name="dreamplayer1">
@@ -33,22 +33,7 @@ initial-scale=1.0">
             </form>
         </div>
     </div>
+    <script src="buttonscript.js"></script>
 </body>
-
-
-<script>
-function chooseteam1() {
-  let dreamPlayer = document.getElementById("dreamplayer1").value;
-  document.getElementById("heading1").textContent = "98/99 squad PLUS " + dreamPlayer + " ACTIVATED";
-  document.getElementById("column1").style.background = "gold";
-}
-
-function chooseteam2() {
-  let dreamPlayer = document.getElementById("dreamplayer2").value;
-    document.getElementById("heading2").textContent = "25/26 squad PLUS " + dreamPlayer + " ACTIVATED";
-  document.getElementById("column2").style.background = "lightblue";
-}
-</script>
-
 
 </html>
