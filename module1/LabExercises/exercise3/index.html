@@ -27,7 +27,9 @@
             <a href="https://www.google.com/">More
                 information...</a>
 
-            <h3>Extremely limited stock, order your jersey now!</h3>
+            <br>
+            <h3>Extremely limited stock, order your jersey NOW</h3>
+            <br>
             <form>
                 <label for="fullname">Full Name of Baby:</label><br>
                 <input type="text" id="fullname" name="fullname"><br><br>
@@ -37,6 +39,8 @@
 
                 <label for="mobile">Mobile Number of Parent/ Guardian:</label><br>
                 <input type="text" id="mobile" name="mobile"><br><br>
+
+                <button type="button" id="orderbutton">Order Now</button>
             </form>
         </article>
         <aside id="aside">
@@ -48,14 +52,18 @@
         </aside>
     </section>
     <footer>
-        <p>@copyright 2050 by Dan Man Utd. all rights
+        <p>@copyright 2026 by Dan Man Utd. all rights
             reversed</p>
     </footer>
     <script>
         document.getElementById("header").innerText =
             'Man Utd Online Shop';
         document.getElementById("aside").style.backgroundColor =
-            'red';
+            'rosybrown';
+
+        document.getElementById("orderbutton").onclick = function () {
+  alert("Your order has been confirmed.");
+};
     </script>
 </body>
 
