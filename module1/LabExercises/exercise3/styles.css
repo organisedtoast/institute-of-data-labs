@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+header {
+    background-color: blue;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+nav {
+    background-color: gold;
+    width: 25%;
+    height: 250px;
+    padding: 15px;
+}
+
+article {
+    background-color: whitesmoke;
+    width: 75%;
+    padding: 25px;
+}
+
+aside {
+    clear: both;
+}
+
+footer {
+    background: #222;
+    color: #eee;
+    text-align: center;
+    padding: 1em;
+    font-size: 0.9em;
+}
