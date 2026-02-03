@@ -4,26 +4,30 @@
 <head>
     <title>page title</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
     <header>
-        <h1>Header</h1>
+        <h1 id="header">Header</h1>
     </header>
     <section>
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
+                <br>
                 <li><a href="#">Articles</a></li>
             </ul>
         </nav>
         <article>
-            <h2>Article heading</h2>
+            <h2>High quality jerseys for your Man Utd Baby</h2>
             <p>Paragraph...</p>
-            <a href="https://www.google.com/">More information...</a>
+            <br>
+            <img src="../manutdbabyjersey.jpg" alt="Man Utd Baby Jersey">
+            <a href="https://www.google.com/">More
+                information...</a>
         </article>
-        <aside>
+        <aside id="aside">
             <h2>Related</h2>
             <ul>
                 <li><a href="#">Article 1</a></li>
@@ -32,8 +36,15 @@
         </aside>
     </section>
     <footer>
-        <p>@copyright 2050 by Dan Man. all rights reversed</p>
+        <p>@copyright 2050 by Dan Man Utd. all rights
+            reversed</p>
     </footer>
+    <script>
+        document.getElementById("header").innerText =
+            'Man Utd Online Shop';
+        document.getElementById("aside").style.backgroundColor =
+            'red';
+    </script>
 </body>
 
 </html>
