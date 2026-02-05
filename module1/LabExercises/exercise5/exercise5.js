@@ -1,5 +1,5 @@
 // Generate array of top 5 EPL clubs in your humble opinion
-let eplclubs = ['Man City', 'Arsenal', 'Man Utd', 'Tottenham','Liverpool'];
+let eplclubs = ['Man City', 'Arsenal', 'Man Utd', 'Tottenham', 'Liverpool'];
 
 // Print all elements in the array you just created
 console.log(eplclubs[0]); // 'Man City'
@@ -9,8 +9,8 @@ console.log(eplclubs[3]); // 'Tottenham'
 console.log(eplclubs[4]); // 'Liverpool'
 
 // Replace the value of the element at positions 1 and 4 (index 0 and 3), these are clubs that should be relegated in your humble opinion and replaced with new ones
-eplclubs [0] = 'Aston Villa';
-eplclubs [3] = 'Newcastle';
+eplclubs[0] = 'Aston Villa';
+eplclubs[3] = 'Newcastle';
 
 // Print the elements in positions 1 and 4, these are the new clubs Aston Villa, Newcastle replacing the relegated ones
 console.log(eplclubs[0]); // 'Aston Villa'
