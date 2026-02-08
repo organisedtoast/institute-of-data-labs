@@ -53,7 +53,7 @@ console.log(manutdsquad[0].firstName);
 console.log("To get stats for Harry Maguire, print the hmaguire object. Harry's stats are:");
 console.log(hmaguire);  // { firstName: 'Harry', lastName: 'Maguire', age: 32, xfollowers: 2400000 }
 
-console.log("Harry Maguire's X followers went down from 2.5m to 13 after a string of embarassing gaffes for Man Utd");
+console.log("Harry Maguire's X followers went down from 2.5m to 13 after a string of embarrassing gaffes for Man Utd.");
 
 // To update for this fact, insert the following line of code to update the "followers" key for the "hmaguire" object:
 hmaguire.xfollowers = 13
