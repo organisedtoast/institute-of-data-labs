@@ -18,7 +18,8 @@ h1 {
   /* spacing around the text */
   padding: 20px;
   /* space inside the heading box (top, right, bottom, left) */
-  margin: 0 0 20px 0;
+  margin: 0 0 40px 0;
+  /* increased space below the heading to separate from label */
   /* space outside the heading box (top, right, bottom, left) */
 
   /* makes the heading stand out */
@@ -182,12 +183,90 @@ body {
   /* blue gray background for the whole page */
   font-family: Arial, sans-serif;
   /* standard, readable font */
-  max-width: 600px;
-  /* limits page width on large screens */
+  max-width: 1100px;
+  /* limits page width on large screens (wider for side-by-side layout) */
   margin: 0 auto;
   /* horizontally centers the body content */
   padding: 20px;
   /* space around the edges of the content */
+}
+
+/*
+STYLING FOR THE IMAGE + MAIN MATERIAL LAYOUT
+The .content-with-image class wraps the image and the main content side-by-side
+*/
+.content-with-image {
+  /* layout */
+  display: flex;
+  /* puts children (image and content) in a row */
+  gap: 30px;
+  /* space between the image and the content */
+  align-items: stretch;
+  /* stretches both items to fill the same height */
+  flex-wrap: wrap;
+  /* allows items to stack on smaller screens */
+}
+
+/*
+STYLING FOR THE IMAGE PLACEHOLDER
+The .hero-image class targets the large image next to the content
+*/
+.hero-image {
+  /* sizing */
+  width: 100%;
+  /* makes the image fill its column width */
+  max-width: 400px;
+  /* allows the image to grow to a reasonable width */
+  height: auto;
+  /* keeps the image proportional (no stretching) */
+  min-height: 70px;
+  /* ensures the image has similar height to main material */
+
+  /* layout behavior */
+  flex: 1 1 300px;
+  /* lets the image grow and shrink, with a good starting width */
+  display: block;
+  /* removes extra space under the image */
+
+  /* styling */
+  border-radius: 12px;
+  /* rounds the image corners */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  /* adds a soft shadow to make it stand out */
+}
+
+/*
+STYLING FOR THE MAIN MATERIAL
+The .main-material class holds the form controls and results
+*/
+.main-material {
+  /* sizing */
+  flex: 1 1 320px;
+  /* lets the content grow and shrink with a minimum width */
+  min-width: 280px;
+  /* prevents the content from becoming too narrow */
+}
+
+/*
+RESPONSIVE LAYOUT FOR SMALL SCREENS
+This stacks the image above the content on narrow screens
+*/
+@media (max-width: 800px) {
+  /* adjust layout when the screen is 800px or smaller */
+  .content-with-image {
+    /* change the row into a column */
+    flex-direction: column;
+    /* stacks the image above the content */
+    align-items: stretch;
+    /* makes items take full width */
+  }
+
+  /* make sure the image stays full width on small screens */
+  .hero-image {
+    /* remove max width so it can fill the screen */
+    max-width: 100%;
+    /* keeps image responsive */
+  }
 }
 
 /*

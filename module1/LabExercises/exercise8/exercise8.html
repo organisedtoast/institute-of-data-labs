@@ -2,35 +2,56 @@
 <html lang="en">
 
 <head>
+    <!-- Character encoding so text displays correctly -->
     <meta charset="UTF-8">
+    <!-- Make the page responsive on phones/tablets -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title shown in the browser tab -->
     <title>Man Utd Red Card Randomizer!</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟥</text></svg>">
     <!-- Favicon as a red square emoji -->
+    <!-- Link to external CSS for styling -->
     <link rel="stylesheet" href="exercise8.css">
+    <!-- Load the JavaScript file after the HTML is parsed -->
     <script src="rolldice.js" defer></script>
 </head>
 
 <body>
+    <!-- Main page heading -->
     <h1>Man Utd Red Card 🟥 Sending Offs Randomizer!</h1>
 
-    <label for="footballGameType">Football Game Type:</label>
-    <select id="footballGameType" name="footballGameType">
-        <option value="11">11 players per side</option>
-        <option value="5">5 players per side</option>
-    </select>
+    <!-- Layout wrapper: image on one side, main content on the other -->
+    <div class="content-with-image">
+        <!-- Large image placeholder -->
+        <img class="hero-image" src="roykeanered1.jpg" alt="Roy Keane Sent Off Again">
 
-    <button type="button" class="rolldicebtn" onclick="RollDice()">
-        Generate red cards!</button>
+        <!-- Main material (form + results) -->
+        <div class="main-material">
+            <!-- Label is tied to the select by the "for" attribute -->
+            <label for="footballGameType">Football Game Type:</label>
+            <!-- Dropdown to choose the game type -->
+            <select id="footballGameType" name="footballGameType">
+                <option value="11">11 players per side</option>
+                <option value="5">5 players per side</option>
+            </select>
 
-    <div class="redcard" id="redcardresult">0</div>
+            <!-- Button that calls the RollDice() function -->
+            <button type="button" class="rolldicebtn" onclick="RollDice()">
+                Generate red cards!
+            </button>
 
-    <div id="playersoff">Man Utd player(s) sent off!</div>
+            <!-- Output: number of red cards -->
+            <div class="redcard" id="redcardresult">0</div>
 
-    <div id="diceresult">0</div>
-    <label>remaining Man Utd player(s) on the bloody field!</label>
+            <!-- Output: message about players sent off -->
+            <div id="playersoff">Man Utd player(s) sent off!</div>
 
+            <!-- Output: remaining players -->
+            <div id="diceresult">0</div>
+            <label>remaining Man Utd player(s) on the bloody field!</label>
+        </div>
+    </div>
 
 </body>
 
