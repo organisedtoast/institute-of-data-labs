@@ -1,4 +1,4 @@
-function rolldice() {
+function RollDice() {
   // get the selected game type (6 or 10) from the dropdown menu id=footballGameType
   const gameType = document.getElementById("footballGameType").value;
 
@@ -21,7 +21,7 @@ function rolldice() {
 
 /* This is what you would do if it was just a single dice with 6 sides:
 
-function rolldice() {
+function RollDice() {
 
 //this will give us a random number between 1 and 6 for dicenumber
 let dicenumber = Math.floor(Math.random() * 6) + 1;
@@ -31,6 +31,4 @@ let dicenumber = Math.floor(Math.random() * 6) + 1;
 document.getElementById("diceresult").textContent = dicenumber; }
 
 
-/*
-
-
+*/
