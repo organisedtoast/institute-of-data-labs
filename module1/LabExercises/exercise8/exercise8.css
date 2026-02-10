@@ -4,21 +4,30 @@ The h1 selector targets the main heading in my HTML
 */
 h1 {
   /* makes the text big and bold */
-  font-size: 2.5em;          /* font size: 2.5 times the default size */
-  font-weight: bold;         /* makes text bold */
-  
+  font-size: 2.5em;
+  /* font size: 2.5 times the default size */
+  font-weight: bold;
+  /* makes text bold */
+
   /* colours and backgrounds */
-  color: #2c3e50;            /* dark blue gray text color */
-  background-color: #ecf0f1; /* light gray background behind the text */
-  
+  color: #2c3e50;
+  /* dark blue gray text color */
+  background-color: #ecf0f1;
+  /* light gray background behind the text */
+
   /* spacing around the text */
-  padding: 20px;             /* space inside the heading box (top, right, bottom, left) */
-  margin: 0 0 20px 0;        /* space outside the heading box (top, right, bottom, left) */
-  
+  padding: 20px;
+  /* space inside the heading box (top, right, bottom, left) */
+  margin: 0 0 20px 0;
+  /* space outside the heading box (top, right, bottom, left) */
+
   /* makes the heading stand out */
-  text-align: center;        /* centers the text horizontally */
-  border-radius: 10px;       /* rounds the corners of the heading box */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds a subtle shadow around the heading */
+  text-align: center;
+  /* centers the text horizontally */
+  border-radius: 10px;
+  /* rounds the corners of the heading box */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Adds a subtle shadow around the heading */
 }
 
 /*
@@ -27,42 +36,60 @@ The select selector targets dropdown menus in my HTML
 */
 select {
   /* size and positioning */
-  width: 250px;              /* makes the dropdown 250 pixels wide */
-  height: 40px;              /* makes the dropdown 40 pixels tall */
-  font-size: 16px;           /* sets the text size inside the dropdown */
-  display: block;            /* makes the dropdown a block-level element */
-  margin: 0 auto 10px auto;  /* horizontally centers the dropdown with auto left/right margins */
+  width: 250px;
+  /* makes the dropdown 250 pixels wide */
+  height: 40px;
+  /* makes the dropdown 40 pixels tall */
+  font-size: 16px;
+  /* sets the text size inside the dropdown */
+  display: block;
+  /* makes the dropdown a block-level element */
+  margin: 0 auto 10px auto;
+  /* horizontally centers the dropdown with auto left/right margins */
 
   /* colours and borders */
-  background-color: white;   /* white background for the dropdown */
-  color: #333;               /* dark gray text color */
-  border: 2px solid #3498db; /* blue border around the dropdown */
-  border-radius: 5px;        /* rounds the corners slightly */
+  background-color: white;
+  /* white background for the dropdown */
+  color: #333;
+  /* dark gray text color */
+  border: 2px solid #3498db;
+  /* blue border around the dropdown */
+  border-radius: 5px;
+  /* rounds the corners slightly */
 
   /* padding adds space inside the dropdown */
-  padding: 8px;              /* space inside the dropdown */
+  padding: 8px;
+  /* space inside the dropdown */
 
   /* makes the dropdown look nice when clicked */
-  cursor: pointer;           /* shows a finger cursor when hovering */
-  outline: none;             /* removes the default blue outline when clicked */
+  cursor: pointer;
+  /* shows a finger cursor when hovering */
+  outline: none;
+  /* removes the default blue outline when clicked */
 }
 
 /* makes the dropdown look different when you hover over it */
 select:hover {
-  border-color: #2980b9;     /* darker blue border on hover */
-  background-color: #f8f9fa; /* slightly lighter background on hover */
+  border-color: #2980b9;
+  /* darker blue border on hover */
+  background-color: #f8f9fa;
+  /* slightly lighter background on hover */
 }
 
 /* makes the dropdown look different when it's selected/focused */
 select:focus {
-  border-color: #e74c3c;     /* red border when clicked/selected */
-  box-shadow: 0 0 5px rgba(231, 76, 60, 0.5); /* red glow effect when focused */
+  border-color: #e74c3c;
+  /* red border when clicked/selected */
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+  /* red glow effect when focused */
 }
 
 /* STYLING FOR THE OPTIONS INSIDE THE DROPDOWN */
 option {
-  text-align: center;        /* Centers the text inside each option */
-  padding: 5px;              /* Adds some padding around each option text */
+  text-align: center;
+  /* Centers the text inside each option */
+  padding: 5px;
+  /* Adds some padding around each option text */
 }
 
 /*
@@ -70,12 +97,18 @@ STYLING FOR THE LABEL NEXT TO DROPDOWN MENU
 The label selector makes all labels on the site look good, however please note there is only one label at the moment, being the "Football Game Type:" text
 */
 label {
-  display: block;            /* makes the label a block-level element */
-  margin: 0 auto 10px auto;  /* horizontally centers the label with auto left/right margins */
-  font-weight: bold;         /* makes the label text bold */
-  color: #555;               /* medium gray text color */
-  font-size: 18px;           /* larger text size for the label */
-  text-align: center;        /* centers the text inside the label */
+  display: block;
+  /* makes the label a block-level element */
+  margin: 0 auto 10px auto;
+  /* horizontally centers the label with auto left/right margins */
+  font-weight: bold;
+  /* makes the label text bold */
+  color: #555;
+  /* medium gray text color */
+  font-size: 18px;
+  /* larger text size for the label */
+  text-align: center;
+  /* centers the text inside the label */
 }
 
 /*
@@ -84,41 +117,59 @@ The .rolldicebtn class targets the button in my HTML
 */
 .rolldicebtn {
   /* size and positioning */
-  width: 300px;              /* button width */
-  height: 70px;              /* button height */
-  font-size: 22px;           /* text size inside the button */
-  font-weight: bold;         /* bold text in the button */
+  width: 300px;
+  /* button width */
+  height: 70px;
+  /* button height */
+  font-size: 22px;
+  /* text size inside the button */
+  font-weight: bold;
+  /* bold text in the button */
 
   /* colours */
-  background-color: #3498db; /* blue background */
-  color: white;              /* white text */
+  background-color: #3498db;
+  /* blue background */
+  color: white;
+  /* white text */
 
   /* borders and shape */
-  border: none;              /* removes default border */
-  border-radius: 25px;       /* makes the button rounded (half circle ends) */
+  border: none;
+  /* removes default border */
+  border-radius: 25px;
+  /* makes the button rounded (half circle ends) */
 
   /* center the button horizontally on the screen */
-  display: block;            /* makes the button a block-level element */
-  margin: 20px auto;         /* centers the button with auto left/right margins */
+  display: block;
+  /* makes the button a block-level element */
+  margin: 20px auto;
+  /* centers the button with auto left/right margins */
 
-  cursor: pointer;           /* shows finger cursor when hovering */
+  cursor: pointer;
+  /* shows finger cursor when hovering */
 
   /* makes the button look 3D */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* shadow under the button */
-  transition: all 0.3s ease; /* smooth animation for hover effects */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* shadow under the button */
+  transition: all 0.3s ease;
+  /* smooth animation for hover effects */
 }
 
 /* makes the button look different when you hover over it */
 .rolldicebtn:hover {
-  background-color: #2980b9; /* darker blue on hover */
-  transform: translateY(-2px); /* moves button up slightly on hover */
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* bigger shadow on hover */
+  background-color: #2980b9;
+  /* darker blue on hover */
+  transform: translateY(-2px);
+  /* moves button up slightly on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  /* bigger shadow on hover */
 }
 
 /* makes the button look pressed when clicked */
 .rolldicebtn:active {
-  transform: translateY(1px); /* moves button down when clicked */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* smaller shadow when clicked */
+  transform: translateY(1px);
+  /* moves button down when clicked */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* smaller shadow when clicked */
 }
 
 /*
@@ -127,11 +178,16 @@ The body selector affects the entire webpage background
 */
 body {
   /* background and layout */
-  background-color: #f5f7fa; /* blue gray background for the whole page */
-  font-family: Arial, sans-serif; /* standard, readable font */
-  max-width: 600px;          /* limits page width on large screens */
-  margin: 0 auto;            /* horizontally centers the body content */
-  padding: 20px;             /* space around the edges of the content */
+  background-color: #f5f7fa;
+  /* blue gray background for the whole page */
+  font-family: Arial, sans-serif;
+  /* standard, readable font */
+  max-width: 600px;
+  /* limits page width on large screens */
+  margin: 0 auto;
+  /* horizontally centers the body content */
+  padding: 20px;
+  /* space around the edges of the content */
 }
 
 /*
@@ -140,7 +196,8 @@ Tthe * selector applies to all elements (general reset)
 */
 * {
   /* makes sure all elements behave consistently */
-  box-sizing: border-box;    /* includes padding and border in element's total width/height */
+  box-sizing: border-box;
+  /* includes padding and border in element's total width/height */
 }
 
 /*
@@ -149,23 +206,34 @@ The #redcardresult ID targets the div showing the red card result
 */
 #redcardresult {
   /* size and positioning */
-  width: 100px;              /* width of the red card display box */
-  height: 100px;             /* height of the red card display box */
-  line-height: 100px;        /* vertically centers the text (same as height) */
+  width: 100px;
+  /* width of the red card display box */
+  height: 100px;
+  /* height of the red card display box */
+  line-height: 100px;
+  /* vertically centers the text (same as height) */
 
   /* colours and borders */
-  background-color: #e74c3c; /* red background */
-  color: white;              /* white text */
+  background-color: #e74c3c;
+  /* red background */
+  color: white;
+  /* white text */
 
   /* shape and spacing */
-  border-radius: 50%;        /* makes it a perfect circle */
-  margin: 20px auto;         /* centers the circle horizontally, adds space around it */
-  text-align: center;        /* centers the text horizontally */
-  font-size: 32px;           /* large text size */
-  font-weight: bold;         /* bold text */
+  border-radius: 50%;
+  /* makes it a perfect circle */
+  margin: 20px auto;
+  /* centers the circle horizontally, adds space around it */
+  text-align: center;
+  /* centers the text horizontally */
+  font-size: 32px;
+  /* large text size */
+  font-weight: bold;
+  /* bold text */
 
   /* makes it stand out */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* shadow around the circle */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* shadow around the circle */
 }
 
 
@@ -175,23 +243,34 @@ The #diceresult ID targets the div showing the dice result (remaining players)
 */
 #diceresult {
   /* size and positioning */
-  width: 100px;              /* width of the dice display box */
-  height: 100px;             /* height of the dice display box */
-  line-height: 100px;        /* vertically centers the text (same as height) */
-  
+  width: 100px;
+  /* width of the dice display box */
+  height: 100px;
+  /* height of the dice display box */
+  line-height: 100px;
+  /* vertically centers the text (same as height) */
+
   /* colours and borders */
-  background-color: #2ecc71; /* green background */
-  color: white;              /* white text */
-  
+  background-color: #2ecc71;
+  /* green background */
+  color: white;
+  /* white text */
+
   /* shape and spacing */
-  border-radius: 50%;        /* makes it a perfect circle */
-  margin: 20px auto;         /* centers the circle horizontally, adds space around it */
-  text-align: center;        /* centers the text horizontally */
-  font-size: 32px;           /* large text size */
-  font-weight: bold;         /* bold text */
-  
+  border-radius: 50%;
+  /* makes it a perfect circle */
+  margin: 20px auto;
+  /* centers the circle horizontally, adds space around it */
+  text-align: center;
+  /* centers the text horizontally */
+  font-size: 32px;
+  /* large text size */
+  font-weight: bold;
+  /* bold text */
+
   /* makes it stand out */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* shadow around the circle */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* shadow around the circle */
 }
 
 /*
@@ -200,13 +279,18 @@ The #playersoff ID targets the div showing players sent off (red carded) after t
 */
 #playersoff {
   /* size and positioning */
-  font-size: 20px;           /* medium-large text size */
-  font-weight: bold;         /* bold text */
-  
+  font-size: 20px;
+  /* medium-large text size */
+  font-weight: bold;
+  /* bold text */
+
   /* colours */
-  color: #e74c3c;            /* red text color */
-  
+  color: #e74c3c;
+  /* red text color */
+
   /* positioning */
-  text-align: center;        /* centers the text */
-  margin: 10px 0;            /* space above and below */
+  text-align: center;
+  /* centers the text */
+  margin: 10px 0;
+  /* space above and below */
 }

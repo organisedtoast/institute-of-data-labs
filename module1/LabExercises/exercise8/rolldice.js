@@ -11,11 +11,11 @@ function rolldice() {
   // calculate the red card result as the game type minus the dice result
   // this represents how many players were sent off (red cards)
   let redCardResult = gameType - dicenumber;
-  
+
   // display the red card result in the redcardresult element
   document.getElementById("redcardresult").textContent = redCardResult;
-  
-  }
+
+}
 
 
 
@@ -27,7 +27,7 @@ function rolldice() {
 let dicenumber = Math.floor(Math.random() * 6) + 1;
 
 
-//display the result in the diceresult ID element
+//display the dicenumber result in the diceresult ID element
 document.getElementById("diceresult").textContent = dicenumber; }
 
 
