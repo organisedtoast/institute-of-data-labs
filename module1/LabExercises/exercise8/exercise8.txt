@@ -1,0 +1,64 @@
+USER STORY
+
+A. Choose a dice
+
+User sees a list of 2 dice options (e.g. D6, D10).
+
+User selects one dice type so the app knows what it is rolling.
+
+App shows user which dice is currently selected so user doesn't get confused.
+
+B. Roll the dice
+
+User has to press a Roll button so they can roll their selected dice.
+
+App shows user the result number after they roll.
+
+User wants result to be random and within the correct range (e.g. Dice 6 gives a number from 1–6; Dice 10 gives a number 1–10).
+
+C. Basic error protection
+
+The app must not roll if no dice has been selected. That way there won't be errors.
+
+
+
+
+STORYBOARD
+
+A. Landing
+
+User opens the Dice Generator page.
+
+They see a title (“Dice Generator”), dice choices (D6, D10), and a disabled or ready “Roll” button.
+
+B. Decision
+
+User thinks: “I want a D10.”
+
+They click/tap D10.
+
+The D10 option highlights (shows it’s selected). The page now indicates: “Selected: D10”.
+
+C. Action
+
+User clicks/taps Roll.
+
+The page briefly shows “Rolling…” (optional) then displays a big number result.
+
+D. Result
+
+The user sees: Result: 7 (for example).
+
+If you have history: “Roll history: 7”.
+
+E. Repeat
+
+User clicks Roll again (without re-selecting D10).
+
+New result appears (e.g., 2) and history updates (7, 2).
+
+F. Change dice
+
+User decides to switch to D6.
+
+They select D6; highlight moves to D6; selected label updates.

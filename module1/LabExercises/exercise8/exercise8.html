@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Man Utd Red Card Randomizer!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟥</text></svg>"> <!-- Favicon as a red square emoji -->
+    <link rel="stylesheet" href="exercise8.css">
+    <script src="rolldice.js" defer></script>
+</head>
+
+<body>
+    <h1>Man Utd Red Card 🟥 Sending Offs Randomizer!</h1>
+
+    <label for="footballGameType">Football Game Type:</label>
+    <select id="footballGameType" name="footballGameType">
+        <option value="11">11 players per side</option>
+        <option value="5">5 players per side</option>
+    </select>
+
+        <button type="button" class="rolldicebtn" onclick="rolldice()">
+                Generate red cards!</button>
+
+<div class="redcard" span id="redcardresult">0</span></div>
+
+<div id="playersoff">Man Utd player(s) sent off!</div>
+
+    <div id="diceresult">0</div>
+    <label>remaining Man Utd player(s) on the bloody field!</label>
+
+
+</body>
+
+</html>
