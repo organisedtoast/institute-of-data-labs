@@ -245,6 +245,8 @@ The .main-material class holds the form controls and results
   /* lets the content grow and shrink with a minimum width */
   min-width: 280px;
   /* prevents the content from becoming too narrow */
+  margin-top: 50px;
+  /* adds 50 pixels of space above the main material to separate it from the hero-image */
 }
 
 /*
