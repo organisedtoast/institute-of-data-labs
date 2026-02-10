@@ -213,20 +213,20 @@ The .hero-image class targets the large image next to the content
 */
 .hero-image {
   /* sizing */
-  width: 100%;
-  /* makes the image fill its column width */
+  width: auto;
+  /* changes from 100% to auto so the image keeps its natural width without stretching */
   max-width: 400px;
   /* allows the image to grow to a reasonable width */
   height: auto;
-  /* keeps the image proportional (no stretching) */
-  min-height: 70px;
-  /* ensures the image has similar height to main material */
+  /* keeps the image proportional (no stretching) */  
 
   /* layout behavior */
   flex: 1 1 300px;
   /* lets the image grow and shrink, with a good starting width */
   display: block;
   /* removes extra space under the image */
+  padding: 30px;
+  /* adds 30 pixels of space inside the image box on all sides */
 
   /* styling */
   border-radius: 12px;
