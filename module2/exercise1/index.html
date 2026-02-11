@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <!-- Page metadata: these tags help browsers and search engines understand the page -->
   <title>Crazy Animals Page</title>
   <meta charset="UTF-8">
   <meta name="description" content="Funny cat music from China.">
@@ -9,11 +10,14 @@
   <meta name="author" content="organisedtoast">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Internal CSS for table borders -->
   <style>
-table, th, td {
-border: 1px solid black;
-}
-</style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+  </style>
 
 
 
@@ -24,136 +28,152 @@ border: 1px solid black;
 </head>
 
 <body>
-  
+  <!-- Header usually contains branding and navigation links -->
   <header>
+    <!-- Navigation provides links to other pages -->
     <nav>
       <!-- works like <a href="/index.html">Home</a> -->
       <a href="/">Home</a>
       <a href="form.html">Submission</a>
-      <a href="index.html">Index</a> 
+      <a href="index.html">Index</a>
 
     </nav>
   </header>
 
-  <main> 
+  <!-- Main contains the primary page content -->
+  <main>
 
-<h1>Page Headline h1 for article 3</h1>
-<h2>Article Headline h2 for img, video, audio</h2>
+    <!-- Section: multimedia examples -->
+    <h1>Page Headline h1 for article 3</h1>
+    <h2>Article Headline h2 for img, video, audio</h2>
 
-<article>
+    <article>
 
-<video controls width="500" autoplay loop muted>
-<source src="assets/flower.webm" type="video/webm">
-Sorry, your browser doesn't support embedded videos.
-</video>
+      <!-- Video with user controls; autoplay+muted allows silent auto playback in most browsers -->
+      <video controls width="500" autoplay loop muted>
+        <source src="assets/flower.webm" type="video/webm">
+        Sorry, your browser doesn't support embedded videos.
+      </video>
 
-<br>
+      <br>
 
-<audio controls src="assets/t-rex-roar.mp3" autoplay loop>
-</audio>
+      <!-- Audio element with controls; loop repeats continuously -->
+      <audio controls src="assets/t-rex-roar.mp3" autoplay loop>
+      </audio>
 
-<br>
+      <br>
 
-<img src="assets/html_lab_image.jpg" alt="" height="900"/>
+      <!-- Image loaded from local project assets -->
+      <img src="assets/html_lab_image.jpg" alt="" height="900" />
 
-<img src="https://i.redd.it/zhzk4ffne8rf1.jpeg" alt="Sir put me down I'm the manager." height="900"/>
+      <!-- Image loaded from an external URL -->
+      <img src="https://i.redd.it/zhzk4ffne8rf1.jpeg" alt="Sir put me down I'm the manager." height="900" />
 
-</article>
+    </article>
 
+    <!-- Section: basic text and list elements -->
+    <h1>Page Headline h1 for article 1</h1>
+    <h2>Article Headline h2 for div, span, p, pre, ul, li, ol, article</h2>
 
-<h1>Page Headline h1 for article 1</h1>
-<h2>Article Headline h2 for div, span, p, pre, ul, li, ol, article</h2>
+    <article>
 
-<article>
+      <br>
 
-<br>
-
-    <div>div examples</div>
-    <div>my cat talks back;</div>
-    <div>powered by naps;</div>
-    <div>hero bengal;</div>
-
-
-<br>
-
-    <div>span examples</div>
-    <span>ctrl+z my life;</span>
-    <span>rubber duck CTO;</span>
-    <span>terrible luck;</span>
+      <div>div examples</div>
+      <div>my cat talks back;</div>
+      <div>powered by naps;</div>
+      <div>hero bengal;</div>
 
 
-<br>
-  
-<p>
-p represents paragraph without preserving spacing
-</p>
+      <br>
 
-<br>
+      <div>span examples</div>
+      <span>ctrl+z my life;</span>
+      <span>rubber duck CTO;</span>
+      <span>terrible luck;</span>
 
-<pre>
+
+      <br>
+
+      <!-- p: standard paragraph flow -->
+      <p>
+        p represents paragraph without preserving spacing
+      </p>
+
+      <br>
+
+      <!-- pre: preserves spacing and line breaks exactly as typed -->
+      <pre>
 Text in a pre element
 is displayed in a fixed-width
 font, and it preserves
 both spaces and
 line breaks
-</pre>  
-    
-
-<div>unordered list of 4 items using ul outside tags, and li tags.<div>
-<ul>
-  <li>li seal penguin li</li>
-  <li>li king penguin li</li>
-  <li>li rock penguin li</li>
-</ul>
-
-<div>ordered list of 3 items using ol outside tags, and li tags</div>
-<ol>
-  <li>li big duck li</li>
-  <li>li small duck li</li>
-  <li>li dumb duck
-    <ul>
-      <li>ul li nested dumb rubber duck li</li>
-      <li>li nested dmb mallard duck li</li>
-     </ul>
-  </li>
-</ol>
-
-<article>
+</pre>
 
 
-<h1>Page Headline h1 for article 2</h1>
-<h2>Article Headline h2 for table</h2>
+      <!-- Unordered list: bullet points where sequence is not important -->
+      <div>unordered list of 4 items using ul outside tags, and li tags.<div>
+          <ul>
+            <li>li seal penguin li</li>
+            <li>li king penguin li</li>
+            <li>li rock penguin li</li>
+          </ul>
 
-<article>
+          <!-- Ordered list: numbered sequence -->
+          <div>ordered list of 3 items using ol outside tags, and li tags</div>
+          <ol>
+            <li>li big duck li</li>
+            <li>li small duck li</li>
+            <!-- Nested list: sub-items related to the parent list item -->
+            <li>li dumb duck
+              <ul>
+                <li>ul li nested dumb rubber duck li</li>
+                <li>li nested dmb mallard duck li</li>
+              </ul>
+            </li>
+          </ol>
 
-<table>
-<thead>
-<tr>
-<th colspan="2">First colspan="2" header</th>
-<th>Second colspan="1" header</th>
-<th>Third colspan="1" header</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>First cell - first row</td>
-<td>Second cell - first row</td>
-<td colspan="2">Third cell - first row  colspan="2"</td>
-</tr>
-<tr>
-<td>First cell - second row</td>
-<td rowspan="2">Second cell - second row rowspan="2"</td>
-<td colspan="2">Third cell - second row colspan="2"</td>
-</tr>
-<tr>
-<td>First cell - third row</td>
-<td>Second cell - third row</td>
-<td>Third cell - third row</td>
-</tr>
-</tbody>
-</table>
+          <article>
 
-</article>
+
+            <h1>Page Headline h1 for article 2</h1>
+            <h2>Article Headline h2 for table</h2>
+
+            <article>
+
+              <!-- Table section: thead = header cells, tbody = data rows -->
+              <table>
+                <thead>
+                  <tr>
+                    <!-- colspan="2" merges this header across two columns -->
+                    <th colspan="2">First colspan="2" header</th>
+                    <th>Second colspan="1" header</th>
+                    <th>Third colspan="1" header</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>First cell - first row</td>
+                    <td>Second cell - first row</td>
+                    <!-- colspan="2" makes this single data cell span two columns -->
+                    <td colspan="2">Third cell - first row colspan="2"</td>
+                  </tr>
+                  <tr>
+                    <td>First cell - second row</td>
+                    <!-- rowspan="2" makes this data cell span this row and the row below -->
+                    <td rowspan="2">Second cell - second row rowspan="2"</td>
+                    <td colspan="2">Third cell - second row colspan="2"</td>
+                  </tr>
+                  <tr>
+                    <td>First cell - third row</td>
+                    <td>Second cell - third row</td>
+                    <td>Third cell - third row</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </article>
 
 
 
@@ -165,7 +185,7 @@ line breaks
 
 
 
-  
+
 </body>
 
 </html>
