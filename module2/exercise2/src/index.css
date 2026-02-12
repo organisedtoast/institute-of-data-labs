@@ -212,28 +212,24 @@ a:visited {
 
 /* VI. PERFORMING SIMPLC CALCS  .calc-style class */ 
 
-/* 1. BASIC STYLING OF THE .calc-style CLASS */
+/* 1. BASIC STYLING OF THE .calc-row CLASS */
 
-.calc-style {
-  background-color: #e0e7ff; /* Light purple background for the calc-style element. */
-  width: 100vw; /* Sets the width to 100% of the viewport width (the visible area of the browser). */
-  width: calc(100vw - 100px); /* This makes the element as wide as the screen, then subtracts 100px. */
-  
+/*.calc-row {
+  display: flex;
+  align-items: flex-start;
+}*/
 
-}
+/*2 STYLING FOR .cat-fixed-width-col CLASS. */
 
-/*2 STYLING FOR .fixed-width-col CLASS. */
-
-.cat {
+.cat-fixed-width-col {
   width: 350px; /* Keeps this column at a fixed width of 350px. */
   display: inline-block; /* Allows this column to sit on the same line as another inline-block column. */
   vertical-align: top; /* Aligns this column to the top edge of the row. */
 }
 
-/*3 STYLING FOR .fluid-col CLASS. */
-.cat-text {
+/*3 STYLING FOR .cat-text-fluid-col CLASS. */
+.cat-text-fluid-col {
   display: inline-block; /* Keeps this column on the same line as the fixed-width column. */
   vertical-align: top; /* Aligns this column with the top of the fixed-width column. */
   width: calc(100% - 350px); /* Takes full row width (100%) and subtracts 350px to fill the remaining space. */
 }
-
