@@ -1,11 +1,87 @@
 /* I. Selectors */
-/* Put styles for questions 1.1, 1.2, 1.3 and 1.4 here */
 
-/* Put styles for questions 2.1 and 2.2 here */
+/* 1.1 STYLING FOR ARTICLE ELEMENTS */
+/* Below are styles applied to all <article> elements in the HTML */
+
+/* Margin: Creates space outside the element (between the element and other elements) */
+/* Padding: Creates space inside the element (between the content and the border) */
+/* Border: Creates a visible line around the element */
+
+article {
+  /* Adds space around each article element (outside the border) */
+  margin: 20px;
+
+  /* Adds space inside each article element (between the border and the content) */
+  padding: 15px;
+
+  /* Creates a solid border around each article element */
+  border: 2px solid #ccc;
+
+  /* Optional: Adds rounded corners to make it look more modern */
+  border-radius: 8px;
+}
+
+
+/* 1.2 STYLING ELEMENTS BY CLASS */
+/* Below are styles applied to elements with specific classes */
+
+
+.style-me1 {
+  /* Sets the font color of elements with class "style-me1" to red */
+  color: red;
+}
+
+/* 1.3 STYLING ELEMENT BY ID */
+/* Below are styles applied to elements with specific IDs */
+
+#style-me2 {
+  /* Sets the font color of the element with id "style-me2" to blue */
+  color: blue;
+}
+
+/* 1.4 STYLING ELEMENT BY SPECIFIC SELECTOR */
+/* Below are styles applied to elements with both class "style-me1" AND id "style-me2" */
+
+.style-me1#style-me2 {
+  /* Sets the font color of the element with both class "style-me1" and id "style-me2" to purple */
+  color: purple;
+}
+
+/* TIP: Note that in normal situations having duplicate ids is a mistake - there should not be duplicate ids on the same page. We are doing it here only for the simplicity of the exercise. */
+
+
+/* 2.1 STYLING ELEMENT BY DESCENDANT COMBINATOR SELECTORS */
+
+/* Descendant combinator: Selects all <p> elements that are descendants of elements with class "my-descendants-are-styled" */
+/* A descendant combinator is represented by a space between selectors */
+/* This means any <p> element that appears inside an element with class "my-descendants-are-styled", regardless of how deeply nested, will be styled */
+.my-descendants-are-styled p {
+  /* Sets the background color of all matching <p> elements to red */
+  background-color: red;
+  color: whitesmoke
+}
+
+/* 2.2 STYLING ELEMENT BY CHILD COMBINATOR SELECTORS */
+
+/* Child combinator: Selects all <p> elements that are direct children of elements with class "my-children-are-styled" */
+/* A child combinator is represented by a > between selectors */
+/* This means only <p> elements that are direct children of an element with class "my-children-are-styled" will be styled */
+.my-children-are-styled > p {
+  /* Sets the background color of all matching <p> elements to blue */
+  background-color: rgb(28, 223, 213);
+  color: rgb(75, 9, 9);
+}
+
 
 
 /* II. Box model and common properties */
-/* Put styles for questions 1-8 here */
+
+
+
+
+
+
+
 
 
 /* III. Positioning */
