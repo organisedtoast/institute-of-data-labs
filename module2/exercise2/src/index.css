@@ -216,22 +216,24 @@ a:visited {
 
 .calc-style {
   background-color: #e0e7ff; /* Light purple background for the calc-style element. */
-  width: calc(100vw - 500px); /* This makes the element as wide as the screen, then subtracts 100px. */
+  width: 100vw; /* Sets the width to 100% of the viewport width (the visible area of the browser). */
+  width: calc(100vw - 100px); /* This makes the element as wide as the screen, then subtracts 100px. */
+  
 
 }
 
 /*2 STYLING FOR .fixed-width-col CLASS. */
 
-.fixed-width-col {
-  width: 350px;
-  display: inline-block;
+.cat {
+  width: 350px; /* Keeps this column at a fixed width of 350px. */
+  display: inline-block; /* Allows this column to sit on the same line as another inline-block column. */
+  vertical-align: top; /* Aligns this column to the top edge of the row. */
 }
 
 /*3 STYLING FOR .fluid-col CLASS. */
-.fluid-col {
-  display: inline-block;
-width: calc(100% - 350px); /* Uses remaining space after the 350px fixed column, so both can sit side-by-side. */
-  vertical-align: top; /* Aligns both inline-block columns from the top edge for a cleaner layout. */
-
-  
+.cat-text {
+  display: inline-block; /* Keeps this column on the same line as the fixed-width column. */
+  vertical-align: top; /* Aligns this column with the top of the fixed-width column. */
+  width: calc(100% - 350px); /* Takes full row width (100%) and subtracts 350px to fill the remaining space. */
 }
+
