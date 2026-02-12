@@ -15,10 +15,7 @@ article {
   padding: 15px;
 
   /* Creates a solid border around each article element */
-  border: 2px solid #ccc;
-
-  /* Optional: Adds rounded corners to make it look more modern */
-  border-radius: 8px;
+  border: 2px solid #ccc;  
 }
 
 
@@ -76,25 +73,165 @@ article {
 
 /* II. Box model and common properties */
 
+/*1. SET MARGIN, PADDING, AND BACKGROUND COLOR ON ELEMENTS WITH CLASS "box"*/
+.box {
+  /* 4-value syntax order is: top right bottom left */
+  margin: 10px 20px 30px 40px; /* Outside space: top 10px, right 20px, bottom 30px, left 40px */
+  padding: 32px 32px 32px 32px; /* More inner space keeps text farther from curved corners in the circular box. */
+  background-color: yellow; /* This makes every .box element appear with a yellow background. */
+}
 
 
+/*2. SET WIDTH AND HEIGHT ON ELEMENTS WITH CLASS "box"*/
+.box {
+  width: 45vmin; /* vmin uses the smaller screen side, so the circle scales nicely on different screens. */
+  height: 45vmin !important; /* Same value as width keeps the shape balanced, so text is less likely to hit curved corners. */
+/* !important forces this height to win over most other height rules. Use sparingly. */
+
+}
+
+/*3. SET BORDER ON ELEMENTS WITH CLASS "box"*/
+.box {
+  border: 3px dashed #0ea5a4; /* Border shorthand = thickness style color (3px, dashed, teal). */
+  border-radius: 12px; /* Rounds the corners so the border looks softer and more modern. */
+}
+
+/*4. SET BOX-SIZING ON ELEMENTS WITH CLASS "box"*/
+.box {
+  box-sizing: border-box; /* border-box means width/height include content + padding + border. This means padding and order will not add extra size. */
+  /* Alternative: content-box (default) means width/height apply only to content, so padding and border will add extra size to the box. */
+}
+
+/*5. OVERLOW PROPERTY ON ELEMENTS WITH CLASS "box"*/
+.box {
+  overflow: auto; /* If content is too big, the browser adds scrollbars only when needed. */
+}
 
 
+/*6. ADD OUTLINE ON ELEMENTS WITH CLASS "box"*/
+.box {
+  outline: 3px solid #741e2b; /* Outline is a line outside the border and does not change the element's size. */
+}
+
+/*7 ADD BORDER RADIUS ON ELEMENTS WITH CLASS "box"*/
+.box {
+  border-radius: 20% ; /* Rounds the corners of the box. Higher values make it more circular. */
+}   
 
 
+/*8 ADD BACKGROUND IMAGE ON ELEMENTS WITH CLASS "box"*/
+.box {
+  background-color: yellow; /* Fallback color shown while the image loads (or if it fails). */
+  background-image: url("../assets/images/img1.jpg"); /* Sets the image used in the background. */
+  background-size: cover; /* Fills the box with the image; parts may be cropped to keep proportions. */
+  background-repeat: no-repeat; /* Prevents the image from tiling (repeating). */
+  background-position: center; /* Keeps the image centered in the box. */
+}
 
 
 /* III. Positioning */
-/* Put styles for questions 1-3 here */
+
+/*1 APPLY ABSOLUTE POSITIONING TO .position-absolute CLASS*/
+.position-absolute {
+  position: absolute; /* Absolute positioning lets you place this element at exact coordinates. */
+  top: 0; /* Places the element at the top edge of the page (or top of the nearest positioned parent). */
+  left: 600px; /* Moves the element 600px away from the left side of its positioned container/page. */
+  right: 600px; /* Moves the element 600px away from the right side of its positioned container/page. */
+  background-color: #facc15; /* Bright color makes this absolutely positioned element easy to find. */
+}
 
 
-/* IV. Styling text */
-/* Put styles for questions 1-10 here */
+/*2 APPLY RELATIVE POSITIONING TO .position-relative CLASS*/
+.position-relative {
+  position: relative; /* Relative keeps the element in normal flow, but allows position offsets if needed. */
+  background-color: #bfdbfe; /* Different light-blue background helps you identify the relative container. */
+}
+
+
+/*3 APPLY STICKY POSITIONING TO .position-sticky CLASS*/
+.position-sticky {
+  position: sticky; /* Sticky positioning keeps an element in place while scrolling until it hits a boundary. */
+  top: 0; /* The element will stick to the top of the viewport when scrolling. */
+  background-color: #1f0a0a; /* Red background helps identify sticky elements. */
+    color: white; /* White text contrasts with the red background for readability. */
+    font-family: 'Roboto', sans-serif; /* Use the Roboto font imported in index.html */
+    font-size: large;
+}
+
+
+/* IV. Styling text on .text-style class */
+.text-style {
+  color: #1d4ed8; /* Sets the text color to blue so the words are easy to see. */
+  font-size: 18px; /* Sets the text size to 18 pixels. */
+  line-height: 1.6em; /* Adds vertical space between lines (1.6 times this element's font size). */
+  /* If units are omitted (for example: line-height: 1.6;), CSS uses a unitless multiplier inherited by children. */
+  font-weight: 700; /* Makes the text bold (700 is a common bold weight). */
+  font-family: "DM Sans", sans-serif; /* Sets the font to DM Sans, which is imported in index.html. If DM Sans fails to load, it falls back to a generic sans-serif font. */
+  text-align: center; /* Aligns the text to the center of its container. */
+  letter-spacing: 1px; /* Adds 1px of space between each character. */
+  word-spacing: 4px; /* Adds 4px of space between words. */
+  text-transform: uppercase; /* Changes all letters to uppercase. */
+  text-decoration: underline; /* Draws a line under the text. */
+}
 
 
 /* V. Styling links */
-/* Put styles for questions 1-3 here */
+
+/*1. a:link. Style all of the links in index.html in their basic (default) state by */
+a:link {
+  color: #1d4ed8; /* Sets the link color to blue */
+  font-size: 16px; /* Sets the font size to 16 pixels */
+  font-weight: bold; /* Makes the link text bold */
+  text-decoration: none; /* Removes the default underline from links */
+}
+
+/*2. a:hover, a:active and a:focus style all of these ‘active’ links differently to default links */
+a:hover {
+  color: #f59e0b; /* Changes the link color to orange when hovered over */
+  text-decoration: underline; /* Adds an underline when the link is hovered over */
+}
+
+a:active {
+  color: #a86f0b; /* Changes the link color to orange when clicked */
+  text-decoration: underline; /* Adds an underline when the link is clicked */
+}
+
+a:focus {
+  color: #ff3c00; /* Changes the link color to orange when focused */
+  text-decoration: underline; /* Adds an underline when the link is focused */
+}
 
 
-/* VI. calc() */
-/* Put styles for questions 1-3 here */
+/*3. a:visited. Apply special styling to visited links.*/
+a:visited {
+  color: #b4a68c; /* Changes the link color to gray for visited links */
+  }
+
+
+
+
+/* VI. PERFORMING SIMPLC CALCS  .calc-style class */ 
+
+/* 1. BASIC STYLING OF THE .calc-style CLASS */
+
+.calc-style {
+  background-color: #e0e7ff; /* Light purple background for the calc-style element. */
+  width: calc(100vw - 500px); /* This makes the element as wide as the screen, then subtracts 100px. */
+
+}
+
+/*2 STYLING FOR .fixed-width-col CLASS. */
+
+.fixed-width-col {
+  width: 350px;
+  display: inline-block;
+}
+
+/*3 STYLING FOR .fluid-col CLASS. */
+.fluid-col {
+  display: inline-block;
+width: calc(100% - 350px); /* Uses remaining space after the 350px fixed column, so both can sit side-by-side. */
+  vertical-align: top; /* Aligns both inline-block columns from the top edge for a cleaner layout. */
+
+  
+}

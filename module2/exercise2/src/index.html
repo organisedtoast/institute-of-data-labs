@@ -9,10 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,700;1,9..40,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <h1>My CSS journey</h1>
+  <h1>My CSS nightmare</h1>
 
   <article>
     <h2>I. Selectors</h2>
@@ -48,45 +49,50 @@
 
   <article>
     <h2>II. Box model and common properties</h2>
-    <div class="box">I'm the first box.</div>
+    <div class="box">I set the width to 200 — felt clever, precise, <br> then padding and border said, “Add us twice!”</div>
     <div class="box">
-      I'm second and I have a lot of content. In publishing and graphic
-      design, Lorem ipsum is a placeholder text commonly used to demonstrate
-      the visual form of a document or a typeface without relying on
-      meaningful content. "Lorem ipsum dolor sit amet, consectetur adipiscing
-      elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-      ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-      qui officia deserunt mollit anim id est laborum."
+      I set a tidy width — two hundred on the nose, <br> 
+Declared, “This box is perfect!” — that’s how the story goes. <br> 
+Then padding strolled in softly, border joined the scene,<br> 
+And suddenly my “perfect” box was bursting at the seam.<br> <br> 
+
+I whispered, “Box-sizing: border-box,” like casting ancient lore,<br> 
+The layout stopped exploding… but then I added more.<br> 
+A margin here, a margin there, a nudge to make it neat,<br> 
+And somehow now the footer lives halfway up the street.<br> 
     </div>
     <div class="box" style="height: 200px">
-      My height is set using directly using style attribute.
-    </div>
+      Flexbox tried to help me — “Relax, I’ll align!”<br>
+But justify-content and I can’t read the same sign.<br>
+I center things horizontally, vertically I plead,<br>
+The box just shrugs and wanders off with reckless flexbox speed.<br><br>
+
+I add a shadow, rounded corners, gradients for some flair,<br>
+Now it looks like modern art — but why’s it over there?<br>
+Inspect tool open, twenty divs deep in the tree,<br>
+One rogue inherited style is mocking me.<br><br>
+
+</div>
   </article>
 
   <article>
     <h2>III. Positioning</h2>
-    <div class="position-absolute">I'm absolutely positioned.</div>
+    <div class="position-absolute">I set it to absolute — and it vanished with attitude.</div>
 
     <div class="position-relative">
-      I'm relatively positioned.
+      I set it to relative — and it moved, but only emotionally.
       <div class="position-absolute">I'm absolutely positioned inside a relative container.</div>
     </div>
   </article>
-  <div class="position-sticky">I'm sticky positioned.</div>
+  <div class="position-sticky">I'm a sticky positioned floating CSS progress monitor.</div>
 
   <article>
     <h2>IV. Styling text</h2>
     <p class="text-style">
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-      occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-      mollit anim id est laborum."
+      I chose font-family “DM Sans” refined and sleek, <br>
+The browser shrugged and gave me sans-serif all week. <br>
+I set font-weight bold 700 in might, <br>
+It still looks slightly wrong — but technically right?
     </p>
   </article>
 
@@ -99,17 +105,14 @@
   <article>
     <h2>VI. calc()</h2>
     <div class="calc-style">
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-      occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-      mollit anim id est laborum."
-    </div>
+      I wrote calc(100% - 20px) feeling smug and wise, <br>
+Like maths and style had formed a grand alliance. <br>
+The layout shifted left — then down — then back again, <br>
+Turns out I forgot the spaces… CSS said “nope” once more, my friend.
+          </div>
 
     <div class="calc-row">
-      <div class="fixed-width-col"><img src="assets/images/img1.png" width="300" /></div>
+      <div class="fixed-width-col"><img src="../assets/images/img1.png" width="500" /></div>
       <div class="fluid-col">This text should expand to fill 'the rest' of the page width not used by the image inside
         the fixed-width-col.
         This text should expand to fill 'the rest' of the page width not used by the image inside the fixed-width-col.
