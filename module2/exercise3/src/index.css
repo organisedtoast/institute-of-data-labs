@@ -1,0 +1,79 @@
+body {
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+    color: purple;
+}
+
+.background-1 {
+    background: #68B0AB;
+}
+
+.background-2 {
+    background: #8FC0A9;
+}
+
+.background-3 {
+    background: #C8D5B9;
+}
+
+.background-4 {
+    background: #FAF3DD;
+}
+
+.m-20 {
+    margin: 20px;
+}
+
+.h-80 {
+    min-height: 80px;
+}
+
+.h-400 {
+    height: 400px;
+}
+
+.w-80 {
+    width: 80px;
+}
+
+
+/*Q2 BASIC FLEXBOX*/
+
+/* 2.1 Add a CSS rule for the flex-container class and set it to use a flexbox display model */
+
+/* This class targets any HTML element with class="flex-container". */
+.flex-container {
+    /* display: flex turns the element into a flex container (Flexbox layout). */
+    display: flex;
+}
+
+/* 2.2 Add rules for the flex-item-1, -2, -3, and -4 classes and set flex: <number> to them accordingly */
+
+
+.flex-item-1 {
+  /* flex: 1 gives this item 1 share of the available space. */
+  flex: 1;
+}
+
+.flex-item-2 {
+  /* flex: 2 gives this item 2 shares, so it becomes twice as wide as flex-item-1. */
+  flex: 2;
+}
+
+.flex-item-3 {
+  /* flex: 3 gives this item 3 shares of space. */
+  flex: 3;
+}
+
+.flex-item-4 {
+  /* flex: 4 gives this item 4 shares, making it the widest item here. */
+  flex: 4;
+}
+
+
+
+
