@@ -74,6 +74,141 @@ a {
   flex: 4;
 }
 
+/*Q3 CENTERING WITH FLEXBOX */
+
+/* 3.1 Add a CSS rule for the flex-center class and set values for justify-content and align-items to center the content both horizontally and vertically within its container */
+
+.flex-center {
+  /* display: flex enables Flexbox so we can control alignment. */
+  display: flex;
+  /* justify-content: center moves child items to the center horizontally. */
+  justify-content: center;
+  /* align-items: center moves child items to the center vertically. */
+  align-items: center;
+}
 
 
+/*Q4 ASSIGNING LEFTOVER SPACE */
+
+/* 4.1 Add a justify-content CSS rule for the flex-space-between class; your aim is to push the elements to the left and right sides, with leftover space in the middle. */
+
+.flex-space-between {
+  /* display: flex enables Flexbox layout for this container. */
+  display: flex;
+  /* space-between puts the first item on the left and the last item on the right. */
+  justify-content: space-between
+}
+
+/*Q5 WRAPPING ITEMS */
+
+/* 5.1 Add CSS rules for both the flex-wrap and flex-basis-item-50 classes so that the flex-wrap container has flex-wrap: wrap; and flex-basis-item-50 items have flex-basis set to 50% */
+
+.flex-wrap {
+  /* display: flex turns this container into a Flexbox layout. */
+  display: flex;
+  /* wrap lets items move onto a new line when there is not enough horizontal space. */
+  flex-wrap: wrap;
+}
+
+.flex-basis-item-50 {
+  /* flex-basis: 50% sets the initial size of each item to 50% of the container's width. */
+  flex-basis: 50%;  /* If two equal CSS rules conflict, the one written last overrides the earlier one. There is another flex-basis value several lines down that overrides this one. */
+}
+
+/* This targets the 4 flex items only when they are inside .flex-wrap. */
+.flex-wrap .flex-item-1,
+.flex-wrap .flex-item-2,
+.flex-wrap .flex-item-3,
+.flex-wrap .flex-item-4 {
+  /* 50% means each item starts at half the container width, so 2 items fit per row. */
+  flex-basis: 50%;
+}
+
+/* 5.3 Choose a new value for flex-basis that makes all 4 flex items fit on the one line */
+
+.flex-basis-item-50 {
+  /* flex-basis: 25% makes each item one-quarter width, so 4 items can fit on one row. */
+  /* If two equal CSS rules conflict, the one written last overrides the earlier one. */
+  flex-basis: 25%;
+}
+
+
+/*Q6 & 7 CHANGING DIRECTION, FLEXBOX NAVIGATION BAR */
+
+/* 6.1 Add a flex-direction property to the flex-container class. Add some values. */
+
+.flex-container {
+  /* display: flex turns this element into a flex container. */
+  display: flex;
+  /* row lays items left-to-right in a horizontal line (this is the default). */
+  flex-direction: row; /* Default value */
+}
+
+/* Useful flex-direction alternatives for beginners:
+   row-reverse: horizontal layout, but right-to-left order.
+   column-reverse: vertical layout, but bottom-to-top order.
+   Tip: row and column control direction; reverse versions flip item order. */
+
+/* 7.1 . Add CSS for the flex-menu class and its children to turn the entire thing into a horizontal navigation bar. Align the menu items to the center of the row.  */
+
+.flex-menu {
+  /* display: flex here will arrange the menu items in one horizontal row. */
+  display: flex;
+  /* justify-content: center moves all menu items to the center of the row. */
+  justify-content: center;
+  /* list-style: none removes the default bullet points from the <ul>. */
+  list-style: none;
+  /* margin: 0 removes default outer spacing around the <ul>. */
+  margin: 0;
+  /* padding: 0 removes default inner spacing so alignment is clean. */
+  padding: 0;
+}
+
+/* li means: each list item (<li>) inside .flex-menu. */
+.flex-menu li {
+  /* flex-grow: 1 gives every menu item an equal share of leftover row space. */
+  flex-grow: 1;
+  /* margin: 1px adds a little space around each menu item so they are not touching. */
+  margin: 1px;
+}
+
+/* li a means: each link (<a>) inside those list items (<li>) in .flex-menu. */
+.flex-menu li a {
+  /* display: block makes the link fill a rectangular clickable area. */
+  display: block;
+  /* text-align: center places the link text in the horizontal center. */
+  text-align: center;
+  /* padding adds space inside each link so it looks like a menu button. */
+  padding: 10px 14px;
+  /* color sets the text color for the navigation links. */
+  color: #1f2937;
+  /* text-decoration: none removes the default underline from links. */
+  text-decoration: none;
+}
+
+/* li a:hover means: the same links, but only while the mouse is hovering over them. */
+.flex-menu li a:hover {
+  /* background adds a subtle highlight when the mouse is over a link. */
+  background: #d7e6d4;
+}
+
+
+/* 7.4 Use the order property to move the FAQs menu item from 4th to last in the navigation bar, but without changing the HTML structure. */
+
+/* :nth-child(4) means "select the 4th <li> item" inside .flex-menu. */
+.flex-menu li:nth-child(4) {
+  /* In Flexbox, items with bigger order values appear later in the row. */
+  order: 1; /* This moves the 4th item (FAQs) to the end of the row. */
+}
+  
+/* 7.5 Use the flex-grow property to divide the total space evenly between each menu item, then center the links. */
+
+/* The .flex-menu li rule above already has flex-grow: 1, which gives each menu item an equal share of leftover space. 
+   This means all items will stretch to fill the row evenly.
+
+   Meanwhile, the .flex-menu rule has justify-content: center, which centers the entire group of menu items in the row. 
+   So with the existing rules above, the menu items are already evenly spaced and centered. */
+
+
+   
 
