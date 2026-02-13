@@ -223,12 +223,11 @@ a:visited {
 
 /* 1B. BASIC STYLING OF THE .calc-row CLASS */
 
-/*.calc-row {
+
+.calc-row {
   display: flex; /* Flexbox layout allows for easy horizontal alignment of child elements. */
   align-items: flex-start; /*Align those children to the top of the row (align-items: flex-start), so columns start at the same top edge. */
 }
-*/
-
 
 
 
@@ -237,12 +236,12 @@ a:visited {
 .cat-fixed-width-col {
   width: 350px; /* Keeps this column at a fixed width of 350px. */
   display: inline-block; /* Allows this column to sit on the same line as another inline-block column. */
-  vertical-align: top; /* Aligns this column to the top edge of the row. */
+  
 }
 
 /*3 STYLING FOR .cat-text-fluid-col CLASS. */
 .cat-text-fluid-col {
   display: inline-block; /* Keeps this column on the same line as the fixed-width column. */
-  vertical-align: top; /* Aligns this column with the top of the fixed-width column. */
-  width: calc(100% - 350px); /* Takes full row width (100%) and subtracts 350px to fill the remaining space. */
+  
+  width: calc(100vw - 350px); /* Takes full row width (100%) and subtracts 350px to fill the remaining space. */
 }
