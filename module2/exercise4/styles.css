@@ -1,0 +1,408 @@
+/* ============================================
+   RESET AND BASE STYLES
+   ============================================ */
+
+* {
+  /* The asterisk (*) selects ALL elements on the page */
+  margin: 0; /* Remove default spacing outside elements */
+  padding: 0; /* Remove default spacing inside elements */
+  box-sizing: border-box; /* Makes width/height calculations easier */
+}
+
+body {
+  /* Styles for the entire page body */
+
+  /* 
+     FONT FAMILY - The "Font Stack" with backups
+     ===========================================
+     
+     BEGINNER EXPLANATION:
+     We list multiple fonts separated by commas. The browser tries them in order:
+     
+     1. 'Inter' - Our PRIMARY font from Google Fonts (clean, modern)
+        - This is in quotes because the name has a space
+        - If this loads successfully, it will be used for ALL text
+     
+     2. -apple-system - FIRST BACKUP: Apple's system font (used on Mac/iPhone)
+        - Very clean and readable
+        - If Inter fails to load, Mac users see this
+     
+     3. BlinkMacSystemFont - SECOND BACKUP: Another Apple font name
+        - Alternative name for Apple's system font
+     
+     4. 'Segoe UI' - THIRD BACKUP: Windows system font
+        - Used on Windows computers
+        - Clean and modern look
+     
+     5. 'Helvetica Neue' - FOURTH BACKUP: Classic font available on many systems
+        - Professional and widely available
+     
+     6. Arial - FIFTH BACKUP: Very common font on almost all computers
+        - Guaranteed to exist on virtually every computer
+     
+     7. sans-serif - FINAL BACKUP: Browser's default sans-serif font
+        - If ALL else fails, browser picks its default
+        - "Sans-serif" means fonts WITHOUT decorative tails (clean, modern)
+     
+     Why use backups?
+     - Sometimes Google Fonts might not load (slow internet, blocked connection, etc.)
+     - Backups ensure your site always looks good, even if Inter doesn't load
+     - The backups are already installed on user's computers, so they load instantly
+  */
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  line-height: 1.6; /* Space between lines of text (1.6 = 160% of font size) */
+  color: #1a1a1a; /* Dark gray text color (colors use hex codes) */
+  background-color: #fafaf9; /* Very light beige background */
+}
+
+/* ============================================
+   HEADER - Title and subtitle at the very top
+   ============================================
+   
+   HOW THE LAYOUT WORKS:
+   
+   In the HTML file, the header is OUTSIDE and BEFORE the container.
+   HTML structure looks like this:
+   
+   <body>
+     <header class="header">  ← THIS COMES FIRST
+       <h1>Title</h1>
+       <p>Subtitle</p>
+     </header>
+     <div class="container">  ← THIS COMES SECOND
+       <aside class="sidebar">...</aside>
+       <main class="main-content">...</main>
+     </div>
+   </body>
+   
+   Since HTML flows from top to bottom naturally, the header
+   will ALWAYS appear first, before the container.
+   
+   On MOBILE screens: Everything stacks vertically
+   1. Header (this section)
+   2. Sidebar
+   3. Main Content
+   
+   On DESKTOP screens: Header at top, then sidebar and content side-by-side
+   1. Header (this section)
+   2. Sidebar | Main Content (side by side)
+*/
+
+.header {
+  /* This is the box that contains your name and tagline */
+  width: 100%; /* Takes full width of the screen */
+  padding: 3rem 2rem; /* Space inside: 48px top/bottom, 32px left/right */
+  background-color: #fafaf9; /* Same beige color as body background */
+  border-bottom: 1px solid #e5e5e0; /* Thin separator line at bottom */
+  text-align: center; /* Centers the text horizontally */
+}
+
+.main-title {
+  /* The "organisedtoast resume" heading */
+  font-size: 2.5rem; /* 40px - big and readable on mobile */
+  font-weight: 300; /* Light/thin font weight */
+  letter-spacing: -0.02em; /* Letters slightly closer together */
+  margin-bottom: 0.75rem; /* 12px space below the title */
+  color: #1a1a1a; /* Dark text color */
+}
+
+.subtitle {
+  /* The "Freshly toasted. Neatly organised." text */
+  font-size: 1.125rem; /* 18px - slightly bigger than normal text */
+  color: #666; /* Medium gray color */
+  font-weight: 300; /* Light weight to match title */
+  font-style: italic; /* Slanted/italic style */
+}
+
+/* ============================================
+   LAYOUT - CONTAINER
+   ============================================ */
+
+.container {
+  /* The dot (.) selects elements by their class name */
+  /* This wraps the sidebar and main content */
+  max-width: 1400px; /* Container won't get wider than 1400 pixels */
+  margin: 0 auto; /* Centers the container horizontally */
+  display: flex; /* Flexbox layout - makes it easy to arrange items */
+  flex-direction: column; /* Stack items vertically (on mobile) */
+}
+
+/* ============================================
+   SIDEBAR - Left column (or top on mobile)
+   ============================================ */
+
+.sidebar {
+  background-color: white; /* White background for contrast */
+  border-right: 1px solid #e5e5e0; /* Thin line on the right side */
+  padding: 3rem 2rem; /* Padding: 3rem top/bottom, 2rem left/right */
+  /* Note: "rem" is a unit based on the root font size (usually 16px, so 3rem = 48px) */
+}
+
+.sidebar-content {
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack sections vertically */
+  gap: 3rem; /* Space between sections */
+}
+
+/* ============================================
+   MAIN CONTENT - Right column (or bottom on mobile)
+   ============================================ */
+
+.main-content {
+  flex: 1; /* Takes up remaining space in the flex container */
+  padding: 3rem 2rem; /* Padding around the content */
+}
+
+/* ============================================
+   SECTION TITLES
+   ============================================ */
+
+.section-title {
+  font-size: 0.75rem; /* Small font size */
+  text-transform: uppercase; /* Makes text ALL CAPS */
+  letter-spacing: 0.1em; /* Wider letter spacing for readability */
+  color: #666; /* Medium gray */
+  font-weight: 500; /* Medium weight */
+  margin-bottom: 1.5rem; /* Space below the title */
+}
+
+.content-section {
+  margin-bottom: 4rem; /* Large space between major sections */
+}
+
+/* ============================================
+   PERSONAL INFO STYLES
+   ============================================ */
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between each info item */
+}
+
+.info-item {
+  font-size: 0.875rem; /* Slightly smaller than normal text */
+  line-height: 1.6; /* Comfortable line spacing */
+}
+
+.info-label {
+  color: #666; /* Gray color for labels */
+  font-size: 0.75rem; /* Small text */
+  margin-bottom: 0.25rem; /* Small space below label */
+}
+
+.info-link {
+  color: #1a1a1a; /* Dark text color */
+  text-decoration: none; /* Removes the underline from links */
+  transition: color 0.2s ease; /* Smooth color change on hover (0.2 seconds) */
+}
+
+.info-link:hover {
+  /* This applies when you hover your mouse over the link */
+  color: #666; /* Changes to gray on hover */
+}
+
+.info-text {
+  color: #444; /* Slightly lighter than main text */
+  line-height: 1.6; /* Comfortable reading space */
+}
+
+/* ============================================
+   SKILLS LIST
+   ============================================ */
+
+.skills-list {
+  list-style: none; /* Removes default bullet points */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space between skills */
+  font-size: 0.875rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* ============================================
+   EXPERIENCE SECTION
+   ============================================ */
+
+.experiences {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* Large space between different jobs */
+}
+
+.experience-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between parts of the job entry */
+}
+
+.job-header {
+  margin-bottom: 0.5rem;
+}
+
+.job-title {
+  font-size: 1.25rem; /* Larger font for job titles */
+  font-weight: 400; /* Normal weight */
+  margin-bottom: 0.5rem;
+}
+
+.job-meta {
+  font-size: 0.875rem;
+  color: #666; /* Gray for less important info */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Small space between meta lines */
+}
+
+.job-meta-single {
+  /* Similar to job-meta but for single-line metadata */
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.job-list {
+  list-style: none; /* Remove default bullets */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.job-list li::before {
+  /* The ::before pseudo-element adds content before each li list item */
+  content: "•"; /* Adds a bullet point character */
+  color: #999; /* Light gray bullet */
+  margin-right: 0.75rem; /* Space between bullet and text */
+}
+
+.highlights {
+  margin-top: 0.5rem;
+}
+
+.highlights-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.highlights-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.highlights-list li::before {
+  /* Different bullet style for highlights */
+  content: "–"; /* Em dash instead of bullet point */
+  color: #999;
+  margin-right: 0.75rem;
+}
+
+/* ============================================
+   EDUCATION SECTION
+   ============================================ */
+
+.education-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Space between education entries */
+}
+
+.education-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ============================================
+   ADDITIONAL SECTION
+   ============================================ */
+
+.additional-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.additional-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - Makes the site look good on different screen sizes
+   ============================================ */
+
+/* 
+   SMALL SCREENS (phones - anything under 1024px wide):
+   The default styles above already work perfectly for mobile!
+   Everything stacks vertically in this order:
+   1. Header (your name and tagline)
+   2. Sidebar (Personal Info and Skills)
+   3. Main Content (Experience, Education, Additional)
+*/
+
+/* LARGE SCREENS (desktops and laptops - 1024px and wider) */
+@media (min-width: 1024px) {
+  /* 
+     @media is a "media query" - these styles ONLY apply 
+     when the screen is 1024 pixels wide or larger 
+  */
+
+  .header {
+    /* Header stays at the top, but we give it more space */
+    padding: 4rem 3rem; /* More padding: 64px top/bottom, 48px left/right */
+    text-align: center; /* Keep text centered */
+  }
+
+  .main-title {
+    font-size: 3rem; /* Bigger title on larger screens (48px instead of 40px) */
+  }
+
+  .container {
+    flex-direction: row; /* Change from vertical to HORIZONTAL layout */
+    /* Now sidebar and main-content sit SIDE BY SIDE instead of stacked */
+  }
+
+  .sidebar {
+    width: 320px; /* Fixed width for sidebar (320px) */
+    min-height: 100vh; /* At least as tall as the screen (vh = viewport height) */
+    padding: 3rem; /* Equal padding on all sides */
+  }
+
+  .main-content {
+    padding: 3rem 3rem 3rem 4rem; /* More padding on the left (64px) */
+  }
+}
+
+/* MEDIUM SCREENS (tablets - between 768px and 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* These styles apply ONLY to tablets */
+  .sidebar {
+    padding: 2.5rem; /* Slightly less padding than desktop */
+  }
+
+  .main-content {
+    padding: 2.5rem; /* Slightly less padding than desktop */
+  }
+}

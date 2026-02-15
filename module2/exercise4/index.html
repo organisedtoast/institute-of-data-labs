@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!-- This tells the browser this is an HTML5 document -->
+
+<html lang="en">
+<!-- The main container for the entire webpage. "lang='en'" specifies this page is in English -->
+
+<head>
+  <!-- The head section contains information about the page (not visible content) -->
+  
+  <meta charset="UTF-8">
+  <!-- This ensures the page can display special characters correctly (like é, ñ, etc.) -->
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- This makes the page responsive on mobile devices by setting the width to match the device -->
+  
+  <title>organisedtoast resume</title>
+  <!-- This is what shows up in the browser tab -->
+  
+  <!-- FONT IMPORT - This loads the "Inter" font from Google Fonts -->
+  <!-- 
+       BEGINNER EXPLANATION: 
+       Google Fonts is a free service that hosts fonts (text styles) that we can use on websites.
+       
+       We're importing "Inter" - a clean, modern font similar to drchowchow.com
+       
+       The numbers (300, 400, 500) are font WEIGHTS:
+       - 300 = Light (thin letters)
+       - 400 = Regular/Normal (standard thickness)
+       - 500 = Medium (slightly bolder)
+       
+       We import multiple weights so we can use different thicknesses for headings vs body text.
+       
+       The "&display=swap" part tells the browser to show a backup font immediately 
+       while the Google Font is loading, then "swap" to Inter once it's ready.
+       This prevents invisible text while fonts load.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- This line tells the browser to connect to Google's servers early for faster loading -->
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google Fonts uses this second server to actually deliver the font files -->
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- This is the actual font import - it loads Inter with weights 300, 400, and 500 -->
+  
+  <link rel="stylesheet" href="styles.css">
+  <!-- This links to my separate CSS file that contains all the styling -->
+</head>
+
+<body>
+  <!-- The body contains all the VISIBLE content of the webpage -->
+
+ <!-- HEADER WITH TITLE AND SUBTITLE -->
+      <header class="header">
+        <!-- "header" is used for introductory content -->
+        
+        <h1 class="main-title">organisedtoast resume</h1>
+        <!-- h1 is the most important heading - usually only one per page -->
+        
+        <p class="subtitle">Freshly toasted. Neatly organised.</p>
+      </header>
+  
+
+
+  
+  <div class="container">
+    <!-- Main wrapper div. The "class" attribute connects to CSS styling -->
+    
+    <!-- ========================================
+         SIDEBAR - Left column with Personal Info and Skills
+         ======================================== -->
+    <aside class="sidebar">
+      <!-- "aside" is used for content that is complementary to the main content -->
+      
+      <div class="sidebar-content">
+        <!-- This div groups all sidebar sections together -->
+        
+        <!-- PERSONAL INFO SECTION -->
+        <section class="section">
+          <!-- "section" represents a thematic grouping of content -->
+          
+          <h2 class="section-title">Personal Info</h2>
+          <!-- h2 is a heading (h1 is biggest, h6 is smallest) -->
+          
+          <div class="info-group">
+            <!-- This div groups all the personal info items -->
+            
+            <!-- Email -->
+            <div class="info-item">
+              <p class="info-label">Email</p>
+              <!-- "p" stands for paragraph - used for text blocks -->
+              
+              <a href="mailto:organisedtoast@pm.me" class="info-link">
+                <!-- "a" is a link. "href" tells where the link goes. "mailto:" opens email -->
+                organisedtoast@pm.me
+              </a>
+            </div>
+            
+            <!-- Location -->
+            <div class="info-item">
+              <p class="info-label">Location</p>
+              <p>London, UK</p>
+            </div>
+            
+            <!-- Summary -->
+            <div class="info-item">
+              <p class="info-label">Summary</p>
+              <p class="info-text">
+                I bring a warm, crisp approach to research - like a well-timed toast pop. 
+                I translate messy inputs into clean slices of insight, with a bias toward 
+                practical outcomes and butter-smooth workflows.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section class="section">
+          <h2 class="section-title">Skills</h2>
+          
+          <ul class="skills-list">
+            <!-- "ul" stands for "unordered list" - a bulleted list -->
+            <!-- Each "li" (list item) represents one skill -->
+            <li>Company specific financial modelling</li>
+            <li>Macro analysis</li>
+            <li>C-suite/ general manager interviewing</li>
+            <li>Expert network interviewing</li>
+            <li>AI local model implementation</li>
+            <li>Claude Cowork implementation</li>
+            <li>Notion/ Slack/ Discourse</li>
+            <li>Turning raw dough (data) into a reliable loaf (decision-ready output)</li>
+            <li>Keeping the crumb structure intact when the kitchen gets hectic</li>
+          </ul>
+        </section>
+      </div>
+    </aside>
+
+    <!-- ========================================
+         MAIN CONTENT - Right column with title and main sections
+         ======================================== -->
+    <main class="main-content">
+      <!-- "main" represents the primary content of the page -->
+      
+     
+
+      <!-- EXPERIENCE SECTION -->
+      <section class="content-section">
+        <h2 class="section-title">Experience</h2>
+        
+        <div class="experiences">
+          <!-- This div groups all job experiences together -->
+          
+          <!-- FIRST JOB -->
+          <article class="experience-item">
+            <!-- "article" represents a self-contained piece of content -->
+            
+            <div class="job-header">
+              <!-- Job title and company details -->
+              
+              <h3 class="job-title">Investment Research Consultant</h3>
+              <!-- h3 is a sub-heading under h2 -->
+              
+              <div class="job-meta">
+                <!-- "meta" means metadata - information about the job -->
+                <p>Company: The Daily Bread Research Co.</p>
+                <p>Dates: 2014 – 2022</p>
+                <p>Location: London, UK</p>
+              </div>
+            </div>
+            
+            <!-- Job responsibilities -->
+            <ul class="job-list">
+              <li>Produced research memos with a crisp top layer and a soft, rigorous core.</li>
+              <li>Built models where assumptions were labelled like ingredients on a bread bag.</li>
+              <li>Interviewed executives and experts—asking the questions that cut like a bread knife.</li>
+              <li>Delivered insights on time, even when the market heat was set to "max grill."</li>
+              <li>Maintained a clean workflow: no crumbs in the process, no burnt edges in conclusions.</li>
+            </ul>
+
+            <!-- Job highlights -->
+            <div class="highlights">
+              <p class="highlights-title">Highlights</p>
+              <ul class="highlights-list">
+                <li>Turned half-baked ideas into fully baked investment theses.</li>
+                <li>Kept stakeholders buttered-up with clear, structured updates.</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- SECOND JOB -->
+          <article class="experience-item">
+            <div class="job-header">
+              <h3 class="job-title">Investment Analyst @ European equities manager</h3>
+              <div class="job-meta">
+                <p>Company: Continental Toast Capital</p>
+                <p>Dates: 2008 – 2014</p>
+                <p>Location: London, UK</p>
+              </div>
+            </div>
+            
+            <ul class="job-list">
+              <li>Analyzed European equities with the patience of slow fermentation.</li>
+              <li>Built valuation frameworks that held together better than day-old sourdough.</li>
+              <li>Mapped catalysts and risks without over-toasting the narrative.</li>
+              <li>Communicated ideas clearly—no jargon crumbs left behind.</li>
+              <li>Supported portfolio decision-making with research that was hot, fresh, and documented.</li>
+            </ul>
+
+            <div class="highlights">
+              <p class="highlights-title">Highlights</p>
+              <ul class="highlights-list">
+                <li>Identified opportunities before they browned in consensus.</li>
+                <li>Stress-tested scenarios until the model stopped being flaky.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- EDUCATION SECTION -->
+      <section class="content-section">
+        <h2 class="section-title">Education</h2>
+        
+        <div class="education-items">
+          <!-- First education entry -->
+          <article class="education-item">
+            <h3 class="job-title">IOD</h3>
+            <p class="job-meta-single">
+              Course/Program: Toastmastery & Governance
+            </p>
+            <p class="info-text">
+              Notes: Learned to keep meetings tight and outcomes well-sliced.
+            </p>
+          </article>
+
+          <!-- Second education entry -->
+          <article class="education-item">
+            <h3 class="job-title">LSE</h3>
+            <p class="job-meta-single">
+              Degree: BSc/MSc in Breadonomics
+            </p>
+            <p class="info-text">
+              Notes: Studied markets, incentives, and why nothing beats a good club sandwich.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ADDITIONAL SECTION -->
+      <section class="content-section">
+        <h2 class="section-title">Additional</h2>
+        
+        <div class="additional-items">
+          <!-- Tools subsection -->
+          <div class="additional-item">
+            <p class="info-label">Tools</p>
+            <p class="info-text">
+              Spreadsheets, notes systems, research workflows, and the occasional high-powered toaster setting.
+            </p>
+          </div>
+
+          <!-- Interests subsection -->
+          <div class="additional-item">
+            <p class="info-label">Interests</p>
+            <p class="info-text">
+              Macro themes, company narratives, clean execution, and bread-related metaphors that refuse to go stale.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
