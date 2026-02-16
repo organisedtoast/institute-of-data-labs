@@ -141,6 +141,17 @@ console.log (resultTernary)
 
 // condition ? value_if_true : value_if_false;
 
+// If you have more than one condition, you can chain ternary operators together like this:
+
+// condition1 ? value_if_condition1_true : condition2 ? value_if_condition2_true : value_if_all_conditions_false;
+
+// However this can get a bit messy. If first statement is a < b , is a is not less than b, it would be false. Then you in false outcome you have another condition
+
+// b > c. So your false can become a conditional statement. Following that on screen, it can get messy.
+
+// if else is more formal so can be easier to read. Ternary is more concise but can be harder to read if you have multiple conditions.
+
+
 
 
 
