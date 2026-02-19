@@ -55,7 +55,8 @@ class PersonClass {
 
 
 
-Use the  use it to create a third person using different name and age values.
+// Exercise 10d: Use the PersonClass to create a third person using different name and age values.
 
 let person3 = new PersonClass("Alice", 30);
+
 printObjectProperties(person3);
