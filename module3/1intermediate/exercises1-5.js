@@ -80,26 +80,134 @@ function truncatesentence(str, max) {
     return str;
   }
 
-}
+} // Step 6: End of the function definition
 
-// Call the function truncate with the string "This is a long string that needs to be truncated." and a max length of 20, then print the result
-console.log(truncatesentence("Arsenal have no chance of winning the EPL this season.", 20));
+// Step 7: Call the function truncate with the string "This is a long string that needs to be truncated." and a max length of 20, then print the result
+console.log(truncatesentence("Arsenal have no chance of winning the EPL this season.", 36));
 
 
 /* EXERCISE 2b Write another variant of the truncate function that uses a conditional operator.*/
 
-// Define a function named truncateWithConditionalOperator that takes two parameters: 'str' (the input string) and 'max' (the maximum allowed length)
+// Step 1: Define a function named truncateWithConditionalOperator that takes two parameters: 'str' (the input string) and 'max' (the maximum allowed length)
 function truncateWithConditionalOperator(str, max) {  
 
-  // The ternary operator works like a compact if-else:
-  // Condition: str.length > max (check if string length exceeds max)
-  // If true: str.slice(0, max) + "…" (truncate and add ellipsis)
-  // If false: str (return the original string unchanged)
+  // Step 2: Write a conditional/ ternary operator in the format: condition ? value_if_true : value_if_false
+  // Condition ? = is the string longer than the maximum allowed length?
+  // value_if_true = keep only the first 'max' characters and add an ellipsis ...
+  // // value_if_false = return the original string as it is
   return str.length > max ? str.slice(0, max) + "…" : str;
 
-} // End of the function definition
+} // Step 3: End of the function definition
 
-// Call the function truncateWithConditionalOperator with the string "Manchester United are struggling this season." and a max length of 25, then print the result
-console.log(truncateWithConditionalOperator("Manchester United are struggling this season because they have a bad manager.", 25));
+// Step 4: Call the function truncateWithConditionalOperator with the string "Manchester United are struggling this season." and a max length of 25, then print the result
+console.log(truncateWithConditionalOperator("Arsenal have no chance of winning the EPL this season.", 36));
 
+
+/* EXERCISE 3 Here is an array.*/
+
+const animals = ['Tiger', 'Giraffe'] 
+
+console.log(animals)
+
+// Exercise 3a Add 2 new values to the end
+animals.push("Elephant", "Penguin");
+
+// Exercise 3b Add 2 new values to the beginning
+animals.unshift("Echidna", "Wombat");
+
+// Exercise 3c Sort the values alphabetically
+animals.sort();
+
+console.log(animals)
+
+// Exercise 3d Write a function replaceMiddleAnimal(newValue) that replaces the value in the middle of the animals array with newValue
+
+// Step 1: Define a function named replaceMiddleAnimal that takes one parameter 'newValue' (the new animal to replace the middle one)
+function replaceMiddleAnimal(newValue) {
+// function means you are creating a reusable block of code.
+// replaceMiddleAnimal is the function’s name (what you call to run it).
+// newValue is an input (parameter) the function receives.
+// { starts the function body, where the instructions go.
+
+  // Step 2: Calculate the index of the middle position in the animals array.
+    const middleIndex = Math.floor(animals.length / 2);
+// const middleIndex = store that number in a variable middleIndex that won’t be reassigned
+// Math.floor(...) = round down to a whole number
+// animals.length = how many items are in the animals array (6)
+// / 2 = move to the halfway point, so 6 / 2 = 3, which is the 4th item (index 3) in the array (since counting starts at 0)
+
+  // Step 3: Replace the middle item in the animals array with the new value.
+  animals[middleIndex] = newValue;
+// animals[middleIndex] = “the item in the animals array at position middleIndex”.
+// = means “set this to”.
+// newValue = the new item you want to put there
+
+} // Step 4: End of the function definition
+
+
+// Step 5: Call the function replaceMiddleAnimal with the argument "Koala"
+// This replace the middle animal in the array, being Penguin (4th animal out of 6, at index 3) with Koala
+replaceMiddleAnimal("Koala");
+
+// Step 6: Print the updated animals array to the console to see the change
+console.log(animals);
+
+// Exercise 3e Write a function findMatchingAnimals(beginsWith) that returns a new array containing all the animals that begin with the beginsWith string.
+// Try to make it work regardless of upper/ lower case.
+
+// Step 1: Define a function named findMatchingAnimals that takes one parameter 'beginsWith' (the string to match the beginning of animal names)
+function findMatchingAnimals(beginsWith) {
+
+  // Step 2: Convert user input to lowercase.
+  // This helps us compare text without worrying about uppercase/lowercase.
+  const lowerBeginsWith = beginsWith.toLowerCase();
+// const lowerBeginsWith = stores that lowercase version in a new variable
+// beginsWith = some text input (for example "C").
+// .toLowerCase() = changes that text to lowercase (so "C" becomes "c").
+
+
+  // Step 3: Use filter to check every animal in the animals array.
+  // Keep only the animals whose lowercase name starts with lowerBeginsWith.
+  // startsWith(...) checks the beginning of each word.
+  return animals.filter(animal => animal.toLowerCase().startsWith(lowerBeginsWith));
+// return = gives back the new filtered list
+// animals.filter(...) = goes through each animal in the animals array and keeps only those that match the condition inside the filter
+// animal => ... = for each animal, do the following check:
+// animal.toLowerCase() = convert the animal name to lowercase for comparison
+// .startsWith(lowerBeginsWith) = check if the lowercase animal name starts with the lowercase user input
+
+
+} // Step 4: End of the function definition
+
+
+// Step 5: Call the function findMatchingAnimals with various arguments "K" "k" "T" "E" and print the result to the console
+console.log(findMatchingAnimals("K"));
+console.log(findMatchingAnimals("k"));
+console.log(findMatchingAnimals("T"));
+console.log(findMatchingAnimals("E"));
+
+
+// Exercise 4 Write a function camelCase(cssProp) that changes dash-separated CSS properties like 'margin-left' into camel-cased 'marginLeft'.
+
+function camelCase(cssProp) {
+  
+  // Step 1: Split the text wherever there is a dash '-'.
+  // Example: "margin-left" becomes ["margin", "left"].
+  const parts = cssProp.split('-');
+
+  // Step 2: Start from index 1 (the second word), not 0.
+  // We keep the first word lowercase in camelCase.
+  for (let i = 1; i < parts.length; i++) {
+
+    // Step 3: Make the first letter of each next word uppercase,
+    // then add the rest of that word unchanged.
+    // Example: "left" becomes "Left".
+    
+    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+  }
+
+  // Step 4: Join all words back together with no spaces or dashes.
+  // Example: ["margin", "Left"] becomes "marginLeft".
+  return parts.join('');
+}
 
