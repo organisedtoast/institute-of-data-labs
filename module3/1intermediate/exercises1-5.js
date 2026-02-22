@@ -133,6 +133,7 @@ animals.sort();
 
 console.log(animals)
 
+console.log("EXERCISE 3d")
 // Exercise 3d Write a function replaceMiddleAnimal(newValue) that replaces the value in the middle of the animals array with newValue
 
 // Step 1: Define a function named replaceMiddleAnimal that takes one parameter 'newValue' (the new animal to replace the middle one)
@@ -165,8 +166,9 @@ replaceMiddleAnimal("Koala");
 // Step 6: Print the updated animals array to the console to see the change
 console.log(animals);
 
+console.log("EXERCISE 3e")
 // Exercise 3e Write a function findMatchingAnimals(beginsWith) that returns a new array containing all the animals that begin with the beginsWith string.
-// Try to make it work regardless of upper/ lower case.
+// Try to make it work regardless of upper case letters or lower case letters.
 
 // Step 1: Define a function named findMatchingAnimals that takes one parameter 'beginsWith' (the string to match the beginning of animal names)
 function findMatchingAnimals(beginsWith) {
@@ -250,14 +252,45 @@ console.log(camelCase('display')) // display
 
 console.log("EXERCISE 4b")
 // EXERCISE 4b Create a variant of the camelCase function that uses a for...in loop, WITH the conditional/ternary operator
-function camelCaseWithForIn(cssProp) {
-  const parts = cssProp.split('-');
-  for (let i in parts) {
-    parts[i] = i > 0 ? parts[i].charAt(0).toUpperCase() + parts[i].slice(1) : parts[i];
-  }
-  return parts.join('');
-}
 
+// Step 1: declare a function named 'camelCaseWithForIn' that takes in one parameter 'cssProp' (the input CSS property string)
+
+function camelCaseWithForIn(cssProp) {
+//   - cssProp = a CSS property string in kebab-case (e.g., 'border-radius')
+
+  // Step 2: Split the CSS property string into an array of parts
+  //   - split('-') divides the string at each hyphen
+  //   - Example: 'border-radius' becomes ['border', 'radius']
+  const parts = cssProp.split('-');
+  
+  // Step 3: Loop through each index of the parts array using for...in
+  //   - 'i' is the index (0, 1, 2, ...)
+  //   - 'parts' is the array being looped through
+  for (let i in parts) {
+    
+    // Step 4: Use ternary operator to conditionally transform each part
+    // format of ternary operator: condition ? value_if_true : value_if_false
+
+    parts[i] = i > 0 ? parts[i].charAt(0).toUpperCase() + parts[i].slice(1) : parts[i];
+    
+    //   Condition = i > 0 (is this NOT the first word?)
+
+    //   If true: Capitalize first letter + keep rest of word
+    //   parts[i].charAt(0).toUpperCase() = gets first letter and makes it uppercase
+
+    //   If false: Keep the word as-is (first word stays lowercase) 
+    //   parts[i].slice(1) = gets the rest of the word (from index 1 to end)
+
+  } // Step 5: close the for...in loop with a curly brace
+  
+  // Step 6: join all parts back into a single string (no separator)
+    return parts.join('');
+//   Example: ['border', 'Radius'] becomes 'borderRadius'
+
+} // Step 7: close the function definition with a curly brace 
+
+
+// Step 8: Call the function camelCaseWithForIn with different CSS properties and print the results to the console
 console.log(camelCaseWithForIn('border-radius')) // borderRadius
 console.log(camelCaseWithForIn('font-size')) // fontSize
 console.log(camelCaseWithForIn('color')) // color
@@ -265,24 +298,230 @@ console.log(camelCaseWithForIn('color')) // color
 
 console.log("EXERCISE 4c")
 // EXERCISE 4c Create a variant of the camelCase function that uses a for...in loop, WITHOUT the conditional/ ternary operator
-function camelCaseWithForInNoConditional(cssProp) {
-  const parts = cssProp.split('-');
-  for (let i in parts) {
-    if (i > 0) {
-      parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
-    }
-  }
-  return parts.join('');
-}
 
+// Step 1: declare function named 'camelCaseWithForInNoConditional' that takes one parameter 'cssProp' (the input CSS property string)
+
+function camelCaseWithForInNoConditional(cssProp) {
+
+  // Step 2: Split the CSS property string into an array of parts
+  //   - split('-') divides the string at each hyphen
+  //   - Example: 'border-radius' becomes ['border', 'radius']
+  const parts = cssProp.split('-');
+  
+  // Step 3: Loop through each index of the parts array using for...in
+
+  for (let i in parts) {
+  //   - 'i' is the index (0, 1, 2, ...)
+  //   - 'parts' is the array being looped through
+
+    // Step 4: Use if statement to check if this is NOT the first word
+    
+    if (i > 0) {
+    //   - i > 0 means we skip the first word (index 0)
+    //   - Only words after the first get capitalized
+
+      // Step 5: Transform the word to start with uppercase
+            parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+      //   - parts[i].charAt(0).toUpperCase() - gets first letter and makes it uppercase
+      //   - parts[i].slice(1) - gets the rest of the word (from index 1 to end)
+      //   - Example: 'radius' becomes 'Radius'
+
+    } // Step 6: close the if statement with a curly brace
+
+  } // Step 7: close the for...in loop with a curly brace
+  
+  // Step 8: Join all parts back into a single string (no separator)
+    return parts.join('');
+    //   Example: ['border', 'Radius'] becomes 'borderRadius'
+
+} // Step 9: close the function definition with a curly brace
+
+// Step 10: Call the function camelCaseWithForInNoConditional with different CSS properties and print the results to the console
 console.log(camelCaseWithForInNoConditional('border-radius')) // borderRadius
 console.log(camelCaseWithForInNoConditional('font-size')) // fontSize
 console.log(camelCaseWithForInNoConditional('color')) // color
 
 
-
-
 console.log("EXERCISE 5")
-// EXERCISE 5
+// EXERCISE 5 Decimal number operations in JavaScript can lead to unexpected results, as in the following:
+
+let twentyCents = 0.20
+let tenCents = 0.10 
+
+console.log(`${twentyCents} + ${tenCents} = ${twentyCents + tenCents}`) // 0.30000000000000004
+
+// Reasoning for above answer is because JS (and many programming languages) represents decimal numbers in binary
+// Some decimal fractions cannot be represented exactly in binary, leading to small rounding errors when performing arithmetic operations
+// In this case, 0.20 and 0.10 cannot be represented precisely, so when they are added together, the result is slightly off from the expected 0.30
+
+console.log("EXERCISE 5a")
+// Exercise 5a: We can sometimes avoid this using the toFixed function to force the number of decimal places, but it’s not always useful.
+// Explain why the below code returns the wrong answer
+
+let fixedTwenty = twentyCents.toFixed(2);
+let fixedTen = tenCents.toFixed(2); 
+
+console.log(fixedTwenty + fixedTen) 
+
+//The toFixed method converts the number into a string representation with a fixed number of decimal places.
+//So fixedTwenty and fixedTen are now strings ("0.20" and "0.10"), and when you use the + operator on strings, it concatenates them instead of adding them as numbers.
+// Therefore, "0.20" + "0.10" results in "0.200.10" instead of 0.30.
+
+console.log("EXERCISE 5b")
+// Exercise 5b: create a function currencyAddition(float1, float2) which safely adds the two decimal numbers float1 and float2 and returns the correct float result
+// Assume 2 decimal places for currency values
+
+// Step 1: declare a function by defining a function named 'currencyAddition' that accepts two parameters float1 and float2
+function currencyAddition(float1, float2) {
+// float1, float2 = the two decimal numbers to be added together
+// currencyAddition = the name of the function that will perform the addition and return the correct result
+
+  // Step 2: Add the two numbers together, round to 2 decimal places, and convert back to a number before returning the result
+  return parseFloat((float1 + float2).toFixed(2));
+  // return = gives back the final result of the function when it is called. In this case, it returns the correctly rounded sum of float1 and float2 as a number.   
+  // parseFloat(...) = converts the string back to a number (since toFixed returns a string)
+  // float1 + float2 = adds the two numbers together. Problem: JS floating-point math can give imprecise results (eg 0.1 + 0.2 = 0.30000000000000004)
+  // .toFixed(2) = converts the result to a string rounded to exactly 2 decimal places. This fixes the floating-point precision issue for currency values
+
+
+} // Step 3: close the function definition with a curly brace
+
+// Step 4: Call the function currencyAddition with the arguments 0.1 and 0.2, then print the result to the console
+console.log(currencyAddition(0.1, 0.2)) // 0.30
+console.log(0.3 == currencyAddition(0.1, 0.2)) // true, because currencyAddition correctly rounds the result to 0.30, which is equal to 0.3 in JavaScript (trailing zeros after the decimal point do not affect the value of a number)
+
+
+console.log("EXERCISE 5c")
+// Exercise 5c: create a function currencyOperation(float1, float2, operation) which safely performs the given operation (either +, -, / or *) on the two numbers
+// It should return the correct float result
+// Assume 2 decimal places for currency values
+
+// Step 1: define a reusable function named 'currencyOperation'
+function currencyOperation(float1, float2, operation) {
+// Takes 3 parameters:
+//   - float1: first number (currency value)
+//   - float2: second number (currency value)
+//   - operation: a string representing the math operation ('+', '-', '*', '/')
+
+  // Step 2: declare a variable 'result' to store the calculation result
+  let result;
+  
+  // Step 3: open a switch statement to check the value of 'operation' and run different code blocks based on whether it's addition, subtraction, multiplication or division
+    switch (operation) {
+    // Step 3a: Case '+': perform addition
+    case '+':
+      result = float1 + float2;  // Add the two numbers
+      break;  // Exit the switch (prevents falling through to other cases)
+    // Step 3b: Case '-': perform subtraction
+    case '-':
+      result = float1 - float2;  // Subtract float2 from float1
+      break;
+    // Step 3c: Case '*': perform multiplication
+    case '*':
+      result = float1 * float2;  // Multiply the two numbers
+      break;
+    // Step 3d: Case '/': perform division
+    case '/':
+      result = float1 / float2;  // Divide float1 by float2
+      break;
+    // Step 3e: Default: runs if 'operation' doesn't match any case above
+    default:
+      // Throw an error to stop execution and notify the caller of invalid input
+      throw new Error('Invalid operation');
+  } // Step 4: close the switch statement using a curly brace
+    
+    // Step 5: After the switch, round the result to 2 decimal places and convert back to a number before returning
+    return parseFloat(result.toFixed(2));
+// result.toFixed(2) = rounds to 2 decimal places, returns a STRING
+// parseFloat(...) = converts the string back to a number
+// return = sends the final value back to the caller
+
+} // Step 6: End of the function definition
+
+
+
+// Step 7: Call the function currencyOperation with different operations and print the results to the console
+console.log(currencyOperation(0.1, 0.2, '+')) // 0.30
+console.log(currencyOperation(0.3, 0.1, '-')) // 0.20
+console.log(currencyOperation(0.1, 0.2, '*')) // 0.02
+console.log(currencyOperation(0.3, 0.1, '/')) // 3.00
+
+console.log(0.3 == currencyOperation(0.1, 0.2, '+')) // true, because currencyOperation correctly rounds the result to 0.30, which is equal to 0.3 in JS 
+// trailing zeros after the decimal point do not affect the value of a number
+
+
+console.log("EXERCISE 5d extension")
+// Exercise 5d: extend the Exercise 5c function to include a fourth argument numDecimals
+// This argument should allow the operation to support different amounts of decimal places from 1 to 10
+
+// Step 1: define a reusable function named 'currencyOperationWithDecimals' with 4 parameters: float1, float2, operation, numDecimals
+function currencyOperationWithDecimals(float1, float2, operation, numDecimals) {
+// 4 parameters description:
+// float1: first number (currency value)
+// float2: second number (currency value)
+// operation: a string representing the math operation ('+', '-', '*', '/')
+// numDecimals: number of decimal places to round to (1 to 10)
+
+  // Step 2: declare a variable 'result' to store the calculation result
+  let result;
+
+  // Step 3a: open a switch statement to check the value of 'operation' and run different code blocks based on whether it's addition, subtraction, multiplication or division
+  switch (operation) {
+    // Step 3b: Case '+': perform addition
+    case '+':
+      result = float1 + float2;  // Add the two numbers
+      break;  // Exit the switch (prevents falling through to other cases)
+    // Step 3c: Case '-': perform subtraction
+    case '-':
+      result = float1 - float2;  // Subtract float2 from float1
+      break;
+    // Step 3d: Case '*': perform multiplication
+    case '*':
+      result = float1 * float2;  // Multiply the two numbers
+      break;
+    // Step 3e: Case '/': perform division
+    case '/':
+      result = float1 / float2;  // Divide float1 by float2
+      break;
+    // Step 3f: Default: runs if 'operation' doesn't match any case above
+    default:
+      // Throw an error to stop execution and notify the caller of invalid input
+      throw new Error('Invalid operation');
+  } // Step 4: close the switch statement using a curly brace
+
+
+    // Step 5: After the switch, round the result to 'numDecimals' decimal places and convert back to a number before returning
+  return parseFloat(result.toFixed(numDecimals));
+  // result.toFixed(numDecimals) = rounds the result to the specified number of decimal places (numDecimals e.g. 2 for cents), returns a STRING (e.g., "0.30" not 0.30)
+  // parseFloat(...) = converts the string back to a number type
+  // return = sends the final value back to the caller
+
+} // Step 6: End of the function definition
+
+// Step 7: Call the function currencyOperationWithDecimals with different operations and numDecimals, then print the results to the console
+console.log(currencyOperationWithDecimals(0.1, 0.2, '+', 3)) // 0.300
+console.log(currencyOperationWithDecimals(0.3, 0.1, '-', 4)) // 0.2000
+console.log(currencyOperationWithDecimals(0.1, 0.2, '*', 5)) // 0.02000
+console.log(currencyOperationWithDecimals(0.3, 0.1, '/', 2)) // 3.00  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
