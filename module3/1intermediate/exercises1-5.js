@@ -1,4 +1,5 @@
 
+console.log("EXERCISE 1")
 
 // EXERCISE 1a Write a function that takes a string and capitalizes the first letter of each word.
 
@@ -35,8 +36,11 @@ console.log(CapitalizeFirstLettersString("paul pogba"));
 // Step 1: Define a function named capitalizeFirstLettersArray that takes one parameter 'str' (the input string)
 function capitalizeFirstLettersArray(str) {  
 
-  // Step 2: Turn string into an array of words
+  // Step 2: Store words in an array called "wordsArray" , the array is comprised of a string converted into an array
   let wordsArray = Array.from(str.split(" "));
+  // let wordsArray = create a new variabe called 'wordsArray'
+  // Array.from(...) = create a new array from array-like/ iterable data
+  // str.split(" ") = take a variable called 'str' and apply a string method called split which splits the string by " "
 
   // Step 3: Loop through each word
   for (let i = 0; i < wordsArray.length; i++) {
@@ -62,6 +66,8 @@ function capitalizeFirstLettersArray(str) {
 console.log(capitalizeFirstLettersArray("michael carrick"));  
 
 
+console.log("EXERCISE 2")
+
 /* EXERCISE 2a Create a function truncate(str, max) that truncates a given string of text if its total length is greater than the max length.
 It should return either the truncated text, with an ellipsis (…) added to the end if it was too long, or the original text otherwise.*/
 
@@ -73,6 +79,10 @@ function truncatesentence(str, max) {
 
     // Step 3: If it is too long, return a truncated version of the string with an ellipsis at the end
     return str.slice(0, max) + "…";
+// str is your input string
+// .slice(0, max) takes characters starting at position 0 (the start) up to max.
+// Then + "…" adds an ellipsis at the end.
+
 
   } else {  // Step 4: If the string is NOT too long (length is less than or equal to max), execute this block
 
@@ -102,6 +112,9 @@ function truncateWithConditionalOperator(str, max) {
 // Step 4: Call the function truncateWithConditionalOperator with the string "Manchester United are struggling this season." and a max length of 25, then print the result
 console.log(truncateWithConditionalOperator("Arsenal have no chance of winning the EPL this season.", 36));
 
+
+
+console.log("EXERCISE 3")
 
 /* EXERCISE 3 Here is an array.*/
 
@@ -187,27 +200,89 @@ console.log(findMatchingAnimals("T"));
 console.log(findMatchingAnimals("E"));
 
 
-// Exercise 4 Write a function camelCase(cssProp) that changes dash-separated CSS properties like 'margin-left' into camel-cased 'marginLeft'.
+console.log("EXERCISE 4a")
 
+// EXERCISE 4a Write a function camelCase(cssProp) that changes dash-separated CSS properties like 'margin-left' into camel-cased 'marginLeft'.
+// The function should remove all dashes, and uppercase the first letter of each word after a dash.
+
+
+// Step 1: Create a function named `camelCase`.
+// This function takes one input called `cssProp` (a CSS property string)
+// and will run code inside to convert/ handle that value.
 function camelCase(cssProp) {
   
-  // Step 1: Split the text wherever there is a dash '-'.
+  // Step 2: Split the text wherever there is a dash '-'.
   // Example: "margin-left" becomes ["margin", "left"].
   const parts = cssProp.split('-');
+// const parts = create a variable 'parts' that cannot be reassigned.
+// cssProp = an input variable, in this case a CSS property string
+// .split('-') = “break this string at every -”
 
-  // Step 2: Start from index 1 (the second word), not 0.
+  // Step 3: Start a stadard for loop that repeats code from each item in 'parts', commencing from index 1 (the second item).
   // We keep the first word lowercase in camelCase.
   for (let i = 1; i < parts.length; i++) {
+// let i = 1 = start counting at index 1 (not 0).
+// i < parts.length = keep going while i is still a valid position in the array.
+// i++ = add 1 to i after each loop.
 
-    // Step 3: Make the first letter of each next word uppercase,
+
+    // Step 4: Make the first letter of each next word uppercase,
     // then add the rest of that word unchanged.
     // Example: "left" becomes "Left".
-    
-    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+        parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
   }
+// parts[i] = the current word (like "color").
+// .charAt(0) = gets the first letter ("c").
+// .toUpperCase() = turns it into uppercase ("C").
+// .slice(1) = gets the rest of the word after the first letter ("olor").
+// + joins the C with the olor ("Color")
+// 'parts[i] =' = this saves the new word back into the array
 
-  // Step 4: Join all words back together with no spaces or dashes.
+  // Step 5: Join all words back together with no spaces or dashes.
   // Example: ["margin", "Left"] becomes "marginLeft".
   return parts.join('');
+} 
+
+// Step 6: Call the function camelCase with different CSS properties and print the results to the console
+console.log(camelCase('margin-left')) // marginLeft 
+console.log(camelCase('background-image')) // backgroundImage
+console.log(camelCase('display')) // display
+
+console.log("EXERCISE 4b")
+// EXERCISE 4b Create a variant of the camelCase function that uses a for...in loop, WITH the conditional/ternary operator
+function camelCaseWithForIn(cssProp) {
+  const parts = cssProp.split('-');
+  for (let i in parts) {
+    parts[i] = i > 0 ? parts[i].charAt(0).toUpperCase() + parts[i].slice(1) : parts[i];
+  }
+  return parts.join('');
 }
+
+console.log(camelCaseWithForIn('border-radius')) // borderRadius
+console.log(camelCaseWithForIn('font-size')) // fontSize
+console.log(camelCaseWithForIn('color')) // color
+
+
+console.log("EXERCISE 4c")
+// EXERCISE 4c Create a variant of the camelCase function that uses a for...in loop, WITHOUT the conditional/ ternary operator
+function camelCaseWithForInNoConditional(cssProp) {
+  const parts = cssProp.split('-');
+  for (let i in parts) {
+    if (i > 0) {
+      parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+    }
+  }
+  return parts.join('');
+}
+
+console.log(camelCaseWithForInNoConditional('border-radius')) // borderRadius
+console.log(camelCaseWithForInNoConditional('font-size')) // fontSize
+console.log(camelCaseWithForInNoConditional('color')) // color
+
+
+
+
+console.log("EXERCISE 5")
+// EXERCISE 5
+
 
