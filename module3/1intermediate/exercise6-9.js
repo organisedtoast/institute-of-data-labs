@@ -163,7 +163,7 @@ console.log('Exercise 8');
 // EXERCISE 8: The following code creates a new Map object for storing names beginning with A, B, or C with their phone numbers.
 // A Map is a collection of key-value pairs where each key is unique.
 // A Map is like an object but with keys that can be any data type (not just strings) and it maintains the order of entries.
-// Maps are rarely used.
+// Maps are rarely used because objects can do the same thing, but they are useful to know about as they are a built-in data structure in JavaScript.
 
 // Step 1: Create a new Map object called phoneBookABC
 const phoneBookABC = new Map();
@@ -284,19 +284,21 @@ function sumSalaries(salaries) {
 
 
         // After each iteration, the loop moves to the next key in the object
-        // Iteration 1: total = 0 + 35000 = 35000 (Timothy)
-        // Iteration 2: total = 35000 + 25000 = 60000 (David)
-        // Iteration 3: total = 60000 + 55000 = 115000 (Mary)
-        // Iteration 4: total = 115000 + 30000000 = 30115000 (Wayne Rooney)
-        // Iteration 5: total = 30115000 + 43000 = 30158000 (James)
-    } // Step 4: close the for...in loop
+        // Iteration 1: total = 0 + 35000 = 35000 (added Timothy)
+        // Iteration 2: total = 35000 + 25000 = 60000 (added David)
+        // Iteration 3: total = 60000 + 55000 = 115000 (added Mary)
+        // Iteration 4: total = 115000 + 30000000 = 30115000 (added Wayne Rooney)
+        // Iteration 5: total = 30115000 + 43000 = 30158000 (added James)
+    
+      } // Step 4: close the for...in loop with a curly brace
     
     // Step 5: After the loop finishes, return the "total" variable which now contains the sum of all salaries
     return total;
-} // Step 6: close the function definition
+
+} // Step 6: close the function definition with a curly brace
 
 // Step 7: Call the sumSalaries function with the salaries object and print the result
-console.log(sumSalaries(salaries)); // 30_000_000 + 35000 + 25000 + 55000 + 43000 = 30_208_000
+console.log(sumSalaries(salaries)); // 30_000_000 + 35000 + 25000 + 55000 + 43000 = 30_158_000
 
 
 console.log('Exercise 9b');
@@ -321,7 +323,7 @@ function topEarner(salaries) {
     // 'in' is used to loop over the enumerable properties of an object
 
         // Step 5: Check if the current person's salary is greater than the current top salary
-        if (salaries[key] > topSalary) {
+        if (salaries[key] >= topSalary) {
         // salaries[key] accesses the value associated with the current key
         // Example: if key is "Timothy", then salaries["Timothy"] = 35000
         // > is the greater than comparison operator
@@ -339,11 +341,11 @@ function topEarner(salaries) {
         // The loop continues to the next key in the object
 
         // Iteration trace:
-        // Iteration 1: key="Timothy", salaries["Timothy"]=35000, 35000 > 0 → topSalary=35000, topName="Timothy"
-        // Iteration 2: key="David", salaries["David"]=25000, 25000 > 35000 → false, no change
-        // Iteration 3: key="Mary", salaries["Mary"]=55000, 55000 > 35000 → topSalary=55000, topName="Mary"
-        // Iteration 4: key="Wayne Rooney", salaries["Wayne Rooney"]=30000000, 30000000 > 55000 → topSalary=30000000, topName="Wayne Rooney"
-        // Iteration 5: key="James", salaries["James"]=43000, 43000 > 30000000 → false, no change
+        // Iteration 1: key="Timothy", salaries["Timothy"]=35000, 35000 >= 0 → topSalary=35000, topName="Timothy"
+        // Iteration 2: key="David", salaries["David"]=25000, 25000 >= 35000 → false, no change
+        // Iteration 3: key="Mary", salaries["Mary"]=55000, 55000 >= 35000 → topSalary=55000, topName="Mary"
+        // Iteration 4: key="Wayne Rooney", salaries["Wayne Rooney"]=30000000, 30000000 >= 55000 → topSalary=30000000, topName="Wayne Rooney"
+        // Iteration 5: key="James", salaries["James"]=43000, 43000 >= 30000000 → false, no change
     
       } // Step 6: close the for...in loop
 
@@ -366,11 +368,15 @@ function averageSalary(salaries) {
 
     // Step 3: count the number of employees by getting the length of the keys array
     let count = Object.keys(salaries).length;
-    // Object.keys(salaries) returns an array of the keys (employee names) in the salaries object
-    // .length gives the number of keys, which is the number of employees
+    // Object = a built-in JavaScript object that has useful methods for working with objects
 
-
-    // Step 4: calculate the average by dividing the total by the count
+    // Object.keys(salaries) = returns an array of the keys (employee names) in the salaries object
+    // example: Object.keys(salaries) is ['Timothy', 'David', 'Mary', 'Wayne Rooney', 'James']
+    
+    // .length = gives the number of keys, which is the number of employees
+    // example: Object.keys(salaries).length is 5, because there are 5 employee names in the salaries object
+    
+        // Step 4: calculate the average by dividing the total by the count
     return total / count;
     // / is the division operator, which divides the total sum of salaries by the number of employees to get the average salary
 

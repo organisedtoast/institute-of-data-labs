@@ -208,19 +208,17 @@ console.log("EXERCISE 4a")
 // The function should remove all dashes, and uppercase the first letter of each word after a dash.
 
 
-// Step 1: Create a function named `camelCase`.
-// This function takes one input called `cssProp` (a CSS property string)
-// and will run code inside to convert/ handle that value.
+// Step 1: define a function named camelCase that takes one parameter 'cssProp' (the input CSS property string in kebab-case)
 function camelCase(cssProp) {
   
-  // Step 2: Split the text wherever there is a dash '-'.
+  // Step 2: split the text wherever there is a dash '-'.
   // Example: "margin-left" becomes ["margin", "left"].
   const parts = cssProp.split('-');
 // const parts = create a variable 'parts' that cannot be reassigned.
 // cssProp = an input variable, in this case a CSS property string
 // .split('-') = “break this string at every -”
 
-  // Step 3: Start a stadard for loop that repeats code from each item in 'parts', commencing from index 1 (the second item).
+  // Step 3: start a stadard for loop that repeats code from each item in 'parts', commencing from index 1 (the second item).
   // We keep the first word lowercase in camelCase.
   for (let i = 1; i < parts.length; i++) {
 // let i = 1 = start counting at index 1 (not 0).
@@ -228,24 +226,28 @@ function camelCase(cssProp) {
 // i++ = add 1 to i after each loop.
 
 
-    // Step 4: Make the first letter of each next word uppercase,
+    // Step 4: make the first letter of each next word uppercase,
     // then add the rest of that word unchanged.
     // Example: "left" becomes "Left".
-        parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
-  }
-// parts[i] = the current word (like "color").
-// .charAt(0) = gets the first letter ("c").
-// .toUpperCase() = turns it into uppercase ("C").
-// .slice(1) = gets the rest of the word after the first letter ("olor").
-// + joins the C with the olor ("Color")
-// 'parts[i] =' = this saves the new word back into the array
+    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+    // parts[i] = the current word (like "color").
+    // .charAt(0) = gets the first letter ("c").
+    // .toUpperCase() = turns it into uppercase ("C").
+    // .slice(1) = gets the rest of the word after the first letter ("olor").
+    // + joins the C with the olor ("Color")
+    // 'parts[i] =' = this saves the new word back into the array
 
-  // Step 5: Join all words back together with no spaces or dashes.
+  
+  
+      } // Step 5: close the for loop with a curly brace
+
+
+  // Step 6: Join all words back together with no spaces or dashes.
   // Example: ["margin", "Left"] becomes "marginLeft".
   return parts.join('');
-} 
+} // Step 7: close the function definition with a curly brace
 
-// Step 6: Call the function camelCase with different CSS properties and print the results to the console
+// Step 8: Call the function camelCase with different CSS properties and print the results to the console
 console.log(camelCase('margin-left')) // marginLeft 
 console.log(camelCase('background-image')) // backgroundImage
 console.log(camelCase('display')) // display
@@ -254,25 +256,30 @@ console.log("EXERCISE 4b")
 // EXERCISE 4b Create a variant of the camelCase function that uses a for...in loop, WITH the conditional/ternary operator
 
 // Step 1: declare a function named 'camelCaseWithForIn' that takes in one parameter 'cssProp' (the input CSS property string)
-
 function camelCaseWithForIn(cssProp) {
-//   - cssProp = a CSS property string in kebab-case (e.g., 'border-radius')
+// cssProp = a CSS property string in kebab-case (e.g., 'border-radius')
+// camelCaseWithForIn = the name of the function that will convert the CSS property to camelCase using a for...in loop and conditional operator
+
 
   // Step 2: Split the CSS property string into an array of parts
   //   - split('-') divides the string at each hyphen
   //   - Example: 'border-radius' becomes ['border', 'radius']
   const parts = cssProp.split('-');
-  
+  // const parts = create a variable called 'parts' that cannot be reassigned
+  // cssProp = the input string (e.g., 'border-radius')
+  // .split('-') = takes the input string and splits it into an array of substrings wherever there is a hyphen. So 'border-radius' becomes ['border', 'radius']. 
+
   // Step 3: Loop through each index of the parts array using for...in
-  //   - 'i' is the index (0, 1, 2, ...)
-  //   - 'parts' is the array being looped through
   for (let i in parts) {
+  // for...in loop goes through each index of the 'parts' array
+    // 'i' = the index (0, 1, 2, ...)
+  // parts' = the array being looped through
     
+
     // Step 4: Use ternary operator to conditionally transform each part
+    parts[i] = i > 0 ? parts[i].charAt(0).toUpperCase() + parts[i].slice(1) : parts[i];
     // format of ternary operator: condition ? value_if_true : value_if_false
 
-    parts[i] = i > 0 ? parts[i].charAt(0).toUpperCase() + parts[i].slice(1) : parts[i];
-    
     //   Condition = i > 0 (is this NOT the first word?)
 
     //   If true: Capitalize first letter + keep rest of word
@@ -283,9 +290,9 @@ function camelCaseWithForIn(cssProp) {
 
   } // Step 5: close the for...in loop with a curly brace
   
-  // Step 6: join all parts back into a single string (no separator)
+    // Step 6: join all parts back into a single string (no separator)
     return parts.join('');
-//   Example: ['border', 'Radius'] becomes 'borderRadius'
+    // Example: ['border', 'Radius'] becomes 'borderRadius'
 
 } // Step 7: close the function definition with a curly brace 
 
@@ -300,28 +307,27 @@ console.log("EXERCISE 4c")
 // EXERCISE 4c Create a variant of the camelCase function that uses a for...in loop, WITHOUT the conditional/ ternary operator
 
 // Step 1: declare function named 'camelCaseWithForInNoConditional' that takes one parameter 'cssProp' (the input CSS property string)
-
 function camelCaseWithForInNoConditional(cssProp) {
 
-  // Step 2: Split the CSS property string into an array of parts
+  // Step 2: split the CSS property string into an array of parts
   //   - split('-') divides the string at each hyphen
   //   - Example: 'border-radius' becomes ['border', 'radius']
   const parts = cssProp.split('-');
   
-  // Step 3: Loop through each index of the parts array using for...in
-
+  // Step 3: loop through each index of the parts array using for...in
   for (let i in parts) {
-  //   - 'i' is the index (0, 1, 2, ...)
-  //   - 'parts' is the array being looped through
-
-    // Step 4: Use if statement to check if this is NOT the first word
+  // for...in loop goes through each index of the 'parts' array
+  // 'i' = the index (0, 1, 2, ...)
+  // parts' = the array being looped through
     
+
+    // Step 4: use if statement to check if this is NOT the first word
     if (i > 0) {
     //   - i > 0 means we skip the first word (index 0)
     //   - Only words after the first get capitalized
 
-      // Step 5: Transform the word to start with uppercase
-            parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+      // Step 5: transform the word to start with uppercase
+      parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
       //   - parts[i].charAt(0).toUpperCase() - gets first letter and makes it uppercase
       //   - parts[i].slice(1) - gets the rest of the word (from index 1 to end)
       //   - Example: 'radius' becomes 'Radius'
@@ -330,9 +336,9 @@ function camelCaseWithForInNoConditional(cssProp) {
 
   } // Step 7: close the for...in loop with a curly brace
   
-  // Step 8: Join all parts back into a single string (no separator)
-    return parts.join('');
-    //   Example: ['border', 'Radius'] becomes 'borderRadius'
+  // Step 8: join all parts back into a single string (no separator)
+  return parts.join('');
+  // Example: ['border', 'Radius'] becomes 'borderRadius'
 
 } // Step 9: close the function definition with a curly brace
 
@@ -376,7 +382,7 @@ function currencyAddition(float1, float2) {
 // float1, float2 = the two decimal numbers to be added together
 // currencyAddition = the name of the function that will perform the addition and return the correct result
 
-  // Step 2: Add the two numbers together, round to 2 decimal places, and convert back to a number before returning the result
+  // Step 2: add the two numbers together, round to 2 decimal places, and convert back to a number before returning the result
   return parseFloat((float1 + float2).toFixed(2));
   // return = gives back the final result of the function when it is called. In this case, it returns the correctly rounded sum of float1 and float2 as a number.   
   // parseFloat(...) = converts the string back to a number (since toFixed returns a string)
@@ -386,7 +392,7 @@ function currencyAddition(float1, float2) {
 
 } // Step 3: close the function definition with a curly brace
 
-// Step 4: Call the function currencyAddition with the arguments 0.1 and 0.2, then print the result to the console
+// Step 4: call the function currencyAddition with the arguments 0.1 and 0.2, then print the result to the console
 console.log(currencyAddition(0.1, 0.2)) // 0.30
 console.log(0.3 == currencyAddition(0.1, 0.2)) // true, because currencyAddition correctly rounds the result to 0.30, which is equal to 0.3 in JavaScript (trailing zeros after the decimal point do not affect the value of a number)
 
@@ -399,9 +405,9 @@ console.log("EXERCISE 5c")
 // Step 1: define a reusable function named 'currencyOperation'
 function currencyOperation(float1, float2, operation) {
 // Takes 3 parameters:
-//   - float1: first number (currency value)
-//   - float2: second number (currency value)
-//   - operation: a string representing the math operation ('+', '-', '*', '/')
+// float1: first number (currency value)
+// float2: second number (currency value)
+// operation: a string representing the math operation ('+', '-', '*', '/')
 
   // Step 2: declare a variable 'result' to store the calculation result
   let result;
@@ -432,12 +438,11 @@ function currencyOperation(float1, float2, operation) {
     
     // Step 5: After the switch, round the result to 2 decimal places and convert back to a number before returning
     return parseFloat(result.toFixed(2));
-// result.toFixed(2) = rounds to 2 decimal places, returns a STRING
-// parseFloat(...) = converts the string back to a number
-// return = sends the final value back to the caller
+    // result.toFixed(2) = rounds to 2 decimal places, returns a STRING
+    // parseFloat(...) = converts the string back to a number
+    // return = sends the final value back to the caller
 
 } // Step 6: End of the function definition
-
 
 
 // Step 7: Call the function currencyOperation with different operations and print the results to the console
