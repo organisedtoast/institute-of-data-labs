@@ -131,6 +131,26 @@ function printFibonacci() {
 
 printFibonacci();
 
+console.log("Exercise 4a")
+// Now, make the function print until 10 seconds have passed, then stop.
+
+function printFibonacciWithLimit() {
+  let a = 0, b = 1;
+  console.log(a); // Print the first number in the sequence
+  const intervalId = setInterval(() => {
+    console.log(b); // Print the next number in the sequence
+    [a, b] = [b, a + b]; // Update a and b to the next two numbers in the sequence
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(intervalId); // Stop printing after 10 seconds
+  }, 10000);
+}
+
+printFibonacciWithLimit();  
+
+
+console.log("Exercise 4b")
 // Exercise 4b: Write a new version printFibonacciTimeouts() that uses nested setTimeout calls to do the same thing.
 
 function printFibonacciTimeouts() {
@@ -148,7 +168,7 @@ function printFibonacciTimeouts() {
 
 printFibonacciTimeouts(); 
 
-
+console.log("Exercise 4c")
 // Exercise 4c: Extend one of the above functions to accept a limit argument, which tells it how many numbers to print before stopping.
 
 function printFibonacciTimeouts(limit) {
@@ -168,5 +188,67 @@ function printFibonacciTimeouts(limit) {
 }
 
 printFibonacciTimeouts(10);
+
+
+console.log("Exercise 5")
+// EXERCISE 5: The following car object has several properties and a method which uses them to print a description.
+
+let car = {
+  make: "Porsche",
+  model: "911",
+  year: 1964,
+
+  description() {
+    console.log(`This car is a ${this.make} ${this.model} from ${this.year}`);
+  },
+};
+
+car.description(); // works
+setTimeout(car.description, 200); // fails
+
+// Why does the setTimeout call fail to print the description of the car?
+
+// The setTimeout call fails to print the description of the car because when the description method is passed as a callback to setTimeout, it loses its context (the value of 'this'). 
+// In JavaScript, the value of 'this' inside a function depends on how the function is called. 
+// When setTimeout calls the description function, it does so without any context, so 'this' inside the description function does not refer to the car object, resulting in undefined values for make, model, and year.
+
+console.log("Exercise 5a")
+// Exercise 5a: Fix the setTimeout call so that it correctly prints the description of the car after 200 milliseconds.
+
+setTimeout(() => car.description(), 200); 
+
+console.log("Exercise 5b")
+// Exercise 5b: Change the year for the car by creating a clone of the original and overriding it.
+
+let carClone = { ...car, year: 2020 };
+carClone.description(); // This will print the description with the updated year  
+
+
+console.log("Exercise 5c")
+// Exercise 5c: Does the delayed description() call use the original values or the new values from b)? Why?
+
+// The delayed description() call uses the original values from the car object, not the new values from carClone. 
+// This is because the setTimeout call was made with a reference to the original description method of the car object, which uses the properties of the car object. 
+// The carClone is a separate object with its own properties, and the setTimeout call does not have any reference to it.
+// So it continues to use the original car object's properties when it executes the description method after the delay.
+
+console.log("Exercise 5d")
+// Exercise 5d: Use bind to fix the description method so that it can be called from within setTimeout without a wrapper function
+
+setTimeout(car.description.bind(car), 200);
+
+
+console.log("Exercise 5e")
+// Exercise 5e: Change another property of the car by creating a clone and overriding it, and test that setTimeout still uses the bound value from d)
+
+let carClone2 = { ...car, model: "Cayenne" };
+
+carClone2.description(); // This will print the description with the updated model
+
+setTimeout(car.description.bind(car), 200); // This will still use the bound value from d)
+
+
+
+
 
 
