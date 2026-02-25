@@ -244,15 +244,44 @@ console.log("Exercise 3b");
 // Exercise 3b:Extend the debounce decorator function to take a second argument ms.
 // ms should define the length of the period of inactivity instead of hardcoding to 1000ms.
 
+// Step 1: Define the debounce function that takes TWO parameters:
+// - func: the function we want to debounce (delay until user stops calling it)
+// - ms: the number of milliseconds to wait after the last call before executing func
 function debounce(func, ms) {
+  
+  // Step 2: Declare a variable to store the timer ID
+  // This variable exists in the "closure" - it persists between multiple calls to the debounced function
+  // Think of it like a sticky note that remembers which timer is currently running
   let timeoutId;
+
+  // Step 3: Return a NEW function that will replace the original function
+  // This new function is called a "wrapper" because it wraps around the original func
+  // ...args uses "rest parameter" syntax - it collects ALL arguments into an array called args
+  // This allows our wrapper to work with any function, regardless of how many parameters it takes
   return function(...args) {
+    
+    // Step 4: Cancel any existing timer
+    // If the user calls this function multiple times quickly, we clear the old timer
+    // This is the key to debouncing - we keep resetting the countdown
+    // Example: If you call it at 100ms, 200ms, and 300ms, the first two timers get cancelled
     clearTimeout(timeoutId);
+    
+    // Step 5: Start a NEW timer that will execute the original function after ms milliseconds
+    // setTimeout returns a timer ID that we store in timeoutId so we can cancel it later
+    // The arrow function () => { ... } is the code that runs when the timer finishes
     timeoutId = setTimeout(() => {
+      
+      // Step 6: Call the original function with the correct context and arguments
+      // func.apply(this, args) does two things:
+      // - 'this' refers to the same context as when the wrapper was called (important for object methods)
+      // - args passes all the arguments that were collected in Step 3
+      // Example: If you called debouncedFunction('hello', 42), args would be ['hello', 42]
       func.apply(this, args);
-    }, ms);
-  };
-}
+      
+    }, ms); // Step 7: The timer duration in milliseconds (e.g., 1000 = 1 second)
+    
+  }; // Step 8: Close the wrapper function - this is what gets returned and used
+} // Step 9: Close the debounce function definition
 
 
 
@@ -410,35 +439,132 @@ printFibonacci();
 console.log("Exercise 4a")
 // Now, make the function print until 10 seconds have passed, then stop.
 
+// Step 1: define a function named printFibonacciWithLimit
 function printFibonacciWithLimit() {
+  
+  // Step 2: declare two variables a and b to hold the current and next Fibonacci numbers, starting with 0 and 1 respectively
   let a = 0, b = 1;
-  console.log(a); // Print the first number in the sequence
-  const intervalId = setInterval(() => {
-    console.log(b); // Print the next number in the sequence
-    [a, b] = [b, a + b]; // Update a and b to the next two numbers in the sequence
-  }, 1000);
+  
+  // Step 3: print the first Fibonacci number (0) immediately
+  console.log(a);
+  
+  // Step 4: use setInterval to create a timer that executes a callback function every 1000 milliseconds (1 second)
+    const intervalId = setInterval(() => {
+    // const intervalId = ... stores the ID of the interval timer so we can clear it later to stop the repeated execution
+    // setInterval(    ) = schedules the following function to run every 1000ms
+    // () => { ... } = this is an arrow function. It serves as the callback for setInterval, containing the logic to print Fibonacci numbers and update them
+    
+    // Step 5: print the current Fibonacci number (b) to the console
+    console.log(b);
+    
+    // Step 6: calculate the next Fibonacci number:
+    [a, b] = [b, a + b];
+    // - New a becomes the current b
+    // - New b becomes a + b (sum of the previous two numbers)   
 
+  } // Step 7: close the setInterval callback function with a closing curly brace 
+  , 1000); // Step 8: specify the interval time (1000ms = 1 second) before closing the setInterval call with a closing parenthesis
+
+
+  // Step 9: set a timeout to stop the interval after 10000 milliseconds (10 seconds)
   setTimeout(() => {
-    clearInterval(intervalId); // Stop printing after 10 seconds
-  }, 10000);
-}
+  // setTimeout( = schedules the following function to run once after a delay
+  // () => { ... } = this is an arrow function. It serves as the callback for setTimeout, containing the logic to stop the interval timer  
+    
+    // Step 10: set up the logic to stop the interval timer using clearInterval and the stored intervalId
+    clearInterval(intervalId);
+  } // Step 11: close the setTimeout callback function with a closing curly brace
+  , 10000); // Step 12: specify the delay time (10000ms = 10 seconds) before closing the setTimeout call with a closing parenthesis
+} // Step 13: close the printFibonacciWithLimit function definition with a closing curly brace
 
-printFibonacciWithLimit();  
 
+// Step 14: Call the function to start printing Fibonacci numbers for 10 seconds
+printFibonacciWithLimit();
 
+// Here is the above code without comments for your perusal.
 
 /*
 
+function printFibonacciWithLimit() {
+  
+  let a = 0, b = 1;
+  
+  console.log(a);
+  
+  const intervalId = setInterval(() => {
+    
+    console.log(b);
+    
+    [a, b] = [b, a + b];
+
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(intervalId);
+  }, 10000);
+}
+
+printFibonacciWithLimit();
+
+*/
+
+
+
+
+
 console.log("Exercise 4b")
 // Exercise 4b: Write a new version printFibonacciTimeouts() that uses nested setTimeout calls to do the same thing.
+// Nested setTimeout calls mean that instead of using setInterval to repeat the action, you schedule the next call to print the next Fibonacci number at the end of the previous call. 
+// This creates a chain of timeouts that achieve the same effect as setInterval, but with more control over the timing of each individual call.
+
+// Step 1: define a function named printFibonacciTimeouts
+function printFibonacciTimeouts() {
+  
+  // Step 2: initialize two variables a and b to hold the current and next Fibonacci numbers, starting with 0 and 1 respectively
+  let a = 0, b = 1;
+  
+  // Step 3: print the first Fibonacci number (0) immediately
+  console.log(a);
+
+  // Step 3: define a "nested helper function" called printNext
+  // This function will be responsible for printing the next Fibonacci number and scheduling the next call to itself after a delay 
+  function printNext() {
+    
+    // Step 4: print the current Fibonacci number (b)
+    console.log(b);
+    
+    // Step 5: calculate the next Fibonacci number:
+    [a, b] = [b, a + b];
+    // [a, b] this is array destructuring syntax that allows us to assign new values to a and b simultaneously
+    // - New a becomes the current b
+    // - New b becomes a + b (sum of the previous two numbers)
+    // [b, a + b] creates a new array with the current value of b and the sum of a and b, which are then assigned back to a and b respectively
+
+
+    // Step 6: schedule the next call to printNext after 1000 milliseconds (1 second)
+    // This creates a chain of timeouts, where each timeout schedules the next one
+    setTimeout(printNext, 1000);
+  } // Step 7: close the printNext function definition with a closing curly brace
+
+  // Step 8: schedule the first call to printNext after 1000 milliseconds (1 second) to start the chain of timeouts
+  setTimeout(printNext, 1000);
+} // Step 9: close the printFibonacciTimeouts function definition with a closing curly brace
+
+// Step 10: call the function to start printing Fibonacci numbers using nested setTimeouts
+printFibonacciTimeouts();
+
+
+// Here is the above code without comments for your perusal.
+
+/*
 
 function printFibonacciTimeouts() {
   let a = 0, b = 1;
-  console.log(a); // Print the first number in the sequence
+  console.log(a); 
 
   function printNext() {
-    console.log(b); // Print the next number in the sequence
-    [a, b] = [b, a + b]; // Update a and b to the next two numbers in the sequence
+    console.log(b); 
+    [a, b] = [b, a + b]; 
     setTimeout(printNext, 1000);
   }
 
@@ -447,18 +573,78 @@ function printFibonacciTimeouts() {
 
 printFibonacciTimeouts(); 
 
+*/
+
+
 console.log("Exercise 4c")
 // Exercise 4c: Extend one of the above functions to accept a limit argument, which tells it how many numbers to print before stopping.
+
+// Step 1: define a function named printFibonacciTimeouts that accepts a limit parameter
+// The limit parameter specifies how many Fibonacci numbers to print in total
+function printFibonacciTimeouts(limit) {
+  
+  // Step 2: initialize two variables: a = 0 (first Fibonacci number), b = 1 (second Fibonacci number)
+  let a = 0, b = 1;
+  
+  // Step 3: initialize a counter variable to keep track of how many numbers have been printed so far
+  // We start at 1 because we will print the first number (0) immediately before the counter starts
+  let count = 1;
+  
+  // Step 4: print the first Fibonacci number (0) immediately
+  console.log(a);
+
+  // Step 5: define a "nested helper function" called printNext
+  // This function will be called repeatedly to print each subsequent Fibonacci number
+  function printNext() {
+    
+    // Step 6: check if we have already printed enough numbers
+    // If count is greater than or equal to limit, stop by returning early
+    if (count >= limit) return;
+    
+    // Step 7: print the current Fibonacci number (b)
+    console.log(b);
+    
+    // Step 8: calculate the next Fibonacci number:
+    [a, b] = [b, a + b];
+    // [a, b] this is array destructuring syntax that allows us to assign new values to a and b simultaneously
+    // - New a becomes the current b
+    // - New b becomes a + b (sum of the previous two numbers)
+    // [b, a + b] creates a new array with the current value of b and the sum of a and b, which are then assigned back to a and b respectively
+
+
+    // Step 9: increment (i.e. add 1 to) the count variable to reflect that we have printed another number
+    count++;
+    
+    // Step 10: schedule the next call to printNext after 1000 milliseconds (1 second)
+    // This creates a chain of timeouts, where each timeout schedules the next one
+    setTimeout(printNext, 1000);
+  
+  } // Step 11: close the printNext function definition with a closing curly brace
+
+  // Step 12: start the chain by scheduling the first call to printNext after 1 second
+  setTimeout(printNext, 1000);
+
+} // Step 13: close the printFibonacciTimeouts function definition with a closing curly brace
+
+
+// Step 14: call the function with argument 10 to print the first 10 Fibonacci numbers
+printFibonacciTimeouts(10);
+
+
+
+// Here is the above code without comments for your perusal.
+
+/* 
 
 function printFibonacciTimeouts(limit) {
   let a = 0, b = 1;
   let count = 1;
-  console.log(a); // Print the first number in the sequence
+  console.log(a);
 
   function printNext() {
     if (count >= limit) return;
-    console.log(b); // Print the next number in the sequence
-    [a, b] = [b, a + b]; // Update a and b to the next two numbers in the sequence
+    console.log(b); 
+    [a, b] = [b, a + b]; 
     count++;
     setTimeout(printNext, 1000);
   }
@@ -468,9 +654,14 @@ function printFibonacciTimeouts(limit) {
 
 printFibonacciTimeouts(10);
 
+*/
+
+
+
 
 console.log("Exercise 5")
-// EXERCISE 5: The following car object has several properties and a method which uses them to print a description.
+// EXERCISE 5: The following car object has several properties.
+// It also has a method called "description()"" that prints a description of the car to the console. 
 
 let car = {
   make: "Porsche",
@@ -482,25 +673,40 @@ let car = {
   },
 };
 
-car.description(); // works
-setTimeout(car.description, 200); // fails
+car.description(); 
 
-// Why does the setTimeout call fail to print the description of the car?
-
-// The setTimeout call fails to print the description of the car because when the description method is passed as a callback to setTimeout, it loses its context (the value of 'this'). 
-// In JavaScript, the value of 'this' inside a function depends on how the function is called. 
+// setTimeout(car.description, 200); this setTimeout call will fail to print the description of the car after 200 milliseconds.
+// But why?
+// The setTimeout call fails to print the description of the car because when the description method is passed as a callback to setTimeout, it loses its context
+// In this case, context refers to the value of 'this' 
+// In JS, the value of 'this' inside a function depends on how the function is called. 
 // When setTimeout calls the description function, it does so without any context, so 'this' inside the description function does not refer to the car object, resulting in undefined values for make, model, and year.
 
 console.log("Exercise 5a")
 // Exercise 5a: Fix the setTimeout call so that it correctly prints the description of the car after 200 milliseconds.
 
+// Use an arrow function wrapper to call car.description()
+// The arrow function preserves the lexical scope, so 'car' is accessible inside it
+// When car.description() is called this way, 'this' correctly refers to the car object
 setTimeout(() => car.description(), 200); 
+// setTimeout(   ) = schedules the following function to run after a delay
+// () => car.description() = an arrow function that calls car.description() when executed
+// 200 = the delay in milliseconds before the function is executed
+
+
 
 console.log("Exercise 5b")
 // Exercise 5b: Change the year for the car by creating a clone of the original and overriding it.
 
-let carClone = { ...car, year: 2020 };
-carClone.description(); // This will print the description with the updated year  
+// Create a new object carClone using the spread operator (...car)
+// The spread operator copies all properties from the car object into the new object
+// Then override the year property with a new value of 2025
+let carClone = { ...car, year: 2025 };
+
+
+// Call the description method on carClone
+// This will print the description with the updated year (2025) instead of the original year (1964)
+carClone.description(); 
 
 
 console.log("Exercise 5c")
@@ -514,36 +720,82 @@ console.log("Exercise 5c")
 console.log("Exercise 5d")
 // Exercise 5d: Use bind to fix the description method so that it can be called from within setTimeout without a wrapper function
 
+// Use the bind method to create a new function that has 'this' bound to the car object
+// This allows us to pass the bound function directly to setTimeout without losing the context of 'this'
+
 setTimeout(car.description.bind(car), 200);
+// setTimeout(   ) = schedules the following function to run after a delay
+// car.description.bind(car) = creates a new function where 'this' is permanently set to the car object, allowing it to access the correct properties when called
+// 200 = the delay in milliseconds before the function is executed
+
 
 
 console.log("Exercise 5e")
 // Exercise 5e: Change another property of the car by creating a clone and overriding it, and test that setTimeout still uses the bound value from d)
 
-let carClone2 = { ...car, model: "Cayenne" };
+// Step 1: create a new clone of the car object using the spread operator
+// and override the model property to "Panamera"
+let carClone2 = { ...car, model: "Panamera" };
+// ...car = creates a new object that copies all properties from car, and then model: "Panamera" overrides the model property in the new object
 
-carClone2.description(); // This will print the description with the updated model
+carClone2.description(); 
 
-setTimeout(car.description.bind(car), 200); // This will still use the bound value from d)
+setTimeout(car.description.bind(car), 200);
+
 
 
 
 console.log("Exercise 6")
 // Exercise 6: Use the Function prototype to add a new delay(ms) function to all functions, which can be used to delay the call to that function by ms milliseconds.
 
-function delay(func, ms) {
-  return function(...args) {
-    setTimeout(() => func.apply(this, args), ms);
-  };
-}
-
-
+// Step 1: add a new method called delay to the Function prototype
+// This allows us to call .delay() on any function in JavaScript, and it will return a new function that delays the execution of the original function by a specified number of milliseconds 
 Function.prototype.delay = function(ms) {
-  const fn = this;
-  return function(...args) {
-    setTimeout(() => fn.apply(this, args), ms);
+
+  // Step 2: return a new function that wraps the original function (the one that delay was called on)
+  // The returned function uses rest parameters (...args) to collect all arguments passed to it
+  return (...args) => {
+  // return is the keyword that allows us to return a value from the delay method, which in this case is the new wrapper function that we are defining.  
+  // (...args) is the syntax for rest parameters, which collects all arguments passed to the wrapper function into an array called args.
+  // => { ...} is the syntax for an arrow function, which is a concise way to define a function expression.
+  // The code inside the curly braces is the body of the function that will be executed when the wrapper function is called. 
+
+
+    // Step 3: use setTimeout to delay the execution of the original function (referred to as 'this' inside delay) by ms milliseconds
+    setTimeout(() => {
+    // setTimeout (   ) = schedules the following function to run after a delay
+    // () => { ... } = an arrow function that serves as the callback for setTimeout, containing the logic to call the original function with the correct context and arguments
+      
+      
+      // Step 4: call the original function using apply to ensure it receives the correct 'this' context and arguments
+      this.apply(this, args);
+
+
+    }, // Step 5: close the setTimeout callback function with a closing curly brace
+    
+    // Step 6: specify the delay time
+    ms);
+    // ms = the delay in milliseconds before the function is executed. In this case, the delay wil be determined by the argument passed to the .delay() method when it is called on a function.
+
+
+  }; // Step 7: close the wrapper function definition with a closing curly brace. This is the function that will be returned by the delay method and will handle the delayed execution of the original function when called.
+}; // Step 8: close the delay method definition with a closing curly brace. This completes the addition of the delay method to the Function prototype, allowing all functions to use it to create delayed versions of themselves.
+
+
+// Below is the code without comments for your perusal.
+
+/*
+
+Function.prototype.delay = function(ms) {       
+  return (...args) => {
+
+    setTimeout(() => {
+      this.apply(this, args); 
+    }, ms);
   };
-}; 
+};
+
+*/
 
 console.log("Exercise 6a")
 // Exercise 6a: use the example multiply function below to test it with, as above, and assume that all delayed functions will take two parameters
@@ -565,8 +817,5 @@ function multiply(a, b, c, d) {
 multiply.delay(500)(2, 3, 4, 5); // prints 120 after 500 milliseconds 
 
 
-
-
-*/
 
 
