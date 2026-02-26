@@ -554,26 +554,47 @@ console.log('EXERCISE 10');
 // run 'npm install node-fetch'
 // run 'npm pkg set type=module'
 
+// Step 1: Import the node-fetch package to enable HTTP requests in Node.js
 import fetch from 'node-fetch';
+
+// Step 2: Make fetch available globally so it can be used anywhere in the code
 globalThis.fetch = fetch;
 
+// Step 3: Define a function called fetchURLData that takes a URL as a parameter
 function fetchURLData(url) {
+
+  // Step 4: Call fetch(url) to start the HTTP request - this returns a Promise
+  
+  // Step 5: Chain .then() to handle the response when the request completes
   let fetchPromise = fetch(url).then(response => {
+    
+    // Step 6: Check if the response status is 200 (OK/success)
     if (response.status === 200) {
+      
+      // Step 7: Parse the response body as JSON and return it
       return response.json();
     } else {
+      
+      // Step 8: If status is not 200, throw an error with the status code
       throw new Error(`Request failed with status ${response.status}`);
     }
   });
+  
+  // Step 9: Return the promise so the caller can handle the result or error
   return fetchPromise;
 }
 
+// Step 10: Call fetchURLData with a test API endpoint URL
 fetchURLData('https://jsonplaceholder.typicode.com/todos/1')
-  .then(data => console.log(data))
-  .catch(error => console.error(error.message));
+  
+// Step 11: Chain .then() to receive and log the data when the promise resolves successfully
+.then(data => console.log(data))
+  
+// Step 12: Chain .catch() to handle and log any errors that occurred during the request
+.catch(error => console.error(error.message));
 
 
-// Here is the above code again, free of comments
+// Here is the above code again, free of comments for your convenience
 
 /*
 import fetch from 'node-fetch';
@@ -598,22 +619,137 @@ fetchURLData('https://jsonplaceholder.typicode.com/todos/1')
 
 console.log('Exercise 10a');
 // Exercise 10a: Write a new version of this function using async/await
+// async/await is a more modern syntax for working with promises that allows us to write asynchronous code in a synchronous-looking way
+// This can be easier to read and understand in many cases.
 
+// Step 1: Define an async function called fetchURLDataAsync that takes a URL as a parameter
+// The 'async' keyword means this function will always return a Promise
+async function fetchURLDataAsync(url) {
+  // Step 2: Start a try block to handle any errors that might occur
+  try {
+    // Step 3: Use 'await' to pause and wait for the fetch request to complete
+    // 'await' can only be used inside async functions
+    const response = await fetch(url);
+    // Step 4: Check if the response status is 200 (OK/success)
+    if (response.status === 200) {
+      // Step 5: Use 'await' again to wait for the JSON parsing to complete
+      const data = await response.json();
+      // Step 6: Return the parsed data (this automatically wraps it in a resolved Promise)
+      return data;
+    } else {
+      // Step 7: If status is not 200, throw an error with the status code
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  } catch (error) {
+    // Step 8: Catch any errors from the try block and re-throw them for the caller to handle
+    throw error; // re-throw the error to be caught by the caller
+  }
+}
 
-
-
-
+// Step 9: Call the async function with a test API endpoint URL
+// This returns a Promise that will resolve with the fetched data
+fetchURLDataAsync('https://jsonplaceholder.typicode.com/todos/1')
+  // Step 10: Chain .then() to receive and log the data when the promise resolves successfully
+  .then(data => console.log(data))
+  // Step 11: Chain .catch() to handle and log any errors that occurred during the request
+  .catch(error => console.error(error.message));  
+  
 console.log('Exercise 10b');
 // Exercise 10b: Test both functions with valid and invalid URLs
 
+fetchURLData('https://jsonplaceholder.typicode.com/todos/1')  
+  .then(data => console.log('Exercise 10b: Valid URL test for fetchURLData:', data))
+  .catch(error => console.error('Exercise 10b: Valid URL test for fetchURLData failed:', error.message));
+
+fetchURLData('https://jsonplaceholder.typicode.com/invalid-endpoint')  
+  .then(data => console.log('Exercise 10b: Invalid URL test for fetchURLData:', data))
+  .catch(error => console.error('Exercise 10b: Invalid URL test for fetchURLData failed:', error.message));
 
 
 
 
 console.log('Exercise 10c extension');
-// Exercise 10c extension: Extend your new function to accept an array of URLs and fetch all of them, using Promise.all to combine the results.
+// Exercise 10c extension: Extend your new function to accept an array of URLs and fetch all of them.
+// Use Promise.all to combine the results.
+// This means that the function will wait for all fetch requests to complete, and then return an array of results if all were successful, or an error if any of them failed.
+
+// Step 1: Define an async function called fetchMultipleURLs that takes an array of URLs as a parameter
+async function fetchMultipleURLs(urls) {
+
+  // Step 2: Start a try block to handle any errors that might occur
+  try {
+
+    // Step 3: Use .map() to transform each URL into a fetch promise by calling fetchURLDataAsync
+    // This creates an array of promises, one for each URL
+    const fetchPromises = urls.map(url => fetchURLDataAsync(url));
+    // fetchPromises = this is an array that will contain the promises returned by calling fetchURLDataAsync for each URL in the input array
+    // urls.map(...) = this iterates over each URL in the input array and applies the function to it, returning a new array of results (in this case, promises)
+    // url => fetchURLDataAsync(url) = this is an arrow function that takes a single URL as input and returns the promise from calling fetchURLDataAsync with that URL  
+
+    // Step 4: Use Promise.all() to wait for ALL promises to resolve
+    // 'await' pauses execution until every fetch request completes
+    // If any promise fails, Promise.all will reject and jump to the catch block
+    const results = await Promise.all(fetchPromises);
+    // await = this pauses the execution of the function until all promises in fetchPromises have either resolved or one has rejected
+    // Promise.all(fetchPromises) = this takes an array of promises and returns a single promise that resolves to an array of results when all the input promises have resolved, or rejects if any input promise rejects
+
+    // Step 5: Return the array of results (one result for each URL that was fetched)
+    return results;
+
+  } // Step 6: close the try block with a closing curly brace
+
+  catch (error) // Step 6: Catch any errors and re-throw them for the caller to handle 
+  
+  {
+      throw error;
+  } // close the catch block with a closing curly brace
+} // close the fetchMultipleURLs async function with a closing curly brace
 
 
+// Step 7a: Call fetchMultipleURLs with an array of 3 test API endpoint URLs
+
+fetchMultipleURLs([
+  'https://jsonplaceholder.typicode.com/todos/1',
+  'https://jsonplaceholder.typicode.com/todos/2',
+  'https://jsonplaceholder.typicode.com/todos/3'
+])
+
+// Step 7b: Chain .then() to receive and log all the fetched data when all promises resolve successfully
+.then(data => console.log('Exercise 10c: Multiple URL fetch results:', data))
+// .then( ) = this is used to handle the successful resolution of the promise returned by fetchMultipleURLs, and it receives the array of results as its argument, which we log to the console with a message indicating that these are the results from fetching multiple URLs
+// data => console.log('<text>', data = this is an arrow function that takes the resolved data (an array of results from the multiple fetch requests) and logs it to the console with a descriptive message
+
+// Step 7c: Chain .catch() to handle and log any errors that occurred during any of the fetch requests
+.catch(error => console.error('Exercise 10c: Multiple URL fetch FAILURE:', error.message));
+// .catch( ) = this is used to handle any errors that occur during the execution of fetchMultipleURLs, including if any of the individual fetch requests fail, and it receives the error object as its argument, which we log to the console with a message indicating that the multiple URL fetch failed along with the error message
+// error => console.error('<text>', error.message) = this is an arrow function that takes the error object and logs an error message to the console, including the specific error message from the error object to provide more details about what went wrong during the multiple URL fetch process
+
+
+
+// Here is the above code again, free of comments for your convenience
+
+/*
+
+
+async function fetchMultipleURLs(urls) {
+  try {
+    const fetchPromises = urls.map(url => fetchURLDataAsync(url));
+    const results = await Promise.all(fetchPromises);
+    return results;
+  } catch (error) {
+    throw error; 
+  }
+}
+
+fetchMultipleURLs([
+  'https://jsonplaceholder.typicode.com/todos/1',
+  'https://jsonplaceholder.typicode.com/todos/2',
+  'https://jsonplaceholder.typicode.com/todos/3'
+])
+.then(data => console.log('Exercise 10c: Multiple URL fetch results:', data))
+.catch(error => console.error('Exercise 10c: Multiple URL fetch FAILURE:', error.message));  
+
+*/
 
 
 
