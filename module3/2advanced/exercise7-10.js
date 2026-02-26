@@ -275,6 +275,7 @@ class AlarmClock extends DigitalClock {
 console.log('EXERCISE 8');
 // EXERCISE 8: Using the starter code provided, create a decorator function to validate function arguments as strings.
 
+console.log('Exercise 8a')
 // Exercise 8a: Create a decorator function validateStringArg(fn) which will validate an argument passed to fn to ensure that it is a string
 // It should throw an error if the argument is not a string
 // Test it by decorating the given orderItems function below which takes an item name as an argument and returns a string, confirming the order.
@@ -284,9 +285,11 @@ console.log('EXERCISE 8');
 function orderItems(itemName) { return `Order placed for: ${itemName}`; }
 
 
-// Step 2: below is a simple decorator function that takes a function as an argument
-// It then returns a new function validating the argument passed to the original function to ensure it is a string
-// An error will be thrown if the argument is not a string, otherwise it will call the original function with the argument and return its result
+// Step 2: below is a simple decorator function "validateStringArg" that takes another function "fn" as an argument
+// It then returns a new unnamed function which validates the argument "arg" passed to the original function "fn" to ensure it is a string
+// An error will be thrown if the argument "arg" is not a string, otherwise it will call the original function "fn" with the argument "arg" and return its result
+// Please note this decorator can only validate a single argument
+// For multiple arguments, we will need to create a different decorator function, which we will do in Exercise 8b
 
 function validateStringArg(fn) {
   return function(arg) {
@@ -352,31 +355,100 @@ function orderItemsMultiple(...itemNames) {
 
     // Step 2: join all item names with a comma and space, then return a formatted string confirming the order for all items
     // For example: "Order placed for: Vision Pro, iPad Pro, Mac Studio"
-    return `Order placed for: ${itemNames.join(', ')}`;
+    // Step 1: Use template literal to create the return message
+    // Step 2: Call itemNames.join(', ') to convert the array into a comma-separated string
+    // Step 3: Insert the joined string into the template literal
+    return `Order placed for: ${itemNames.join(', ')} you lucky bastard!`;
 
 } // Step 3: close the orderItems function with a closing curly brace
 
-// Step 4: decorate the orderItemsMultiple function with validateStringArg
+// Step 4: Create a new decorator function validateMultipleStringsArg(fn) which can validate MULTIPLE arguments passed to fn to ensure that they are strings
+// A decorator is a function that takes another function and extends its behavior without modifying it
+// This decorator will check that ALL arguments passed to the wrapped function are strings
+
+// Step 5: create decorator function called validateMultipleStringsArg that takes a function "fn" as an argument
+function validateMultipleStringsArg(fn) {
+  
+  // Step 6: return a new function that uses the rest operator to accept any number of arguments (e.g., ...args)
+  return function(...args) {
+  // (...args) = collects all arguments into an array called 'args' that we can then loop through to validate each one
+
+    // Step 7: loop through each argument in the "args" array and check if it is a string
+    for (let arg of args) {
+      
+      // Step 8a: Check if the current argument is NOT a string type
+      if (typeof arg !== 'string') {
+        // Step 8b: If any argument is not a string, throw an error to stop execution
+        throw new Error(`Arguments must be bloody strings you abject moron!`);
+      } // Step 8c: close the if statement with a closing curly brace
+    } // Step 9: close the for loop with a closing curly brace
+
+    // Step 10: if all arguments passed validation, call the original function "fn" with the validated arguments and return its result
+    return fn(...args);
+    // fn(...) = this calls the original function "fn" that we are decorating, and passes the validated arguments to it
+    // (...args) = this spreads the array of arguments back into individual arguments when calling the original function "fn", allowing us to pass all the validated arguments to it as separate parameters
+
+  }; // Step 11: close the returned function with a closing curly brace
+} // Step 12: close the validateMultipleStringsArg function with a closing curly brace
+
+
+
+// Step 13: decorate the orderItemsMultiple function with validateMultipleStringsArg
 // This creates a new function called validatedOrderItemsMultiple that will validate its arguments, before calling the original orderItemsMultiple function and returning its result
-const validatedOrderItemsMultiple = validateStringArg(orderItemsMultiple);
+// Now when validatedOrderItemsMultiple is called, it will first check all arguments are strings
+const validatedOrderItemsMultiple = validateMultipleStringsArg(orderItemsMultiple);
 
 
-// Step 5: call the decorated function "validatedOrderItemsMultiple" with multiple string arguments to confirm it works as expected
+// Step 14: call the decorated function "validatedOrderItemsMultiple" with multiple string arguments to confirm it works as expected
 
 // All arguments (e.g. "Vision Pro") will be validated
 // They will then be passed to orderItemsMultiple as an "itemNames" array, which will join them into a single string and return the formatted string confirming the order for all items
-console.log(validatedOrderItemsMultiple("Vision Pro", "iPad Pro", "Mac Studio"));   
+
+console.log(validatedOrderItemsMultiple("Vision Pro", "iPad Pro", "Mac Studio"));
+
+// Here is the above code again, free of comments for your convenience
+
+/*
+function orderItemsMultiple(...itemNames) {
+  return `Order placed for: ${itemNames.join(', ')} you lucky bastard!`;
+}
+
+function validateMultipleStringsArg(fn) {
+  return function(...args) {
+    for (let arg of args) {
+      if (typeof arg !== 'string') {
+        throw new Error(`Arguments must be bloody strings you abject moron!`);
+      }
+    }
+    return fn(...args);
+  };
+}
+
+const validatedOrderItemsMultiple = validateMultipleStringsArg(orderItemsMultiple);
+
+console.log(validatedOrderItemsMultiple("Vision Pro", "iPad Pro", "Mac Studio"));
+
+*/
 
 
 
 
 console.log('Exercise 8c');
 // Exercise 8c: Extend the decorator function to validate as strings all arguments passed to fn
+// This means that if any argument passed to the decorated function is not a string, an error will be thrown and the original function will not be called at all
+
+
+
+// I feel like I did this already in exercise 8c.
+
+
+
 
 
 console.log('Exercise 8d');
 // Exercise 8d: When testing the decorated function, use try-catch blocks to handle errors thrown for non-string arguments
 
+// I feel like I did this already in exercise 8a.
 
 
 console.log('EXERCISE 9');
@@ -389,27 +461,86 @@ function randomDelay() {
 try {
   randomDelay().then(() => console.log('Bro, there appears to have been a delay.'));
 } catch (error) {
-  console.error('DISASTROUS MALFUNCTION:', error.message);
+  console.error('Exercise 9: DISASTROUS MALFUNCTION.', error.message);
 }
 
 
 console.log('Exercise 9a');
-// Exercise 9a: Create a promise-based alternative randomDelay() that delays execution for a random amount of time (between 1 and 20 seconds) and returns a promise we can use via .then(), as in the starter code below
+// Exercise 9a: Create a promise-based alternative to randomDelay() that delays execution for a random amount of time (between 1 and 20 seconds)
+// It should then return a promise we can use via .then()
+
+function randomDelayPromise() {
+  return new Promise((resolve, reject) => {
+    const delay = Math.floor(Math.random() * 20) + 1;
+    setTimeout(() => {
+      resolve(delay);
+    }, delay * 1000);
+  });
+}   
+
+randomDelayPromise().then(() => console.log('Exercise 9a: Bro, there has been a successful delay.'))
 
 
+// Here is the above code again, free of comments for your convenience
+
+/*
+
+function randomDelayPromise() {
+  return new Promise((resolve, reject) => {
+    const delay = Math.floor(Math.random() * 20) + 1;
+    setTimeout(() => {
+      resolve(delay);
+    }, delay * 1000);
+  });
+}   
+
+randomDelayPromise().then(() => console.log('Exercise 9a: There has been a successful delay.'))
+
+*/
 
 console.log('Exercise 9b');
-// Exercise 9b: If the random delay is even, consider this a successful delay and resolve the promise, and if the random number is odd, consider this a failure and reject it
+// Exercise 9b: Create a promise-based alternative randomDelayEvenOnlyPromise() similar to randomDelayPromise  
+// However, if the random delay is even number, consider this a successful delay and resolve the promise.
+// If the random number is odd, consider this a failure and please reject it
+
+function randomDelayEvenOnlyPromise() {
+  return new Promise((resolve, reject) => {
+    
+    const delay = Math.floor(Math.random() * 20) + 1;
+
+    setTimeout(() => {
+
+      if (delay % 2 === 0) {
+        resolve(`Exercise 9b/c: SUCCESS. Delay was ${delay} seconds. We dig even people. Welcome to Australia.`);
+      } else {
+        reject(new Error(`Delay was ${delay} seconds, we don't accept odd people. Fuck right off.`));
+      }
+
+    }, delay * 1000);
+
+  });
+}
 
 
 console.log('Exercise 9c');
-// Exercise 9c: Update the testing code to catch rejected promises and print a different message
+  // Exercise 9c: Update the testing code to catch rejected promises and print a different message
+
+randomDelayEvenOnlyPromise()
+  .then(message => console.log(message))
+  .catch(error => console.error('Exercise 9b/c: DISASTROUS MALFUNCTION.', error.message)); 
+ 
 
 
 console.log('Exercise 9d');
 // Exercise 9d: Try to update the then and catch messages to include the random delay value
 
-
+try {
+  randomDelayEvenOnlyPromise()
+    .then(message => console.log(message))
+    .catch(error => console.error('Exercise 9d: DISASTROUS MALFUNCTION.', error.message));
+} catch (error) {
+  console.error('Exercise 9d: DISASTROUS MALFUNCTION.', error.message);
+} 
 
 
 
