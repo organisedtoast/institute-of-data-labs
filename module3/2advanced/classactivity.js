@@ -46,53 +46,53 @@ mobileGossipAnalysisReady();
 
 
 // Task 2: Make the functions asynchronous by using setTimeout with different time durations, maintaining the right order.
-function initiateHistoricalSharePriceChart() {
+function initiateHistoricalSharePriceChart2() {
     setTimeout(() => {
         console.log("Initiating historical share price chart...");
     }, 1000);
 }
 
-const overlayValueLineTable = function() {
+const overlayValueLineTable2 = function() {
     setTimeout(() => {
         console.log("Overlaying ValueLine table...");
     }, 2000);
 }   
 
-const addKeyInsiderTrading = () => {
+const addKeyInsiderTrading2 = () => {
     setTimeout(() => {
         console.log("Adding key insider trading...");
     }, 3000);   
 }
 
-function addKeyBrokerReports() {
+function addKeyBrokerReports2() {
     setTimeout(() => {
         console.log("Adding key broker reports...");
     }, 4000);   
 }
 
-const addKeyFundManagerSocialsAndNewsCommentary = () => {
+const addKeyFundManagerSocialsAndNewsCommentary2 = () => {
     setTimeout(() => {
         console.log("Adding key fund manager, socials and news commentary...");
     }, 5000);
 }
 
-function mobileGossipAnalysisReady() {
+function mobileGossipAnalysisReady2() {
     setTimeout(() => {
         console.log("Mobile Gossip Analysis ready!");
     }, 6000);
 }   
 
 // Call the functions in sequence
-initiateHistoricalSharePriceChart();
-overlayValueLineTable();
-addKeyInsiderTrading();
-addKeyBrokerReports();
-addKeyFundManagerSocialsAndNewsCommentary();
-mobileGossipAnalysisReady();
+initiateHistoricalSharePriceChart2();
+overlayValueLineTable2();
+addKeyInsiderTrading2();
+addKeyBrokerReports2();
+addKeyFundManagerSocialsAndNewsCommentary2();
+mobileGossipAnalysisReady2();
 
 
 // Task 3: Modify the asynchronous functions to use Promises and achieve the required result.
-function initiateHistoricalSharePriceChart() {
+function initiateHistoricalSharePriceChart3() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Initiating historical share price chart...");
@@ -101,7 +101,7 @@ function initiateHistoricalSharePriceChart() {
     });
 }
 
-const overlayValueLineTable = function() {
+const overlayValueLineTable3 = function() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Overlaying ValueLine table...");
@@ -110,7 +110,7 @@ const overlayValueLineTable = function() {
     });
 }
 
-const addKeyInsiderTrading = () => {
+const addKeyInsiderTrading3 = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Adding key insider trading...");
@@ -119,7 +119,7 @@ const addKeyInsiderTrading = () => {
     });
 }
 
-function addKeyBrokerReports() {
+function addKeyBrokerReports3() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Adding key broker reports...");
@@ -128,7 +128,7 @@ function addKeyBrokerReports() {
     });
 }   
 
-const addKeyFundManagerSocialsAndNewsCommentary = () => {
+const addKeyFundManagerSocialsAndNewsCommentary3 = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Adding key fund manager, socials and news commentary...");
@@ -137,7 +137,7 @@ const addKeyFundManagerSocialsAndNewsCommentary = () => {
     });
 }
 
-function mobileGossipAnalysisReady() {
+function mobileGossipAnalysisReady3() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Mobile Gossip Analysis ready!");
@@ -147,19 +147,19 @@ function mobileGossipAnalysisReady() {
 }
 
 // Call the functions in sequence using Promises
-initiateHistoricalSharePriceChart()
-    .then(overlayValueLineTable)
-    .then(addKeyInsiderTrading)
-    .then(addKeyBrokerReports)
-    .then(addKeyFundManagerSocialsAndNewsCommentary)
-    .then(mobileGossipAnalysisReady);
+initiateHistoricalSharePriceChart3()
+    .then(overlayValueLineTable3)
+    .then(addKeyInsiderTrading3)
+    .then(addKeyBrokerReports3)
+    .then(addKeyFundManagerSocialsAndNewsCommentary3)
+    .then(mobileGossipAnalysisReady3);
 
 
     
 
 // Task 4: Modify the functions to use async/await and achieve the required result.
 
-function initiateHistoricalSharePriceChart() {
+function initiateHistoricalSharePriceChart4() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Initiating historical share price chart...");
@@ -168,7 +168,7 @@ function initiateHistoricalSharePriceChart() {
     }); 
 }
 
-const overlayValueLineTable = function() {
+const overlayValueLineTable4 = function() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Overlaying ValueLine table...");
@@ -177,7 +177,7 @@ const overlayValueLineTable = function() {
     });
 }   
 
-const addKeyInsiderTrading = () => {
+const addKeyInsiderTrading4 = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Adding key insider trading...");
@@ -186,17 +186,16 @@ const addKeyInsiderTrading = () => {
     });
 }
 
-function addKeyBrokerReports() {
+function addKeyBrokerReports4() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Adding key broker reports...");
             resolve();
         }, 4000);
-    });
-    
+    });   
 }   
 
-const addKeyFundManagerSocialsAndNewsCommentary = () => {
+const addKeyFundManagerSocialsAndNewsCommentary4 = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Adding key fund manager, socials and news commentary...");
@@ -205,7 +204,7 @@ const addKeyFundManagerSocialsAndNewsCommentary = () => {
     });
 }  
 
-function mobileGossipAnalysisReady() {
+function mobileGossipAnalysisReady4() {
     return new Promise((resolve) => {
         setTimeout(() => {
             console.log("Mobile Gossip Analysis ready!");
@@ -216,12 +215,12 @@ function mobileGossipAnalysisReady() {
 
 // Call the functions in sequence using async/await
 async function runMobileGossipAnalysis() {
-    await initiateHistoricalSharePriceChart();
-    await overlayValueLineTable();
-    await addKeyInsiderTrading();
-    await addKeyBrokerReports();
-    await addKeyFundManagerSocialsAndNewsCommentary();
-    await mobileGossipAnalysisReady();
+    await initiateHistoricalSharePriceChart4();
+    await overlayValueLineTable4();
+    await addKeyInsiderTrading4();
+    await addKeyBrokerReports4();
+    await addKeyFundManagerSocialsAndNewsCommentary4();
+    await mobileGossipAnalysisReady4   ();
 }
 
 runMobileGossipAnalysis();
