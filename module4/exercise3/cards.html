@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Profile Cards</title>
+
+    <!-- STEP 1: CSS STYLING -->
+    <!-- Define styles for the page and card components -->
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #e3f2fd;
+        }
+
+        .card {
+            padding: 10px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 3em;
+            padding: 0 0 10px 0;
+        }
+
+        .card-text {
+            font-weight: 400;
+            font-size: 2em;
+        }
+
+.card-image {
+    width: 100%;           /* Fill container width */
+    height: auto;          /* Maintain aspect ratio */
+    display: block;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.player-image {
+    width: 30%;           /* 30% of original 110px width */
+    height: auto;          /* Maintain aspect ratio */
+}
+
+.position-image {
+    width: 70%;           /* Full width for position diagrams */
+    height: auto;          /* Maintain aspect ratio */
+}
+
+
+    
+    
+    
+    </style>
+
+    <!-- STEP 2: JAVASCRIPT BEHAVIOR -->
+
+    <!-- We usually put our script at the end of the body to populate the cards with data from our JSON file. -->
+        <!-- We can also put it at the top for easier introduction to a starter developer.  -->
+        <!-- However, if we do that, we need to make sure that the script runs after the DOM has loaded, otherwise it will not be able to find the HTML template and card list elements. -->
+        <!-- If it is an external script, this can be easily achieved by using defer attribute in the script tag -->
+        <!-- However, given that we are writing the script directly in the HTML file, we will need to wrap our code in a DOMContentLoaded event listener to ensure that it runs after the DOM has fully loaded. -->
+
+    <script>
+        // Step 2a: Wait for DOM to be fully loaded before running script
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Step 2b: Define the players data source
+            // This array contains each player's name and their key information
+            const players = [
+                {
+                    name: "Bruno Fernandes",
+                    portfolio: [
+                        { info: "Man Utd", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/141746.png" },
+                        { info: "Attacking Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cam.jpg" }
+                    ]
+                },
+                {
+                    name: "Declan Rice",
+                    portfolio: [
+                        { info: "Arsenal", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/204480.png" },
+                        { info: "Defensive Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cdm.jpg" }
+                    ]
+                },
+                {
+                    name: "Erling Haaland",
+                    portfolio: [
+                        { info: "Man City", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/223094.png" },
+                        { info: "Centre Forward", supportingimage: "https://www.footballizer.com/img/public/position-cf.jpg" }
+                    ]
+                },
+                {
+                    name: "Mohamed Salah",
+                    portfolio: [
+                        { info: "Liverpool", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/118748.png" },
+                        { info: "Right Wing Forward", supportingimage: "https://www.footballizer.com/img/public/position-rf.jpg" }
+                    ]
+                },
+                {
+                    name: "Cole Palmer",
+                    portfolio: [
+                        { info: "Chelsea", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/244851.png" },
+                        { info: "Attacking Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cam.jpg" }
+                    ]
+                },
+                {
+                    name: "Christian Romero",
+                    portfolio: [
+                        { info: "Tottenham", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/221632.png" },
+                        { info: "Centre Back", supportingimage: "https://www.footballizer.com/img/public/position-cb.jpg" }
+                    ]
+                },
+                {
+                    name: "Bruno Guimaraes",
+                    portfolio: [
+                        { info: "Newcastle", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/208706.png" },
+                        { info: "Centre Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cm.jpg" }
+                    ]
+                },
+                {
+                    name: "Morgan Rogers",
+                    portfolio: [
+                        { info: "Aston Villa", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/244850.png" },
+                        { info: "Attacking Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cam.jpg" }
+                    ]
+                },
+                {
+                    name: "Jarrod Bowen",
+                    portfolio: [
+                        { info: "West Ham", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/178186.png" },
+                        { info: "Right Winger", supportingimage: "https://www.footballizer.com/img/public/position-rw.jpg" }
+                    ]
+                },
+                {
+                    name: "Ferdi Kadıoğlu",
+                    portfolio: [
+                        { info: "Brighton", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/231416.png" },
+                        { info: "Left Back", supportingimage: "https://www.footballizer.com/img/public/position-lb.jpg" }
+                    ]
+                },
+                {
+                    name: "Rayan Vitor",
+                    portfolio: [
+                        { info: "Bournemouth", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/499604.png" },
+                        { info: "Right Winger", supportingimage: "https://www.footballizer.com/img/public/position-rw.jpg" }
+                    ]
+                },
+                {
+                    name: "Harry Wilson",
+                    portfolio: [
+                        { info: "Fulham", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/153682.png" },
+                        { info: "Right Winger", supportingimage: "https://www.footballizer.com/img/public/position-rw.jpg" }
+                    ]
+                },
+                {
+                    name: "Igor Thiago",
+                    portfolio: [
+                        { info: "Brentford", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/502500.png" },
+                        { info: "Centre Forward", supportingimage: "https://www.footballizer.com/img/public/position-cf.jpg" }
+                    ]
+                },
+                {
+                    name: "João Gomes",
+                    portfolio: [
+                        { info: "Wolves", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/448089.png" },
+                        { info: "Centre Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cm.jpg" }
+                    ]
+                },
+                {
+                    name: "Adam Wharton",
+                    portfolio: [
+                        { info: "Crystal Palace", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/496221.png" },
+                        { info: "Defensive Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cdm.jpg" }
+                    ]
+                },
+                {
+                    name: "Jack Grealish",
+                    portfolio: [
+                        { info: "Everton", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/114283.png" },
+                        { info: "Left Winger", supportingimage: "https://www.footballizer.com/img/public/position-lw.jpg" }
+                    ]
+                },
+                {
+                    name: "Elliot Anderson",
+                    portfolio: [
+                        { info: "Nottm Forest", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/215379.png" },
+                        { info: "Central Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cm.jpg" }
+                    ]
+                },
+                {
+                    name: "Granit Xhaka",
+                    portfolio: [
+                        { info: "Sunderland", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/84450.png" },
+                        { info: "Defensive Midfielder", supportingimage: "https://www.footballizer.com/img/public/position-cdm.jpg" }
+                    ]
+                }
+            ];
+            
+
+            // Step 2c: Define the addCard function
+            // This function creates a new card with the given title, description, and optional image
+            function addCard(title, text, imageUrl) {
+                // Clone the template to create a new card
+                const template = document.getElementById('card-template')
+                    .content
+                    .cloneNode(true);
+
+                // Populate the cloned template with the provided data
+                template.querySelector('.card-title').innerText = title;
+                template.querySelector('.card-text').innerText = text;
+                
+                // If an image URL is provided, create and append an img element
+                if (imageUrl) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = title;
+                    img.referrerPolicy = "no-referrer"; // this is used to bypass hotlinking restrictions that some websites may have on their images
+                    
+                    // this is a hardcoded rule used to add different classes to the image based on whether it is a player image or a position image from footballizer website, so that we can style them differently if needed
+                    img.classList.add('card-image');
+                    if (imageUrl.includes("footballizer")) {
+                        img.classList.add("position-image");
+                    } else {
+                        img.classList.add("player-image");
+                    }
+                    template.querySelector('.card-body').appendChild(img);
+                }
+
+                // Append the populated card to the card-list container
+                document.querySelector('#card-list').appendChild(template);
+            }
+
+            // Step 2d: Display cards for each player
+            // Loop through each player and create cards using the addCard function
+            players.forEach(player => {
+                
+                // Create header card for player name
+                addCard('Player: ' + player.name, 'Key Details');
+                
+                // Create cards for each item in the player's portfolio
+                player.portfolio.forEach(item => addCard(item.info, '', item.supportingimage));
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <!-- STEP 3: HTML STRUCTURE -->
+    <!-- Define the template and container where cards will be inserted -->
+
+    <!-- Template: A blueprint for each card (not rendered until cloned by JS) -->
+    <template id="card-template">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"></div>
+                <div class="card-text"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Container: Cards generated by JS will be appended here -->
+    <div id="card-list"></div>
+</body>
+</html>
