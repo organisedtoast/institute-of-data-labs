@@ -37,7 +37,7 @@
 }
 
 .player-image {
-    width: 30%;           /* 30% of original 110px width */
+    width: 20%;           /* 30% of original 110px width */
     height: auto;          /* Maintain aspect ratio */
 }
 
@@ -64,8 +64,10 @@
         // Step 2a: Wait for DOM to be fully loaded before running script
         document.addEventListener('DOMContentLoaded', function() {
 
-            // Step 2b: Define the players data source
-            // This array contains each player's name and their key information
+            // Step 2b: Define the players data source in a JavaScript array of objects
+            // This array will contain each player's name as well as key information you would like to add to their profile card
+            // Please note you may attach multiple pieces of information to each player, and you can also include an image URL for each piece of information if you want to display an image on the card as well
+            // A player can have only one card with their name as the title (e.g. club with supporting image of the player in their club kit), others can have two or more (e.g. position along with supporting image of their position). 
             const players = [
                 {
                     name: "Bruno Fernandes",
@@ -85,7 +87,7 @@
                     name: "Erling Haaland",
                     portfolio: [
                         { info: "Man City", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/223094.png" },
-                        { info: "Centre Forward", supportingimage: "https://www.footballizer.com/img/public/position-cf.jpg" }
+                        { info: "Striker", supportingimage: "https://www.footballizer.com/img/public/position-st.jpg" }
                     ]
                 },
                 {
@@ -141,7 +143,7 @@
                     name: "Rayan Vitor",
                     portfolio: [
                         { info: "Bournemouth", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/499604.png" },
-                        { info: "Right Winger", supportingimage: "https://www.footballizer.com/img/public/position-rw.jpg" }
+                        { info: "Right Wing Forward", supportingimage: "https://www.footballizer.com/img/public/position-rf.jpg" }
                     ]
                 },
                 {
@@ -155,7 +157,7 @@
                     name: "Igor Thiago",
                     portfolio: [
                         { info: "Brentford", supportingimage: "https://resources.premierleague.com/premierleague25/photos/players/110x140/502500.png" },
-                        { info: "Centre Forward", supportingimage: "https://www.footballizer.com/img/public/position-cf.jpg" }
+                        { info: "Striker", supportingimage: "https://www.footballizer.com/img/public/position-st.jpg" }
                     ]
                 },
                 {
@@ -234,7 +236,7 @@
             players.forEach(player => {
                 
                 // Create header card for player name
-                addCard('Player: ' + player.name, 'Key Details');
+                addCard('Player: ' + player.name, 'Key Facts');
                 
                 // Create cards for each item in the player's portfolio
                 player.portfolio.forEach(item => addCard(item.info, '', item.supportingimage));
@@ -253,6 +255,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title"></div>
+                
                 <div class="card-text"></div>
             </div>
         </div>
