@@ -2,14 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Page title shown in browser tab -->
+    
     <title>Calculator</title>
-        <!-- LINK TO CSS: Connects the external stylesheet
-        - href: Path to the CSS file (same folder, so just filename)
-        - rel: Defines relationship as "stylesheet"-->
-        <link rel="stylesheet" href="exercise2.css">
-    <script src="exercise2.js" defer></script>
+    <!-- page title shown in browser tab -->
+
+    <link rel="stylesheet" href="exercise2.css"> 
+    <!-- link = this tag is used to link external resources -->    
+    <!-- rel= = this attribute specifies the relationship between the current document and the linked resource -->
+    <!-- "stylesheet" = indicates that the linked resource is a CSS stylesheet --> 
+    <!-- href= = this attribute specifies the path to the CSS file -->
+    <!-- "xxxxxx.css" = the CSS file is in the same directory as this HTML file. If it were in a subfolder called "styles", it would be "styles/xxxxxx.css" -->
+    
+    <script src="exercise2.js" defer></script> <!-- always put script link at the top for new starter/ AI friendliness. BUT MUST INSERT DEFER -->
+    <!-- script = this tag is used to include JavaScript code or link to an external JavaScript file -->
+    <!-- src= this attribute specifies the path to the JavaScript file -->
+    <!-- "xxxxxx.js" = the JavaScript file is in the same directory as this HTML file. If it were in a subfolder called "scripts", it would be "scripts/xxxxxx.js" -->
+    <!-- defer = this attribute tells the browser to only execute the script after the HTML document has been fully parsed. This is important because our JavaScript code needs to access HTML elements
+    If the script runs before those elements are loaded, it will cause errors. By using defer, we ensure that the script runs at the right time. -->
+
 </head>
 <body>
 
@@ -39,6 +51,7 @@
             
             <!-- Step 1: CREATE INPUTS AREA-->
 
+            
             <!-- Step 1a: create First Input-->
             <input type="number" id="first-number" class="input-display" placeholder="0" value="0">
             <!-- 
