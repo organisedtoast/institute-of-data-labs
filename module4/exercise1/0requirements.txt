@@ -1,0 +1,242 @@
+A multi-dimensional knowledge + performance monitor for listed markets.
+
+✅ CORE REQUIREMENTS (FOUNDATIONAL)
+
+1️⃣ Multi-Dimensional Categorisation System
+
+Every research item must support multi-tag classification across:
+
+A. Style
+
+Profitable Growth
+Lossmaking Growth
+Defensive
+Event-Driven
+Deep Value
+Cyclical
+Special Situations
+
+
+B. Broad Industry Sector
+
+Commodities
+Software
+Lenders
+REITs
+Semiconductors
+Industrials
+Healthcare
+Consumer
+
+C. Narrow Industry Sector
+
+Offshore Oil
+Shipping
+Tungsten
+Aged Care
+Data Centres
+Copper Developers
+Aircraft Leasing
+
+D. Geography
+
+China
+US
+Developed Europe
+Eastern Europe
+Japan / Korea
+Australia
+LatAm
+
+E. Theme
+
+Middle East Conflict
+Russia-Ukraine
+China-Taiwan
+
+Cybersecurity
+Crypto / Stablecoins
+Global Payments
+Central Bank Liquidity Flows
+
+AI Infrastructure
+
+Reshoring
+
+Requirement:
+Each piece of content can belong to multiple tags across all five axes.
+
+2️⃣ Multi-Source Content Ingestion
+
+Must support storing and indexing:
+Saved Emails (Gmail export)
+Twitter/X posts
+Blog posts
+Fund manager letters
+Exchange announcements
+Broker reports (PDF)
+YouTube videos
+Podcasts (future)
+Screenshots (optional OCR)
+
+3️⃣ Visual Subsegment Performance Dashboard
+
+A core module that:
+Shows price performance by:
+Style bucket
+Broad sector
+Narrow sector
+Geography
+Theme
+
+Performance timeframes:
+
+1D
+1W
+1M
+3M
+YTD
+1Y
+3Y
+5Y
+
+Visual display:
+
+Heatmaps
+Ranked tables
+Sparklines
+Trend arrows
+
+This is my “world pulse monitor.”
+
+🚀 ADDITIONAL CORE REQUIREMENTS
+
+
+4️⃣ Unified Search Engine
+
+Powerful search supporting:
+Keyword search
+Filter by any tag axis
+Boolean logic
+Date range
+Source type
+Author
+Sentiment tag (bullish/bearish)
+
+
+6️⃣ Cross-Linking & Idea Graph
+
+Allow linking:
+Research → Stock
+Research → Theme
+Theme → Other Themes
+Author → Track Record
+Visual graph view:
+Which themes connect?
+
+
+
+7️⃣ Author Performance Tracking
+
+For each contributor:
+
+What sectors do they cover?
+How have stocks they discuss performed?
+Thematic hit rate?
+
+Quickly identify:
+High-signal researchers
+Structural permabears
+Momentum chasers
+
+9️⃣ Alerts & Watchlists
+
+Users can:
+
+Follow specific themes
+
+Follow sub-sectors
+
+Follow authors
+
+Set performance alerts (e.g., "Shipping +15% in 2 weeks")
+
+Push notifications for:
+
+Major price moves
+
+New research in tracked themes
+
+🔟 Mobile-Optimised Research Feed
+
+Mobile-first layout:
+
+Card-based content display
+
+Quick-scan summary
+
+Tag badges
+
+Save to folder
+
+Swipe navigation
+
+Think:
+“Twitter meets Notion meets Bloomberg industry monitor.”
+
+1️⃣1️⃣ Portfolio Overlay (Optional but Powerful)
+
+Allow user to:
+
+Input current holdings
+
+See exposure by:
+
+Style
+
+Geography
+
+Theme
+
+Compare to research flow
+
+This shows:
+
+Where you're overweight vs research buzz
+
+Blind spots
+
+Crowding risk
+
+1️⃣2️⃣ Performance Attribution by Theme
+
+Allow you to see:
+
+Which themes generated the most alpha?
+
+Which style bucket has worked YTD?
+
+What macro regime is active?
+
+This turns monitoring into regime detection.
+
+1️⃣3️⃣ Timeline Mode (Historical View)
+
+Ability to view:
+
+What research was published before major moves?
+What themes were rising before they became consensus?
+
+Extremely powerful for pattern recognition.
+
+
+📱 STRUCTURAL REQUIREMENTS (UI/UX)
+
+Fast loading (no heavy frameworks initially)
+
+Minimalist professional aesthetic
+
+Dark mode (essential for markets app)
+
+Sticky performance bar
+
