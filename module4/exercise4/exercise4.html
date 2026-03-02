@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Demo</title>
+
+    <!-- Step 1: Include Bootstrap CSS -->
+    <!-- this is the link to the latest version of Bootstrap CSS from a CDN (Content Delivery Network) -->
+    <!-- The integrity attribute is used for Subresource Integrity (SRI) to ensure the file has not been tampered with, and crossorigin is set to anonymous to allow cross-origin requests without credentials. -->  
+    <!-- Bootstrap is a popular front-end framework that provides pre-designed components and responsive grid system to help developers create modern and responsive websites quickly.
+    By including the Bootstrap CSS file, you can use its classes and styles in your HTML to enhance the appearance and functionality of your web page. --> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 class="display-4 fw-bold text-primary">Hello, World!</h1>
+                <p class="lead text-muted mt-3">Welcome to your Bootstrap-powered page.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Step 2: Include Bootstrap JS Bundle -->
+    <!-- this is the link to the latest version of Bootstrap JS Bundle from a CDN (Content Delivery Network) -->
+    <!-- The integrity attribute is used for Subresource Integrity (SRI) to ensure the file has not been tampered with, and crossorigin is set to anonymous to allow cross-origin requests without credentials. -->  
+    <!-- Bootstrap JS Bundle includes Popper.js, which is required for some Bootstrap components like tooltips and popovers. By including the Bootstrap JS Bundle, you can enable interactive features and components in your web page. -->
+    <!-- It's important to include the Bootstrap JS Bundle after the Bootstrap CSS file and before the closing </body> tag to ensure that the JavaScript functionality works correctly. --> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+
+</html>
