@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- STEP 4: CREATE A TEMPLATE FOR THE NEWS CARDS
+The template element is used to define a reusable HTML structure for the news cards.
+It contains placeholders for the news title and content, which will be dynamically populated with actual data. 
+Nothing inside the template will be rendered on the page until it is cloned in Step 5.
+-->
+
+<!-- After we have defined the template, we can use JavaScript to clone its content and populate it with data from the newsFlow array.
+This allows us to create multiple news cards based on the same structure without having to write redundant HTML code for each card.
+-->
+
+<!-- define a template for the news cards with id "news-template" -->
+<template id="news-template">
+
+<!-- style the "card" class to define the appearance of the news cards -->    
+<div class="card col-8" style="width: 18rem; margin:10px">
+
+<!-- style the "news-body" class to define the appearance of the news content -->    
+<div class="news-body">
+
+<!-- style the "news-title" class to define the appearance of the news title -->    
+<h5 class="news-title">News title placeholder</h5>
+
+<!-- style the "news-text" class to define the appearance of the news content -->    
+<p class="news-text">News content placeholder</p> 
+
+</template>
+
+
+
+
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Geopolitics</title>
+
+    <!-- STEP 1: INCLUDE BOOTRAP CSS -->
+    <!-- The CDN (Content Delivery Network) link is used to load the Bootstrap CSS from a remote server, which can improve loading times and reduce the load on your own server. It also ensures that you are using a stable and widely used version of Bootstrap. -->
+    <!-- Boostrap CSS provides a responsive grid system, pre-designed components, and utility classes that make it easier to create a visually appealing and responsive layout for the webpage. It helps in quickly styling the content without needing to write custom CSS from scratch. -->
+    <!-- The integrity attribute is used to ensure that the file being loaded has not been tampered with. It provides a hash that the browser can use to verify the integrity of the file. The crossorigin attribute is used to handle CORS (Cross-Origin Resource Sharing) requests, allowing the browser to make requests for resources from different origins while maintaining security. -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+
+</head>      
+
+
+<body>
+
+<h1 class="text-center my-4">🌍 Global Geopolitics News Monitor</h1>
+
+
+
+<!-- STEP 6: CREATE A CONTAINER FOR THE NEWS CARDS -->
+<div id="news-list" class="d-flex flex-wrap justify-content-center"></div>
+
+<!-- STEP 7: CREATE A FORM TO ADD NEW NEWS ITEMS -->
+<!-- This form allows users to submit new news items dynamically. It includes fields for the title and content, and a submit button. -->
+<!-- The preventDefault method is used to stop the form from performing a normal POST request on submit, allowing us to handle the submission with JavaScript instead. -->
+<form id="news-form" class="my-4 p-4 border rounded">
+   <div class="mb-3">
+      <label for="news-title" class="form-label">News Title</label>
+      <input type="text" class="form-control" id="news-title" placeholder="Please enter news title" required>
+   </div>
+   <div class="mb-3">
+      <label for="news-content" class="form-label">News Content</label>
+      <textarea class="form-control" id="news-content" rows="3" placeholder="Please enter news content" required></textarea>
+   </div>
+   <button type="submit" class="btn btn-primary">Add News</button>
+</form>
+
+
+
+
+
+
+   <script>
+      // STEP 3: SIMULATE ASYNCHRONOUS DATA FETCHING
+      // This function simulates fetching news data asynchronously, which is a common scenario when working with APIs.
+      // It returns a promise that resolves with the news data after a delay of 1 second, mimicking the time it might take to receive a response from an API.
+      // The newsFlow array contains objects representing different news items, each with a title and content.
+      // This data will be used to populate the webpage with news content once it is fetched.
+
+      // Step 3a: use const to declare a variable newsFlow and assign it an array of objects, where each object represents a news item with a title and content.
+      const newsFlow = [
+         { title: 'BREAKING: Israel launches decapitation strike on Iran ☠️💣', content: 'Israel has launched a surprise opportunistic daylight attack on the IRGC leadership, killing Supreme Leader Ayatollah Ali Khamenei and 30 top officials during a leadership meeting held in his underground Tehran complex.' },
+         { title: 'BREAKING: US attacks Iran with aim of regime coercion ✈️💥', content: 'The United States has followed up with a series of airstrikes on Iranian military targets. President Donald Trump aims to coerce what remains of the IRGC leadership into abandoning their nuclear weapon & ballistic missile ambitions.' },
+         { title: 'BREAKING: Iran retaliates against neighbours hosting US forces 🚀⚔️', content: 'Iran has responded with missile counterattacks against Israeli and US forces in the region. This included attacks on Bahrain, Jordan, Kuwait, Iraq, Qatar, Saudi Arabia and the United Arab Emirates.' },
+         { title: 'BREAKING: EU to schedule leisurely meeting next month 🏖️🍹', content: 'The European Union may schedule a leisurely meeting next month after their holiday siesta has concluded. EU President Ursula von der Leyen plans to discuss the escalating conflict and devise a united diplomatic response that is politically acceptable to all members.' }
+      ];
+
+    // Step 3b: declare a function getNews that simulates fetching news data asynchronously. It returns a promise that resolves with the newsFlow data after a delay of 1 second.
+      function getNews() {
+        return new Promise(resolve => {
+            setTimeout(function() {
+               resolve(newsFlow)
+            }, 1000)
+         })
+      }
+
+      // Step 3c: call the getNews function and log the news data to the console once it is fetched. This demonstrates how to handle asynchronous data fetching using promises.
+      getNews().then((news) => console.log(news))
+   
+   
+   
+// STEP 5: CREATE A FUNCTION TO ADD NEWS CARDS TO THE HTML PAGE (ALONGSIDE ADDING TEMPLATE?)
+// This function takes a news item as an argument, clones the content of the news template, and populates it with the title and content from the news item.
+// Finally, it appends the populated template to the news list on the webpage, allowing for dynamic addition of news cards based on the fetched data.
+
+// Step 5a: declare a function addNews that takes a newsItem as an argument. 
+// This function will be responsible for adding a news card to the HTML page based on the provided news item.
+function addNews(newsItem) {
+
+   // Step 5b: clone the content of the news template using document.getElementById and cloneNode. This creates a new instance of the template that can be modified without affecting the original template. 
+   const template = document.getElementById("news-template").content.cloneNode(true);
+   
+   // Step 5c: populate the cloned template with the title and content from the news item. The querySelector method is used to select the elements within the template and set their innerText to the corresponding values from the news item.
+   template.querySelector('.news-title').innerText = newsItem.title;
+   template.querySelector('.news-text').innerText = newsItem.content;
+    
+   // Step 5d: append the populated template to the news list on the webpage. This allows the new news card to be displayed on the page dynamically based on the fetched data.
+   document.querySelector('#news-list').appendChild(template);
+} // close function addNews
+   
+   // Step 5e: call the addNews function for each news item in the newsFlow array.
+   // This will dynamically add all the news cards to the HTML page based on the fetched data.
+   getNews().then((news) => news.forEach(addNews));
+
+
+   // Step 7b: add an event listener to the form to handle the submit event.
+   // The preventDefault method is called to stop the form from performing a normal POST request.
+   // Instead, we handle the submission with JavaScript to add the new news item dynamically.
+   document.getElementById('news-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // prevent default form submission behavior
+      
+      // get the title and content from the form inputs
+      const title = document.getElementById('news-title').value;
+      const content = document.getElementById('news-content').value;
+      
+      // create a new news item object
+      const newNewsItem = { title: title, content: content };
+      
+      // add the new news item to the page
+      addNews(newNewsItem);
+      
+      // clear the form inputs
+      document.getElementById('news-title').value = '';
+      document.getElementById('news-content').value = '';
+   });
+
+   </script>
+
+
+    <!-- STEP 2: INCLUDE BOOTSTRAP JS -->
+    <!-- The Bootstrap JS bundle includes all the necessary JavaScript files for Bootstrap's interactive components, such as modals, dropdowns, tooltips, and more. By including this bundle, you can easily add interactivity to your webpage without needing to write custom JavaScript code for each component. -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
