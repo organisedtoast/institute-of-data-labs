@@ -18,7 +18,7 @@ This allows us to create multiple news cards based on the same structure without
 <div class="card col-8" style="width: 18rem; margin:10px">
 
 <!-- style the "news-title" class to define the appearance of the news title -->    
-<h5 class="news-title">News title placeholder</h5>
+<h5 class="news-title"></h5>
 
 <!-- style the "news-body" class to define the appearance of the news body -->    
 <div class="news-body">
@@ -33,11 +33,30 @@ This allows us to create multiple news cards based on the same structure without
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Geopolitics v2</title>
 
-    <!-- STEP 1: INCLUDE BOOTRAP CSS -->
+    <!-- STEP 1: INCLUDE BOOTRAP CSS AS WELL AS CUSTOM STYLES -->
+    
+    <!-- Step 1a: include the Bootstrap CSS using a CDN link. -->
     <!-- The CDN (Content Delivery Network) link is used to load the Bootstrap CSS from a remote server, which can improve loading times and reduce the load on your own server. It also ensures that you are using a stable and widely used version of Bootstrap. -->
     <!-- Boostrap CSS provides a responsive grid system, pre-designed components, and utility classes that make it easier to create a visually appealing and responsive layout for the webpage. It helps in quickly styling the content without needing to write custom CSS from scratch. -->
     <!-- The integrity attribute is used to ensure that the file being loaded has not been tampered with. It provides a hash that the browser can use to verify the integrity of the file. The crossorigin attribute is used to handle CORS (Cross-Origin Resource Sharing) requests, allowing the browser to make requests for resources from different origins while maintaining security. -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+
+   <!-- Step 1b: include custom styles section to define additional CSS rules for the webpage. -->
+   <!-- You may need this to make the news title larger and bolder than the default styling provided by Bootstrap. -->
+   <style>
+       .subtitle {
+          font-size: 1.5rem;
+            font-weight: bold;
+       }
+
+         .form-label {
+            font-weight: bold;
+         }
+
+   </style>
+
+
 
 
 </head>      
@@ -57,14 +76,15 @@ This allows us to create multiple news cards based on the same structure without
 <!-- The preventDefault method is used to stop the form from performing a normal POST request on submit, allowing us to handle the submission with JavaScript instead. -->
 <form id="news-form" class="my-4 p-4 border rounded">
    <div class="mb-3">
+      <p class="subtitle">TOP SECRET: SECURE SUBMIT GEOPOLITICAL NEWS</p>
       <label for="news-title" class="form-label">News Title</label>
-      <input type="text" class="form-control" id="news-title" placeholder="Please enter news title" required>
+      <input type="text" class="form-control" id="news-title" placeholder="Please enter title of geopolitical news" required>
    </div>
    <div class="mb-3">
       <label for="news-body" class="form-label">News Body</label>
-      <textarea class="form-control" id="news-body" rows="3" placeholder="Please enter news body" required></textarea>
+      <textarea class="form-control" id="news-body" rows="3" placeholder="Please enter body of geopolitical news" required></textarea>
    </div>
-   <button type="submit" class="btn btn-primary">Add News</button>
+   <button type="submit" class="btn btn-primary">Secure Submit</button>
 </form>
 
 
