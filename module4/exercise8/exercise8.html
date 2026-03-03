@@ -1,0 +1,129 @@
+<html>
+
+<!-- EXERCISE 8 Use Luxon libary to do the following: -->
+
+<!-- (8i) Calculate the number of days between the September 11th World Trade Center attacks and today  -->
+
+<!-- (8ii) Display the number of years, months and days between the two dates above e.g. 5 years, 3 months, 12 days -->
+
+<!-- (8iii) Given two dates, display the date that is closest to today -->
+
+<!-- (8iv) Given two dates, display whether the first date is before or after the second date -->
+
+<!-- (8v) Display the current time in London -->
+
+<head>
+    <title>Luxon DateTime Formatting</title>
+   
+<!-- STEP 1a: Import the Luxon library in your HTML file using a CDN link in the script tag. 
+This allows you to use Luxon's features for date and time manipulation. -->
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.5.0/build/global/luxon.min.js"></script>
+ 
+</head>
+
+<body>
+    <h2>Luxon DateTime Formatting Exercise</h2>
+ 
+<!-- STEP 1b: Create a div element with an id of "displayLuxon" in your HTML body where you will display the results of your Luxon date calculations. -->
+
+    <div id="displayLuxon"></div>
+
+<!-- STEP 2: Use JavaScript to perform the following tasks using the Luxon library.-->
+
+<script>
+    // ============================================================
+    // EXERCISE 8i: Days between two dates
+    // ============================================================
+
+      // STEP 2(8i): Create a Luxon DateTime object for September 11th, 2001 (the date of the attacks)
+        // luxon.DateTime.fromObject() creates a specific date from an object with year, month, day properties
+        const attackDate = luxon.DateTime.fromObject({ year: 2001, month: 9, day: 11 });
+
+    // STEP 3(8i): Create a Luxon DateTime object for the current date and time
+        // DateTime.now() returns the current date and time based on the user's system clock
+        const currentDate = luxon.DateTime.now();
+
+    // STEP 4(8i): Calculate the number of days between the attack date and the current date using the diff method
+        // diff() calculates the difference between two DateTime objects
+        // The first argument 'days' specifies we want the result in days
+        // toObject() converts the Duration to a plain object, and .days extracts the days value
+        const daysBetween = currentDate.diff(attackDate, 'days').toObject().days;
+
+    // STEP 5(8i): Display the number of days between the two dates on the webpage
+        // document.getElementById() finds the div with id "displayLuxon"
+        // innerHTML sets the HTML content of that div
+        // Math.floor() rounds down to the nearest whole number (removes decimal places)
+        // The backticks (`) create a template literal for string interpolation with ${}
+        document.getElementById('displayLuxon').innerHTML = `Number of days between September 11th, 2001 and today: ${Math.floor(daysBetween)} days`;
+
+
+    // ============================================================
+    // EXERCISE 8ii: Years, months, and days between two dates
+    // ============================================================
+
+    // STEP 6(8ii): Calculate the number of years, months, and days between the attack date and the current date using the diff method with 'years', 'months', and 'days' units
+        // Pass an array ['years', 'months', 'days'] to get the difference broken down into each unit
+        const diff = currentDate.diff(attackDate, ['years', 'months', 'days']).toObject();
+        // Math.floor() rounds down each value to get whole numbers
+        const years = Math.floor(diff.years);
+        const months = Math.floor(diff.months);
+        const days = Math.floor(diff.days);
+
+    // STEP 7(8ii): Display the number of years, months, and days between the two dates on the webpage
+        // The += operator appends (adds) new content after the existing content
+        // <br> creates a line break in HTML to start a new line
+        document.getElementById('displayLuxon').innerHTML += `<br>Number of years, months, and days between September 11th, 2001 and today: ${years} years, ${months} months, ${days} days`;
+
+
+    // ============================================================
+    // EXERCISE 8iii: Find the date closest to today
+    // ============================================================
+
+    // STEP 9(8iii): Use const to create two Luxon DateTime objects date1 and date2
+        // These are two sample dates we'll compare to find which is closer to today
+        const date1 = luxon.DateTime.fromObject({ year: 2020, month: 1, day: 1 });
+        const date2 = luxon.DateTime.fromObject({ year: 2022, month: 1, day: 1 });
+
+    // STEP 10(8iii): Display Date 1 and Date 2 on the webpage
+        // toLocaleString() formats the date in a readable format based on the user's locale
+        document.getElementById('displayLuxon').innerHTML += `<br>Date 1: ${date1.toLocaleString()}`;
+        document.getElementById('displayLuxon').innerHTML += `<br>Date 2: ${date2.toLocaleString()}`;
+
+
+    // Step 11(8iii): Create a function called closestDate that takes two dates as arguments and returns the date that is closest to today's date.
+        // This uses a ternary operator (condition ? valueIfTrue : valueIfFalse)
+        // Math.abs() gets the absolute value (removes negative signs)
+        // date1.diff(currentDate, 'days').days calculates how many days difference between date1 and today
+        // The < compares which difference is smaller (closer to today)
+        const closestDate = Math.abs(date1.diff(currentDate, 'days').days) < Math.abs(date2.diff(currentDate, 'days').days) ? date1 : date2;
+        document.getElementById('displayLuxon').innerHTML += `<br>Closest date to today: ${closestDate.toLocaleString()}`;
+
+
+    // ============================================================
+    // EXERCISE 8iv: Compare if one date is before or after another
+    // ============================================================
+
+    // STEP 12(8iv): Create a function called compareDates that takes two dates as arguments and returns whether the first date is before or after the second date.
+        // DateTime objects can be compared directly using < and > operators
+        // If date1 is earlier than date2, it returns 'before', otherwise 'after'
+        const comparison = date1 < date2 ? 'before' : 'after';
+        document.getElementById('displayLuxon').innerHTML += `<br>Date1 is ${comparison} Date2`;
+
+
+    // ============================================================
+    // EXERCISE 8v: Display current time in a different timezone
+    // ============================================================
+
+    // STEP 13(8v): Display the current time in London
+        // setZone() changes the timezone of the DateTime object
+        // 'Europe/London' is the IANA timezone identifier for London time
+        const londonTime = luxon.DateTime.now().setZone('Europe/London');
+        // DateTime.TIME_SIMPLE is a predefined format that shows just the time (e.g., "3:45 PM")
+        document.getElementById('displayLuxon').innerHTML += `<br>Current time in London: ${londonTime.toLocaleString(luxon.DateTime.TIME_SIMPLE)}`;
+
+</script>
+
+</body>
+
+</html>
