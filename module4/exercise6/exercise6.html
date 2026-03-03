@@ -205,12 +205,9 @@ userId: 1,
 <!-- STEP 9: DISPLAY FETCHED POSTS FROM JSONPLACEHOLDER ON THE WEBPAGE -->
 <!-- This step uses the data fetched from the JSONPlaceholder API and displays it on the webpage using the addNews function. -->
 
-<!-- Step 9a: use Axios to make a GET request to the JSONPlaceholder API to fetch posts, then iterate through the response data. -->
-<!-- For each post, call the addNews function to create a news card and display it on the page. -->
-
 
 <script>
-// Step 9e: wrap the axios GET request in a 3-second delay using setTimeout.
+// Step 9a: wrap the axios GET request in a 3-second delay using setTimeout.
 // A 3-second delay is added using setTimeout to ensure the local newsFlow array (1-second delay) displays first, followed by the API data.
 setTimeout(() => {
    axios.get('https://jsonplaceholder.typicode.com/posts')
