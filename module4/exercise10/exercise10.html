@@ -38,9 +38,19 @@
 
 <h1 class="text-center my-4">Man Utd Official Merchandise</h1>
 
+
+
 <!-- CREATE CONTAINER FOR DYNAMIC CONTENT -->
     <!-- This container will hold the dynamically generated cards. -->
     <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="category-filter" class="form-label">Filter by Category:</label>
+                <select id="category-filter" class="form-select">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+        </div>
         <div id="content-container" class="row g-4"></div>
     </div>
 
@@ -54,7 +64,8 @@
                 <img src="" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title"></h5>
-                    <p class="card-text"></p>
+                    <p class="card-text category text-muted small"></p>
+                    <p class="card-text description"></p>
                     <p class="card-text fw-bold text-success"></p>
                     <a href="#" class="btn btn-primary">Order Now</a>
                 </div>
@@ -62,8 +73,11 @@
         </div>
     </template>
 
-<!-- INCLUDE BOOTSTRAP JS -->    
+<!-- INCLUDE BOOTSTRAP JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<!-- INCLUDE AXIOS LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <!-- CREATE CUSTOM JS TO DYNAMICALLY RENDER CARDS -->
     <script>
@@ -71,17 +85,19 @@
     // DECLARE (SAMPLE) DATA FROM AN API OR DATABASE
         const data = [
             {
-                title: "Dummy Shirt",
-                description: "A large rotten t-shirt found in the sewer.",
-                image: "",
-                price: 19.99
+                title: "Dirty Laundry",
+                description: "A large basket of dirty clothes that need to be washed.",
+                image: "https://www.household-management-101.com/image-files/wicker-laundry-basket.jpg",
+                price: 719.99,
+                category: "women's clothing"
             },
             {
-                title: "Dummy Underwear",
-                description: "Soiled, from a baby.",
-                image: "",
-                price: 23.99
-            } 
+                title: "Undies of Doom",
+                description: "Soiled, smells like poo. Someone please deal with this.",
+                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjfjfAQDP4i3n6hcXpLojl_W7xXQf_PoCSuDDRi0huHZ24zwyoUNBTe7D06cz1eWaqt7FY08bQ8DHJhq4Oovg_JXxICiQeTf7O9dyGXT80ZvNePYKo1vr3vIYj3IFTLz-OAdSQZI9VdvJqT/s400/nasty+undies.jpg",
+                price: 239.99,
+                category: "men's clothing"
+            }
         ];
 
         // FUNCTION TO RENDER CARDS DYNAMICALLY
@@ -95,15 +111,18 @@
             clone.querySelector('img').src = item.image || 'https://via.placeholder.com/300x200?text=No+Image';
             clone.querySelector('img').alt = item.title;
             clone.querySelector('.card-title').textContent = item.title;
-            clone.querySelector('.card-text').textContent = item.description || item.body || '';
+            clone.querySelector('.category').textContent = item.category || '';
+            clone.querySelector('.description').textContent = item.description || '';
             clone.querySelector('.fw-bold').textContent = item.price ? `$${item.price}` : '';
             clone.querySelector('.btn').href = item.link || item.url || '#';
 
             container.appendChild(clone);
         });
     }
-        // call renderItems function with the data array to populate the webpage with the cards based on the provided data.
-        renderItems(data);
+        // NOTE: This line below is commented out because we now render both dummy data + API data together
+        // after the API fetch completes, as per STEP 0c below.
+        
+        // renderItems(data);
     </script>
 
 
@@ -116,42 +135,81 @@ function addItem(productItem) {
 
    template.querySelector('img').src = productItem.image || 'https://via.placeholder.com/300x200?text=No+Image';
    template.querySelector('img').alt = productItem.title;
-   template.querySelector('.card-title').innerText = productItem.title;
-   template.querySelector('.card-text').innerText = productItem.description;
-   template.querySelector('.fw-bold').innerText = productItem.price ? `$${productItem.price}` : '';
+   template.querySelector('.card-title').textContent = productItem.title;
+   template.querySelector('.category').textContent = productItem.category || '';
+   template.querySelector('.description').textContent = productItem.description;
+   template.querySelector('.fw-bold').textContent = productItem.price ? `$${productItem.price}` : '';
 
 
    document.querySelector('#content-container').appendChild(template);
 } // close function addItem
 
-// use Axios to make a GET request to the JSONPlaceholder API to fetch posts, then iterate through the response data.
-// For each post, call the addItem function to create a card and display it on the page.
-   axios.get('https://fakestoreapi.com/products').then((response) => response.data.forEach(item => {
-       addItem({ title: item.title, description: item.description, body: item.description, price: item.price, image: item.image });
-   }));
+ </script>
+
+<!-- FILTERING BY CATEGORY FUNCTIONALITY -->
+<script>
+
+// STORE ALL PRODUCTS HERE FOR FILTERING
+let allProducts = [];
+
+// RENDER PRODUCTS TO PAGE
+function renderProducts(products) {
+    // Clear the container first
+    document.getElementById('content-container').innerHTML = '';
+    
+    // Render each product
+    products.forEach(item => {
+        addItem({ title: item.title, description: item.description, price: item.price, image: item.image, category: item.category });
+    });
+}
+
+// POPULATE DROPDOWN WITH UNIQUE CATEGORIES
+function populateCategories(products) {
+    const categories = [...new Set(products.map(p => p.category))];
+    const select = document.getElementById('category-filter');
+    
+    categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        select.appendChild(option);
+    });
+}
+
+// FILTER AND RENDER ON DROPDOWN CHANGE
+document.getElementById('category-filter').addEventListener('change', (e) => {
+    const selected = e.target.value;
+    if (selected === 'all') {
+        renderProducts(allProducts);
+    } else {
+        const filtered = allProducts.filter(p => p.category === selected);
+        renderProducts(filtered);
+    }
+});
+
  </script>
 
 
-<!-- INCLUDE AXIOS LIBRARY -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
-<!-- AXIOS GET AND POST REQUESTS -->
+<!-- STEP 0: AXIOS GET AND POST REQUESTS -->
+<!-- please note that this script needs to be at the bottom of the HTML because it relies on the DOM being fully loaded first. -->
+<!-- defer won't work here it is only for external style sheets -->
+
 <script>
 
-// AXIOS GET REQUEST TO FETCH PRODUCT DATA FROM FAKESTOREAPI.COM
-
+// STEP 0a TEST: AXIOS GET REQUEST TO FETCH PRODUCT DATA FROM FAKESTOREAPI.COM
 axios.get('https://fakestoreapi.com/products')
 .then(response => console.log(response.data))
+// this is the response from the GET request, which includes an array of product objects. The response is logged to the console to verify that the data was fetched successfully.
 
-
-// AXIOS POST REQUEST TO CREATE A NEW PRODUCT ON FAKESTOREAPI.COM
+// STEP 0b TEST: AXIOS POST REQUEST TO CREATE A NEW PRODUCT ON FAKESTOREAPI.COM
 
 axios.post('https://fakestoreapi.com/products',
 {
-title: 'The Studio',
-description: 'Something funny',
-price: 19.99,
+title: 'Title of Product',
+description: 'Description of Product',
+price: 192.99,
 category: 'clothing',
 image: 'https://example.com/image.jpg'
 })
@@ -159,27 +217,16 @@ image: 'https://example.com/image.jpg'
 // this is the response from the POST request, which includes the newly created product data. The response is logged to the console to verify that the product was created successfully.
 .then(response => console.log(response.data))
 
-</script>
 
-
-<!-- DISPLAY FETCHED POSTS FROM FAKESTOREAPI.COM ON WEBPAGE -->
-<script>
-
-   axios.get('https://fakestoreapi.com/products').then(response => {
-
-
-      response.data.forEach(post => {
-
-         const productItem = { title: post.title, body: post.description, price: post.price, image: post.image };
-
-         addItem(productItem);
-      });
-   });
+// STEP 0c: FETCH PRODUCTS AND RENDER
+// Fetch products from the API, combine with dummy data, populate the category dropdown, and render all products.
+axios.get('https://fakestoreapi.com/products').then((response) => {
+    allProducts = [...data, ...response.data]; // Combine dummy data + API products into one array (dummy first)
+    populateCategories(allProducts); // Fill the dropdown with unique category options
+    renderProducts(allProducts); // Render all products (dummy + API) to the page
+});
 
 </script>
-
-
-
 
 </body>
 
