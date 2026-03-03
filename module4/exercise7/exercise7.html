@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Square</title>
+
+<!-- EXERCISE 7: Create a square slider that slides from top to bottom and returns to its original position, changing color during the animation -->
+
+<style>
+
+/* Step 2: CSS style the div element into a square */
+    .square {
+        width: 500px;
+        height: 500px;
+        background-color: red;
+        position: relative; /* sets the position of the square to relative, allowing it to be moved using the top property in the animation. */
+        animation: slide 2s infinite; /* applies the animation named "slide" to the square, with a duration of 2 seconds and infinite repetition. */
+    }
+
+/* Step 3: CSS style the keyframes for the animation */
+
+/* The @keyframes rule defines the animation named "slide".
+The animation will last for 2 seconds and will repeat infinitely. */
+
+/* The animation starts with the square at the top (0px) and red color.
+At 50% of the animation duration, the square moves down to 200px and changes to blue color.
+At the end of the animation (100%), the square returns to its original position (0px) and color (red). */
+
+    @keyframes slide {
+        0% {
+            top: 0;
+            background-color: red;
+        }
+        50% {
+            top: 200px;
+            background-color: rgb(140, 204, 38);
+        }
+        100% {
+            top: 0;
+            background-color: rgba(255, 231, 20, 0.863);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Step 1: Create a square div element that you eventually want to be animated. -->
+
+    <div class="square"></div>
+
+
+</body>
+</html>
