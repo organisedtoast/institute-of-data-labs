@@ -1,11 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Man Utd Store</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <style>
+        .btn-primary {
+            background-color: #DA291C;
+            border-color: #DA291C;
+        }
+
+        .btn-primary:hover {
+            background-color: #b91e12;
+            border-color: #b91e12;
+        }
+
+        .btn-primary:focus,
+        .btn-primary:focus-visible {
+            background-color: #DA291C;
+            border-color: #b91e12;
+            box-shadow: 0 0 0 0.25rem rgba(218, 41, 28, 0.5);
+        }
+
+        h1 {
+            color: #7e120b;
+            font-size: 3rem;
+        }
+
+    </style>
 </head>
+
 <body>
+
+<h1 class="text-center my-4">Man Utd Official Merchandise</h1>
+
+<!-- CREATE CONTAINER FOR DYNAMIC CONTENT -->
+    <!-- This container will hold the dynamically generated cards. -->
+    <div class="container py-5">
+        <div id="content-container" class="row g-4"></div>
+    </div>
+
+<!-- CREATE HTML TEMPLATE FOR CARDS -->
+    <!-- The <template> element defines a reusable HTML structure that is not rendered on the page initially. -->
+    <!-- JavaScript will clone this template for each item in the data array and fill in the content dynamically. -->
+    <!-- This keeps your code DRY (Don't Repeat Yourself) - you define the structure once and reuse it many times. -->
+    <template id="card-template">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <img src="" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+                    <p class="card-text fw-bold text-success"></p>
+                    <a href="#" class="btn btn-primary">Order Now</a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+<!-- INCLUDE BOOTSTRAP JS -->    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<!-- CREATE CUSTOM JS TO DYNAMICALLY RENDER CARDS -->
+    <script>
     
+    // DECLARE (SAMPLE) DATA FROM AN API OR DATABASE
+        const data = [
+            {
+                title: "Dummy Shirt",
+                description: "A large rotten t-shirt found in the sewer.",
+                image: "",
+                price: 19.99
+            },
+            {
+                title: "Dummy Underwear",
+                description: "Soiled, from a baby.",
+                image: "",
+                price: 23.99
+            } 
+        ];
+
+        // FUNCTION TO RENDER CARDS DYNAMICALLY
+    function renderItems(items) {
+        const container = document.getElementById('content-container');
+        const template = document.getElementById('card-template');
+
+        items.forEach(item => {
+            const clone = template.content.cloneNode(true);
+
+            clone.querySelector('img').src = item.image || 'https://via.placeholder.com/300x200?text=No+Image';
+            clone.querySelector('img').alt = item.title;
+            clone.querySelector('.card-title').textContent = item.title;
+            clone.querySelector('.card-text').textContent = item.description || item.body || '';
+            clone.querySelector('.fw-bold').textContent = item.price ? `$${item.price}` : '';
+            clone.querySelector('.btn').href = item.link || item.url || '#';
+
+            container.appendChild(clone);
+        });
+    }
+        // call renderItems function with the data array to populate the webpage with the cards based on the provided data.
+        renderItems(data);
+    </script>
+
+
+<!-- FUNCTION THAT ADDS NEW CARDS TO THE PAGE BASED ON FETCHED DATA -->
+
+<script>
+function addItem(productItem) {
+
+   const template = document.getElementById("card-template").content.cloneNode(true);
+
+   template.querySelector('img').src = productItem.image || 'https://via.placeholder.com/300x200?text=No+Image';
+   template.querySelector('img').alt = productItem.title;
+   template.querySelector('.card-title').innerText = productItem.title;
+   template.querySelector('.card-text').innerText = productItem.description;
+   template.querySelector('.fw-bold').innerText = productItem.price ? `$${productItem.price}` : '';
+
+
+   document.querySelector('#content-container').appendChild(template);
+} // close function addItem
+
+// use Axios to make a GET request to the JSONPlaceholder API to fetch posts, then iterate through the response data.
+// For each post, call the addItem function to create a card and display it on the page.
+   axios.get('https://fakestoreapi.com/products').then((response) => response.data.forEach(item => {
+       addItem({ title: item.title, description: item.description, body: item.description, price: item.price, image: item.image });
+   }));
+ </script>
+
+
+<!-- INCLUDE AXIOS LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<!-- AXIOS GET AND POST REQUESTS -->
+<script>
+
+// AXIOS GET REQUEST TO FETCH PRODUCT DATA FROM FAKESTOREAPI.COM
+
+axios.get('https://fakestoreapi.com/products')
+.then(response => console.log(response.data))
+
+
+// AXIOS POST REQUEST TO CREATE A NEW PRODUCT ON FAKESTOREAPI.COM
+
+axios.post('https://fakestoreapi.com/products',
+{
+title: 'The Studio',
+description: 'Something funny',
+price: 19.99,
+category: 'clothing',
+image: 'https://example.com/image.jpg'
+})
+
+// this is the response from the POST request, which includes the newly created product data. The response is logged to the console to verify that the product was created successfully.
+.then(response => console.log(response.data))
+
+</script>
+
+
+<!-- DISPLAY FETCHED POSTS FROM FAKESTOREAPI.COM ON WEBPAGE -->
+<script>
+
+   axios.get('https://fakestoreapi.com/products').then(response => {
+
+
+      response.data.forEach(post => {
+
+         const productItem = { title: post.title, body: post.description, price: post.price, image: post.image };
+
+         addItem(productItem);
+      });
+   });
+
+</script>
+
+
+
+
 </body>
+
 </html>

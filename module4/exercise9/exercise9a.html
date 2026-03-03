@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 
+        EXERCISE 9:
+        a) Use the code below as a starting point from which you can adapt.
+        b) Get data from FakeStore API (Fetch or Axios the data) and use it to replace the existing static data in the eChart options.
+        c) Have an eChart bar for each category of products in the FakeStore API (Hint: you will first need to find out how many categories there are and how many products are in each category).
+        d) Make the eChart display the number of products in each category.
+    -->
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCharts BEFORE</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js"></script>
+</head>
+
+<body>
+    <!-- STEP 1: Create a container div for the chart -->
+    <!-- The id="main" is used to reference this element in JavaScript -->
+    <!-- The inline style sets the chart dimensions: 900 pixels wide, 600 pixels tall -->
+    <div id="main" style="width: 900px; height: 600px;"></div>
+
+
+    <!-- STEP 2: Write JavaScript code to configure and display the chart -->
+    <script type="text/javascript">
+
+        // STEP 3: Create an options object that defines the chart configuration
+        // This object tells eCharts what type of chart to draw and what data to display
+        let options = {
+            
+            // STEP 4: Set the chart title that appears at the top of the chart
+            title: {
+                text: 'Number of trophies won without cheating from top 4 teams in Premier League'
+            },
+           
+            // STEP 5: Configure the horizontal (x) axis of the bar chart
+            xAxis: {
+                // The data array contains the labels for each bar on the x-axis
+                // Each string represents a category that will have its own bar
+                data: ['Man City', 'Chelsea', 'Man Utd', 'Liverpool']
+            },
+           
+            // STEP 6: Configure the vertical (y) axis of the bar chart
+            // Leaving it empty {} means eCharts will auto-generate appropriate scale and labels
+            yAxis: {},
+           
+            // STEP 7: Define the data series (the actual bars and their values)
+            series: [{
+             
+                // The name describes what the data represents (shown in tooltips and legends)
+                name: '# trophies',
+            
+                // The type specifies this is a bar chart (vertical bars)
+                type: 'bar',
+            
+                // The data array contains numeric values for each bar
+                // Each number corresponds to the category at the same position in xAxis.data
+                // Order matters: first value matches first category, second matches second, etc.
+                data: [0, 1, 5, 2]
+            }]
+        };
+
+        // STEP 8: Fetch data from an external API using the Fetch API
+        // fetch() sends an HTTP GET request to the specified URL
+        // This returns a Promise that resolves to the Response object
+        fetch('https://fakestoreapi.com/products')
+           
+            // STEP 9: Convert the response to JSON format
+            // response.json() reads the response body and parses it as JSON
+            // This also returns a Promise that resolves to the parsed JavaScript object
+            .then((response) => response.json())
+           
+            // STEP 10: Process the JSON data received from the API
+            // The json parameter contains the array of product objects from FakeStore API
+            .then((json) => {
+                // Log the data to the browser console for inspection
+                // Press F12 and go to Console tab to see the output
+                console.log(json);
+                // This is where you would extract and transform the API data
+                // to update the chart options defined above
+
+            })
+            
+            // STEP 11: After processing the data, render the chart
+            // This .then() runs after the previous .then() completes
+            .then(() => {
+                // STEP 12: Apply the options configuration to the chart instance
+                // setOption() tells eCharts to draw or update the chart with the given configuration
+                myChart.setOption(options);
+            });
+
+
+        // STEP 13: Initialize the eCharts instance
+        // echarts.init() creates a new chart instance attached to the div element
+        // document.getElementById('main') finds the div with id="main" in the HTML
+        // The chart is now ready to display data when setOption() is called
+        let myChart = echarts.init(document.getElementById('main'));
+    </script>
+</body>
+
+</html>

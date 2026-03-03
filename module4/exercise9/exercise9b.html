@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 
+        EXERCISE 9:
+        a) Use the code below as a starting point from which you can adapt.
+        b) Get data from FakeStore API (Fetch or Axios the data) and use it to replace the existing static data in the eChart options.
+        c) Have an eChart bar for each category of products in the FakeStore API (Hint: you will first need to find out how many categories there are and how many products are in each category).
+        d) Make the eChart display the number of products in each category.
+    -->
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCharts AFTER</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 900px; height: 600px;"></div>
+
+    <script type="text/javascript">
+        let options = {
+            title: {
+                text: 'Number of products in each category'
+            },
+            xAxis: {
+                data: ['men\'s clothing', 'jewelery', 'electronics', 'women\'s clothing']
+            },
+            yAxis: {},
+            series: [{
+                name: '# products',
+                type: 'bar',
+                data: [2, 4, 2, 1]
+            }]
+        };
+
+        fetch('https://fakestoreapi.com/products')
+            .then((response) => response.json())
+            .then((json) => {
+                // STEP 1: Log the received JSON data to the browser console
+                // This allows you to inspect the raw data structure from the API
+                // Press F12, go to Console tab, and you'll see an array of product objects
+                console.log(json);
+
+                // Add new code here after STEP 10 to process the JSON data and update the options object with the categories and their counts
+                
+                // STEP 2: Create an empty object to store category counts
+                // This object will use category names as keys and their counts as values
+                // Example structure after processing: { "men's clothing": 5, "jewelery": 3, ... }
+                let categories = {};
+                
+                // STEP 3: Loop through each product in the JSON array using forEach
+                // forEach() executes the provided function once for each array element
+                // 'product' represents the current product object being processed
+                json.forEach(product => {
+                    
+                    // STEP 4: Check if the current product's category already exists in the categories object
+                    // product.category accesses the 'category' property of the product object
+                    // categories[product.category] checks if this key already exists
+                    if (categories[product.category]) {
+                        
+                        // STEP 5: If category exists, increment its count by 1
+                        // This means we've found another product in this existing category
+                        categories[product.category]++;
+                    } else {
+                        
+                        // STEP 6: If category doesn't exist, initialize it with a count of 1
+                        // This creates a new key-value pair for this new category
+                        categories[product.category] = 1;
+                    }
+                });
+                
+                // STEP 7: Update the xAxis data with all category names
+                // Object.keys(categories) returns an array of all keys (category names) from the categories object
+                // This replaces the hardcoded category names with the actual categories from the API
+                options.xAxis.data = Object.keys(categories);
+                
+                // STEP 8: Update the series data with the count for each category
+                // Object.values(categories) returns an array of all values (counts) from the categories object
+                // The order of values matches the order of keys, so each count aligns with its category
+                options.series[0].data = Object.values(categories);
+            })
+            .then(() => {
+                // STEP 9: Render the chart with the updated options
+                // This ensures the chart displays the latest data from the API
+                myChart.setOption(options);
+            });
+
+        
+        let myChart = echarts.init(document.getElementById('main'));
+    </script>
+</body>
+
+</html>

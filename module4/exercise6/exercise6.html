@@ -91,14 +91,14 @@ This allows us to create multiple news cards based on the same structure without
 
 
 
-
+<!-- STEP 3: SIMULATE ASYNCHRONOUS DATA FETCHING USING PROMISES -->
+<!-- This function simulates fetching news data asynchronously, which is a common scenario when working with APIs.
+     It returns a promise that resolves with the news data after a delay of 1 second, mimicking the time it might take to receive a response from an API.
+     The newsFlow array contains objects representing different news items, each with a title and body.
+     This data will be used to populate the webpage with news content once it is fetched.
+-->
+     
    <script>
-      // STEP 3: SIMULATE ASYNCHRONOUS DATA FETCHING
-      // This function simulates fetching news data asynchronously, which is a common scenario when working with APIs.
-      // It returns a promise that resolves with the news data after a delay of 1 second, mimicking the time it might take to receive a response from an API.
-      // The newsFlow array contains objects representing different news items, each with a title and body.
-      // This data will be used to populate the webpage with news content once it is fetched.
-
       // Step 3a: use const to declare a variable newsFlow and assign it an array of objects, where each object represents a news item with a title and body.
       const newsFlow = [
          { title: 'BREAKING: Israel launches decapitation strike on Iran ☠️💣', body: 'Israel has launched a surprise opportunistic daylight attack on the IRGC leadership, killing Supreme Leader Ayatollah Ali Khamenei and 30 top officials during a leadership meeting held at his underground Tehran complex.' },
