@@ -1,0 +1,176 @@
+   .btn-primary {
+            background-color: #DA291C;
+            border-color: #DA291C;
+        }
+
+        .btn-primary:hover {
+            background-color: #b91e12;
+            border-color: #b91e12;
+        }
+
+        .btn-primary:focus,
+        .btn-primary:focus-visible {
+            background-color: #DA291C;
+            border-color: #b91e12;
+            box-shadow: 0 0 0 0.25rem rgba(218, 41, 28, 0.5);
+        }
+
+        h1 {
+            color: #7e120b;
+            font-size: 3rem;
+        }
+
+                :root {
+            --primary-red: #DA291C;
+            --primary-red-dark: #b91e12;
+            --card-bg: #ffffff;
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 16px;
+            background: var(--card-bg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--primary-red);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .category {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text.category {
+            color: white !important;
+        }
+
+        .share-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-item strong {
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .metrics-container {
+            margin: 1rem 0;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .metrics-container::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        .metrics-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 7px;
+        }
+
+        .metrics-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 7px;
+            border: 3px solid #f1f1f1;
+        }
+
+        .metrics-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-red) 0%, #c41e12 100%);
+            border: none;
+            padding: 0.625rem 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(218, 41, 28, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-red-dark) 0%, #a31810 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(218, 41, 28, 0.4);
+        }
+
+        .btn-primary:focus,
+        .btn-primary:focus-visible {
+            background: var(--primary-red);
+            box-shadow: 0 0 0 0.25rem rgba(218, 41, 28, 0.5);
+        }
+
+        /* Filter Dropdown */
+        .form-select {
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            padding: 0.625rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(218, 41, 28, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }

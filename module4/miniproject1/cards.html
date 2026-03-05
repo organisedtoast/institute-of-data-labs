@@ -7,163 +7,8 @@
     <title>Stock Cards Monitor</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
 
-    <style>
-        :root {
-            --primary-red: #DA291C;
-            --primary-red-dark: #b91e12;
-            --card-bg: #ffffff;
-        }
-
-        /* Card Styling */
-        .card {
-            border: none;
-            border-radius: 16px;
-            background: var(--card-bg);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 3px solid var(--primary-red);
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 0.25rem;
-        }
-
-        .card-subtitle {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .category {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.75rem;
-        }
-
-        .card-text.category {
-            color: white !important;
-        }
-
-        .share-price {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #10b981;
-        }
-
-        .metric-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.25rem 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .metric-item:last-child {
-            border-bottom: none;
-        }
-
-        .metric-item strong {
-            color: #4a5568;
-            font-weight: 600;
-        }
-
-        .metrics-container {
-            margin: 1rem 0;
-            padding: 0.75rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .metrics-container::-webkit-scrollbar {
-            width: 14px;
-        }
-
-        .metrics-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 7px;
-        }
-
-        .metrics-container::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 7px;
-            border: 3px solid #f1f1f1;
-        }
-
-        .metrics-container::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        /* Button Styling */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-red) 0%, #c41e12 100%);
-            border: none;
-            padding: 0.625rem 1.5rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(218, 41, 28, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--primary-red-dark) 0%, #a31810 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(218, 41, 28, 0.4);
-        }
-
-        .btn-primary:focus,
-        .btn-primary:focus-visible {
-            background: var(--primary-red);
-            box-shadow: 0 0 0 0.25rem rgba(218, 41, 28, 0.5);
-        }
-
-        /* Filter Dropdown */
-        .form-select {
-            border-radius: 8px;
-            border: 2px solid #e2e8f0;
-            padding: 0.625rem 1rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .form-select:focus {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 0.2rem rgba(218, 41, 28, 0.25);
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 0.5rem;
-        }
-    </style>
 </head>
 
 <body>
@@ -239,7 +84,7 @@
 
     // DECLARE (SAMPLE) DATA FROM AN API OR DATABASE
         const data = [
-            {
+            /*{
                 stock_code: "DUMMY-01",
                 name: "Dummy Stock One",
                 lenses_category: "deep value",
@@ -256,11 +101,13 @@
                 share_price: 12.75,
                 market_cap: 1200000000,
                 roe: 0.22
-            }
+            }*/
         ];
 
         // FUNCTION TO RENDER CARDS DYNAMICALLY
-    function renderItems(items) {
+
+        // 
+    function renderCards(items) {
         const container = document.getElementById('content-container');
         const template = document.getElementById('card-template');
 
@@ -277,16 +124,24 @@
             clone.querySelector('.category').textContent = item.lenses_category || '';
             clone.querySelector('.share-price').textContent = item.share_price ? `$${item.share_price.toFixed(2)}` : '';
 
-            // Render all other properties dynamically in the metrics container
+            // NEW CODE: render all other properties dynamically in the metrics container
+            // The advantage of this is if I add new properties to JSON data in the future, they will be auto rendered on the cards without needing to update the HTML or JS
+            // As long as they are not in the fixedProps list.
+            
+            // declare fixedProps array to exclude from dynamic rendering (already rendered in fixed positions on the card)
             const metricsContainer = clone.querySelector('.metrics-container');
             
+            // loop through all properties of the item object using forEach and Object.keys
             Object.keys(item).forEach(key => {
-                // Skip fixed properties and image
+                
+                // render them dynamically on the card if they are not in the fixedProps list or 'image'
                 if (fixedProps.includes(key) || key === 'image') return;
                 
+                // format the value based on its type and key name (e.g. format large numbers, percentages, etc.)
                 const value = item[key];
                 const formattedValue = formatMetricValue(key, value);
                 
+                // only render if formattedValue is not null (e.g. skip null/ undefined values)
                 if (formattedValue !== null) {
                     const metricEl = document.createElement('p');
                     metricEl.className = 'card-text metric-item text-muted small mb-1';
@@ -299,17 +154,17 @@
         });
     }
 
-    // Helper function to format metric values based on key type
+// NEW FUNCTION: TO FORMAT METRIC VALUES BASED ON KEY NAMES AND VALUE TYPES
     function formatMetricValue(key, value) {
         if (value === null || value === undefined || value === '') return null;
         
         // Format numeric values
         if (typeof value === 'number') {
             // Market cap and large numbers
-            if (key.includes('cap') || key.includes('debt') || key.includes('assets')) {
-                if (value >= 1000000000) {
+            if (key.includes('cap') || key.includes('debt') || key.includes('assets') || key.includes('ev') || key.includes('shares')) {
+                if (Math.abs(value) >= 1000000000) {
                     return `$${(value / 1000000000).toFixed(2)}B`;
-                } else if (value >= 1000000) {
+                } else if (Math.abs(value) >= 1000000) {
                     return `$${(value / 1000000).toFixed(2)}M`;
                 }
                 return `$${value.toFixed(2)}`;
@@ -354,17 +209,17 @@
             .replace(/_/g, ' ')
             .replace(/\b\w/g, char => char.toUpperCase());
     }
-        // NOTE: This line below is commented out because we now render both dummy data + API data together
+        // NOTE: This renderCards line below is commented out because we now render both dummy data + API data together
         // after the API fetch completes, as per STEP 0c below.
         
-        // renderItems(data);
+        // renderCards(data);
     </script>
 
 
 <!-- FUNCTION THAT ADDS NEW CARDS TO THE PAGE BASED ON FETCHED DATA -->
 
 <script>
-function addItem(stockItem) {
+function addCard(stockItem) {
 
    const template = document.getElementById("card-template").content.cloneNode(true);
 
@@ -394,30 +249,30 @@ function addItem(stockItem) {
    });
 
    document.querySelector('#content-container').appendChild(template);
-} // close function addItem
+} // close function addCard
 
  </script>
 
 <!-- FILTERING BY CATEGORY FUNCTIONALITY -->
 <script>
 
-// STORE ALL STOCKS HERE FOR FILTERING
-let allProducts = [];
+// store all stocks in a global variable so we can filter them without needing to fetch again from the API
+let allStocks = [];
 
-// RENDER STOCKS TO PAGE
-function renderProducts(products) {
+// declare renderStocks function to render an array of stocks (used for initial render and after filtering)
+function renderStocks(stocks) {
     // Clear the container first
     document.getElementById('content-container').innerHTML = '';
 
     // Render each stock (pass entire object to preserve all properties)
-    products.forEach(item => {
-        addItem(item);
+    stocks.forEach(item => {
+        addCard(item);
     });
 }
 
 // POPULATE DROPDOWN WITH UNIQUE CATEGORIES
-function populateCategories(products) {
-    const categories = [...new Set(products.map(p => p.lenses_category))];
+function populateCategories(stocks) {
+    const categories = [...new Set(stocks.map(p => p.lenses_category))];
     const select = document.getElementById('category-filter');
 
     categories.forEach(cat => {
@@ -432,10 +287,10 @@ function populateCategories(products) {
 document.getElementById('category-filter').addEventListener('change', (e) => {
     const selected = e.target.value;
     if (selected === 'all') {
-        renderProducts(allProducts);
+        renderStocks(allStocks);
     } else {
-        const filtered = allProducts.filter(p => p.lenses_category === selected);
-        renderProducts(filtered);
+        const filtered = allStocks.filter(p => p.lenses_category === selected);
+        renderStocks(filtered);
     }
 });
 
@@ -478,9 +333,9 @@ axios.post('db.json', {
 // STEP 0c: FETCH STOCKS AND RENDER
 // Fetch stocks from the local JSON file, combine with dummy data, populate the category dropdown, and render all stocks.
 axios.get('db.json').then((response) => {
-    allProducts = [...data, ...response.data]; // Combine dummy data + local JSON stocks
-    populateCategories(allProducts); // Fill the dropdown with unique category options
-    renderProducts(allProducts); // Render all stocks (dummy + local JSON) to the page
+    allStocks = [...data, ...response.data.stocks]; // Combine dummy data + local JSON stocks
+    populateCategories(allStocks); // Fill the dropdown with unique category options
+    renderStocks(allStocks); // Render all stocks (dummy + local JSON) to the page
 });
 
 </script>

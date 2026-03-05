@@ -6,35 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Stock - Stock Cards Monitor</title>
 
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
 
-    <style>
-        .btn-primary {
-            background-color: #DA291C;
-            border-color: #DA291C;
-        }
-
-        .btn-primary:hover {
-            background-color: #b91e12;
-            border-color: #b91e12;
-        }
-
-        .btn-primary:focus,
-        .btn-primary:focus-visible {
-            background-color: #DA291C;
-            border-color: #b91e12;
-            box-shadow: 0 0 0 0.25rem rgba(218, 41, 28, 0.5);
-        }
-
-        h1 {
-            color: #7e120b;
-            font-size: 3rem;
-        }
-
-    </style>
 </head>
 
 <body>
+
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container">
@@ -80,6 +59,22 @@
                 <option value="defensive yield">Defensive Yield</option>
             </select>
         </div>
+        <div class="col-md-6">
+            <label for="share_price" class="form-label">Share Price</label>
+            <input type="number" step="0.01" class="form-control" id="share_price" required>
+        </div>
+        <div class="col-md-6">
+            <label for="market_cap" class="form-label">Market Cap</label>
+            <input type="number" step="0.01" class="form-control" id="market_cap" required>
+        </div>
+        <div class="col-md-6">
+            <label for="roe" class="form-label">ROE</label>
+            <input type="number" step="0.01" class="form-control" id="roe" required>
+        </div>
+        <div class="col-md-6">
+            <label for="image" class="form-label">Image URL</label>
+            <input type="url" class="form-control" id="image" placeholder="https://via.placeholder.com/300x200?text=No+Image">
+        </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Add Stock</button>
         </div>
@@ -102,7 +97,7 @@ document.getElementById('add-stock-form').addEventListener('submit', function(e)
         roe: parseFloat(document.getElementById('roe').value),
         image: document.getElementById('image').value || 'https://via.placeholder.com/300x200?text=No+Image'};
 
-    axios.post('db.json', newStock)
+    axios.post('http://localhost:3000/stocks', newStock)
         .then(response => {
             alert('Stock added successfully!');
             this.reset();
@@ -112,7 +107,23 @@ document.getElementById('add-stock-form').addEventListener('submit', function(e)
             alert('Error adding stock. Note: POST requires a backend server like json-server.');
         });
 });
+
+// NOTE: To test the POST request, you need to have a backend server running that can accept POST requests and update the data source (e.g., a JSON file or database). 
+// For this exercise, use json-server to create a simple REST API based on a JSON file. Here's how you can set it up:
+
+// Install json-server globally on the terminal by running the following command:
+// npm install json-server
+// npm install -g json-server (global)
+
+// To run json-server, use the following command in your terminal:
+// json-server --watch db.json --port 3000
+
+// Then you can test the POST request by filling out the form and submitting it.
+// The new stock will be added to the db.json file under the "stocks" array, and you should see a success alert if the POST request is successful.
+
 </script>
+
+
 
 </body>
 </html>
