@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Cards Monitor</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <style>
+        :root {
+            --primary-red: #DA291C;
+            --primary-red-dark: #b91e12;
+            --card-bg: #ffffff;
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 16px;
+            background: var(--card-bg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--primary-red);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .category {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text.category {
+            color: white !important;
+        }
+
+        .share-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-item strong {
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .metrics-container {
+            margin: 1rem 0;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .metrics-container::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        .metrics-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 7px;
+        }
+
+        .metrics-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 7px;
+            border: 3px solid #f1f1f1;
+        }
+
+        .metrics-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-red) 0%, #c41e12 100%);
+            border: none;
+            padding: 0.625rem 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(218, 41, 28, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-red-dark) 0%, #a31810 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(218, 41, 28, 0.4);
+        }
+
+        .btn-primary:focus,
+        .btn-primary:focus-visible {
+            background: var(--primary-red);
+            box-shadow: 0 0 0 0.25rem rgba(218, 41, 28, 0.5);
+        }
+
+        /* Filter Dropdown */
+        .form-select {
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            padding: 0.625rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(218, 41, 28, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Stock Cards Monitor</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="cards.html">Stock Cards</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="addcard.html">Add Stock</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<h1 class="text-center my-4">Stock Cards</h1>
+
+
+
+<!-- CREATE CONTAINER FOR DYNAMIC CONTENT -->
+    <!-- This container will hold the dynamically generated cards. -->
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="category-filter" class="form-label">Filter by Lenses Category:</label>
+                <select id="category-filter" class="form-select">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+        </div>
+        <div id="content-container" class="row g-4"></div>
+    </div>
+
+<!-- CREATE HTML TEMPLATE FOR CARDS -->
+    <!-- The <template> element defines a reusable HTML structure that is not rendered on the page initially. -->
+    <!-- JavaScript will clone this template for each item in the data array and fill in the content dynamically. -->
+    <!-- This keeps your code DRY (Don't Repeat Yourself) - you define the structure once and reuse it many times. -->
+    <template id="card-template">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <img src="" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title stock-code fw-bold"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted stock-name"></h6>
+                    <p class="card-text category text-muted small"></p>
+                    <p class="card-text share-price fw-bold text-success"></p>
+                    <div class="metrics-container"></div>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+<!-- INCLUDE BOOTSTRAP JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<!-- INCLUDE AXIOS LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- CREATE CUSTOM JS TO DYNAMICALLY RENDER CARDS -->
+    <script>
+
+    // DECLARE (SAMPLE) DATA FROM AN API OR DATABASE
+        const data = [
+            {
+                stock_code: "DUMMY-01",
+                name: "Dummy Stock One",
+                lenses_category: "deep value",
+                image: "https://via.placeholder.com/300x200?text=Stock+1",
+                share_price: 3.50,
+                market_cap: 500000000,
+                roe: 0.15
+            },
+            {
+                stock_code: "DUMMY-02",
+                name: "Dummy Stock Two",
+                lenses_category: "profitable growth",
+                image: "https://via.placeholder.com/300x200?text=Stock+2",
+                share_price: 12.75,
+                market_cap: 1200000000,
+                roe: 0.22
+            }
+        ];
+
+        // FUNCTION TO RENDER CARDS DYNAMICALLY
+    function renderItems(items) {
+        const container = document.getElementById('content-container');
+        const template = document.getElementById('card-template');
+
+        // Properties to display in fixed positions (always shown if available)
+        const fixedProps = ['stock_code', 'name', 'lenses_category', 'share_price', 'market_cap', 'roe'];
+
+        items.forEach(item => {
+            const clone = template.content.cloneNode(true);
+
+            clone.querySelector('img').src = item.image || 'https://via.placeholder.com/300x200?text=No+Image';
+            clone.querySelector('img').alt = item.name || item.stock_code;
+            clone.querySelector('.stock-code').textContent = item.stock_code || '';
+            clone.querySelector('.stock-name').textContent = item.name || '';
+            clone.querySelector('.category').textContent = item.lenses_category || '';
+            clone.querySelector('.share-price').textContent = item.share_price ? `$${item.share_price.toFixed(2)}` : '';
+
+            // Render all other properties dynamically in the metrics container
+            const metricsContainer = clone.querySelector('.metrics-container');
+            
+            Object.keys(item).forEach(key => {
+                // Skip fixed properties and image
+                if (fixedProps.includes(key) || key === 'image') return;
+                
+                const value = item[key];
+                const formattedValue = formatMetricValue(key, value);
+                
+                if (formattedValue !== null) {
+                    const metricEl = document.createElement('p');
+                    metricEl.className = 'card-text metric-item text-muted small mb-1';
+                    metricEl.innerHTML = `<strong>${formatLabel(key)}:</strong> ${formattedValue}`;
+                    metricsContainer.appendChild(metricEl);
+                }
+            });
+
+            container.appendChild(clone);
+        });
+    }
+
+    // Helper function to format metric values based on key type
+    function formatMetricValue(key, value) {
+        if (value === null || value === undefined || value === '') return null;
+        
+        // Format numeric values
+        if (typeof value === 'number') {
+            // Market cap and large numbers
+            if (key.includes('cap') || key.includes('debt') || key.includes('assets')) {
+                if (value >= 1000000000) {
+                    return `$${(value / 1000000000).toFixed(2)}B`;
+                } else if (value >= 1000000) {
+                    return `$${(value / 1000000).toFixed(2)}M`;
+                }
+                return `$${value.toFixed(2)}`;
+            }
+            // Ratios and percentages (roe, margins, yields, growth rates)
+            if (key.includes('roe') || key.includes('margin') || key.includes('yield') || 
+                key.includes('growth') || key.includes('ratio') || key.includes('earnings_yield')) {
+                if (value >= -1 && value <= 1) {
+                    return `${(value * 100).toFixed(1)}%`;
+                }
+                return `${value.toFixed(2)}`;
+            }
+            // Price and small numbers
+            if (key.includes('price') || key.includes('pe') || key.includes('ev_') || key.includes('p_')) {
+                return value.toFixed(2);
+            }
+            // Shares on issue (large numbers)
+            if (key.includes('shares')) {
+                if (value >= 1000000000) {
+                    return `${(value / 1000000000).toFixed(2)}B`;
+                } else if (value >= 1000000) {
+                    return `${(value / 1000000).toFixed(2)}M`;
+                }
+                return value.toLocaleString();
+            }
+            // Default number format
+            return value.toFixed(2);
+        }
+        
+        // Boolean-like yes/no values
+        if (typeof value === 'string' && (value.toLowerCase() === 'yes' || value.toLowerCase() === 'no')) {
+            return value;
+        }
+        
+        // Default string
+        return String(value);
+    }
+
+    // Helper function to format labels (convert snake_case to Title Case)
+    function formatLabel(key) {
+        return key
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, char => char.toUpperCase());
+    }
+        // NOTE: This line below is commented out because we now render both dummy data + API data together
+        // after the API fetch completes, as per STEP 0c below.
+        
+        // renderItems(data);
+    </script>
+
+
+<!-- FUNCTION THAT ADDS NEW CARDS TO THE PAGE BASED ON FETCHED DATA -->
+
+<script>
+function addItem(stockItem) {
+
+   const template = document.getElementById("card-template").content.cloneNode(true);
+
+   template.querySelector('img').src = stockItem.image || 'https://via.placeholder.com/300x200?text=No+Image';
+   template.querySelector('img').alt = stockItem.name || stockItem.stock_code;
+   template.querySelector('.stock-code').textContent = stockItem.stock_code || '';
+   template.querySelector('.stock-name').textContent = stockItem.name || '';
+   template.querySelector('.category').textContent = stockItem.lenses_category || '';
+   template.querySelector('.share-price').textContent = stockItem.share_price ? `$${stockItem.share_price.toFixed(2)}` : '';
+
+   // Render all other properties dynamically in the metrics container
+   const metricsContainer = template.querySelector('.metrics-container');
+   const fixedProps = ['stock_code', 'name', 'lenses_category', 'share_price', 'market_cap', 'roe', 'image'];
+
+   Object.keys(stockItem).forEach(key => {
+       if (fixedProps.includes(key)) return;
+
+       const value = stockItem[key];
+       const formattedValue = formatMetricValue(key, value);
+
+       if (formattedValue !== null) {
+           const metricEl = document.createElement('p');
+           metricEl.className = 'card-text metric-item text-muted small mb-1';
+           metricEl.innerHTML = `<strong>${formatLabel(key)}:</strong> ${formattedValue}`;
+           metricsContainer.appendChild(metricEl);
+       }
+   });
+
+   document.querySelector('#content-container').appendChild(template);
+} // close function addItem
+
+ </script>
+
+<!-- FILTERING BY CATEGORY FUNCTIONALITY -->
+<script>
+
+// STORE ALL STOCKS HERE FOR FILTERING
+let allProducts = [];
+
+// RENDER STOCKS TO PAGE
+function renderProducts(products) {
+    // Clear the container first
+    document.getElementById('content-container').innerHTML = '';
+
+    // Render each stock (pass entire object to preserve all properties)
+    products.forEach(item => {
+        addItem(item);
+    });
+}
+
+// POPULATE DROPDOWN WITH UNIQUE CATEGORIES
+function populateCategories(products) {
+    const categories = [...new Set(products.map(p => p.lenses_category))];
+    const select = document.getElementById('category-filter');
+
+    categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        select.appendChild(option);
+    });
+}
+
+// FILTER AND RENDER ON DROPDOWN CHANGE
+document.getElementById('category-filter').addEventListener('change', (e) => {
+    const selected = e.target.value;
+    if (selected === 'all') {
+        renderProducts(allProducts);
+    } else {
+        const filtered = allProducts.filter(p => p.lenses_category === selected);
+        renderProducts(filtered);
+    }
+});
+
+ </script>
+
+
+
+
+<!-- STEP 0: AXIOS GET AND POST REQUESTS -->
+<!-- please note that this script needs to be at the bottom of the HTML because it relies on the DOM being fully loaded first. -->
+<!-- defer won't work here it is only for external style sheets -->
+
+<script>
+
+// STEP 0a TEST: AXIOS GET REQUEST TO FETCH DATA FROM LOCAL DB.JSON
+axios.get('db.json')
+    .then(response => console.log('GET response:', response.data))
+    // Logs the response from the GET request to verify data was fetched successfully.
+
+// STEP 0b TEST: AXIOS POST REQUEST TO CREATE A NEW STOCK ENTRY
+// Note: POST to a local JSON file requires a backend server like json-server
+axios.post('db.json', {
+    stock_code: 'NEW-AU',
+    name: 'New Stock Entry',
+    lenses_category: 'deep value',
+    image: '/images/shareprice-new-au.png',
+    share_price: 10.00,
+    shares_on_issue: 100000000,
+    market_cap: 1000000000,
+    net_debt: 50000000,
+    ev: 1050000000,
+    roe: 0.15,
+    billy_the_bear: 'yes',
+    mary_momentus: 'no',
+    gavin_the_gambler: 'yes'
+})
+    .then(response => console.log('POST response:', response.data))
+    // Logs the response from the POST request to verify the entry was created.
+
+// STEP 0c: FETCH STOCKS AND RENDER
+// Fetch stocks from the local JSON file, combine with dummy data, populate the category dropdown, and render all stocks.
+axios.get('db.json').then((response) => {
+    allProducts = [...data, ...response.data]; // Combine dummy data + local JSON stocks
+    populateCategories(allProducts); // Fill the dropdown with unique category options
+    renderProducts(allProducts); // Render all stocks (dummy + local JSON) to the page
+});
+
+</script>
+
+</body>
+
+</html>
