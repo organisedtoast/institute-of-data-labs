@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Gossip</title>
+    <title>Stock Gossip Monitor</title>
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     
+
+
 </head>
 
 <body>
@@ -22,10 +25,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.html">Home</a>
+                    <a class="nav-link" href="index.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="cards.html">Stock Cards</a>
+                    <a class="nav-link active" href="cards.html">Stock Cards</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="addcard.html">Add Stock</a>
@@ -37,10 +40,138 @@
 
 <div class="container py-5">
     <h1 class="text-center my-4">Stock Gossip Monitor</h1>
-    <p class="text-center lead">Welcome to the Stock Cards Monitor application.</p>
+    <p class="text-center lead">“Stock ideas move fast. Your research should too.” ⚡</p>
 </div>
 
+<!-- 1st DOM container just for ECharts -->
+<h2 class="text-center mb-3 deep-value-heading">Deep Value</h2>
+<div id="firstlense"></div>
+
+<!-- 2nd DOM container just for ECharts -->
+<h2 class="text-center mb-3 mt-4 unprofitable-growth-heading">Unprofitable Growth</h2>
+<div id="secondlense"></div>
+
+
+
+<!-- Implement Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<!-- NEW Implement Apache ECharts -->
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+<!-- NEW Implement ECharts configuration and rendering -->
+<script>
+    // Initialize 1st ECharts instance
+    var chartDom = document.getElementById('firstlense');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      title: {
+        text: ''
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul' , 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yAxis: {
+        type: 'value',
+        min: 0
+      },
+      series: [
+        {
+          name: 'Deep Value',
+          type: 'line',
+          stack: 'Total',
+          data: [0, 2, 11, 6, 0, 3, 10, 12, 15, 13, 14, 17]
+        },
+        {
+          name: 'Market',
+          type: 'line',
+          stack: 'Total',
+          data: [0, 2, 8, 4, 8, 11, 18, 22, 18, 15, 17, 21]
+        },
+      ]
+    };
+
+    option && myChart.setOption(option);
+
+    // Make chart responsive to window resize
+    window.addEventListener('resize', function() {
+        myChart.resize();
+    });
+
+    // Initialize 2nd ECharts instance
+    var chartDom2 = document.getElementById('secondlense');
+    var myChart2 = echarts.init(chartDom2);
+    var option2;
+
+    option2 = {
+      tooltip: {
+        trigger: 'axis'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul' , 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yAxis: {
+        type: 'value',
+        min: 0
+      },
+      series: [
+        {
+          name: 'Unprofitable Growth',
+          type: 'line',
+          stack: 'Total',
+          itemStyle: {
+            color: '#DA291C'
+          },
+          data: [0, 3, 8, 14, 18, 25, 26, 20, 15, 10, 6, -3]
+        },
+        {
+          name: 'Market',
+          type: 'line',
+          stack: 'Total',
+          data: [0, 2, 8, 4, 8, 11, 18, 22, 18, 15, 17, 21]
+        },
+      ]
+    };
+
+    option2 && myChart2.setOption(option2);
+
+    // Make 2nd chart responsive to window resize
+    window.addEventListener('resize', function() {
+        myChart2.resize();
+    });
+</script>
+
+
+
 
 </body>
 </html>
