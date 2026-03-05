@@ -126,7 +126,7 @@
         }
 
         .metrics-container::-webkit-scrollbar {
-            width: 14px;
+            width: 35px;
         }
 
         .metrics-container::-webkit-scrollbar-track {

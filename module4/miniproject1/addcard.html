@@ -111,12 +111,14 @@ document.getElementById('add-stock-form').addEventListener('submit', function(e)
 // NOTE: To test the POST request, you need to have a backend server running that can accept POST requests and update the data source (e.g., a JSON file or database). 
 // For this exercise, use json-server to create a simple REST API based on a JSON file. Here's how you can set it up:
 
-// Install json-server globally on the terminal by running the following command:
-// npm install json-server
-// npm install -g json-server (global)
+// Install json-server on the terminal by running the following command.
+// 1) npm install json-server (this installs json-server locally in your project which is recommended for project dependencies)
+// 2) npm install -g json-server (this installs json-server globally on your system, allowing you to run it from any directory)
 
 // To run json-server, use the following command in your terminal:
-// json-server --watch db.json --port 3000
+// 1) npx json-server --watch db.json --port 3000 (if local installation)
+// 2) json-server --watch db.json --port 3000 (if global installation)
+
 
 // Then you can test the POST request by filling out the form and submitting it.
 // The new stock will be added to the db.json file under the "stocks" array, and you should see a success alert if the POST request is successful.

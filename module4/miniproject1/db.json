@@ -84,16 +84,6 @@
       "dividend_yield": 0.05,
       "fcast_dps_growth": 0.04,
       "id": "2a68"
-    },
-    {
-      "id": "49aa",
-      "stock_code": "aSDSF",
-      "name": "ASFD",
-      "lenses_category": "deep value",
-      "share_price": 123,
-      "market_cap": 12323,
-      "roe": 0.4,
-      "image": "https://via.placeholder.com/300x200?text=No+Image"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
