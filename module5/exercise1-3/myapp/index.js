@@ -13,13 +13,26 @@
 
 const express = require('express');
 const app = express();
+const path = require('path');
 
 app.get('/', (req, res) => {
   res.send('Hello from server 1!');
 });
 
+// Serve calculator.html
+app.get('/calculator.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'calculator.html'));
+});
+
+// Serve static files (CSS, JS, etc.)
+app.use(express.static(__dirname));
+
+// Import and use calculator routes
+const calculatorRoutes = require('./routes/calculatorRoutes');
+app.use('/calculator', calculatorRoutes);
+
 app.listen(3000, () => {
-  console.log('Server 1 is running on port 3000');
+  console.log('Server is running on port 3000');
 });
 
 // 5. Create another file named `index2.js` and add the following code to create a second web server that listens on port 4000:
@@ -106,7 +119,53 @@ app.listen(3000, () => {
 // {"result":15}
 
 
+// 5. Create a new file named `calculator.html` in the myapp directory and add the following code to create a simple front-end interface for the calculator:
 
+/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <link rel="stylesheet" href="calculator.css"> <!-- This line links to a CSS file for styling the calculator. -->
+</head>
+<body>
+    <h1>Simple Calculator</h1>
+    <input type="number" id="num1" placeholder="Enter first number">
+    <input type="number" id="num2" placeholder="Enter second number">
+    <button id="addButton">Add</button>
+    <p id="result"></p>
+
+    <script src="calculator.js" defer></script> <!-- This line links your HTML to a JavaScript file that will handle the calculator's functionality. -->
+</body>
+</html>
+*/
+
+// 6. Create a new file named `calculator.js` in the myapp directory and add the following code to handle the button click event and make an API call to the back-end calculator route:
+
+/*
+document.getElementById('addButton').addEventListener('click', () => {
+    const num1 = document.getElementById('num1').value;
+    const num2 = document.getElementById('num2').value;
+
+    fetch(`/calculator/add?num1=${num1}&num2=${num2}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('result').textContent = `Result: ${data.result}`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+*/
+
+// 7. Open `calculator.html` in your web browser, enter two numbers, and click the "Add" button to see the result displayed on the page.
+
+// You should see the result of the addition displayed below the button when you click it. For example, if you enter 5 and 10, it should display "Result: 15".
+
+// Congrats mate! You've successfully created a simple calculator application with a front-end and back-end component.
 
 
 
