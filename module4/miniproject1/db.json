@@ -84,16 +84,6 @@
       "dividend_yield": 0.05,
       "fcast_dps_growth": 0.04,
       "id": "2a68"
-    },
-    {
-      "id": "2e7c",
-      "stock_code": "AQZsdf",
-      "name": "df",
-      "lenses_category": "unprofitable growth",
-      "share_price": 23,
-      "market_cap": 123,
-      "roe": 0.03,
-      "image": "https://via.placeholder.com/300x200?text=No+Image"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
