@@ -1,64 +1,34 @@
+// import the express module by using require function and assign it to a variable called express
 const express = require('express');
+
+// import the functions defined in the calculatorController.js file located in the controllers directory.
+const { addNumbers, subtractNumbers, multiplyNumbers, divideNumbers } = require('../controllers/calculatorController');
+
+// create a new router object by calling the Router method on the express object and assign it to a variable called router
 const router = express.Router();
 
-// route for adding two numbers
+// define routes for the calculator operations (add, subtract, multiply, divide) using the router object and the get method. 
+// each route will call the corresponding function from the calculatorController and pass in the request and response objects as arguments.
+
+
+// define a route for the addition operation that listens for GET requests at the /add endpoint.
 router.get('/add', (req, res) => {
-    const num1 = parseFloat(req.query.num1);
-    const num2 = parseFloat(req.query.num2);
-    const result = num1 + num2;
-    res.json({ result });
+    // call the addNumbers function from the calculatorController and pass in the request and response objects as arguments
+    addNumbers(req,res)
 })
 
-
-// route for subtracting two numbers
 router.get('/subtract', (req, res) => {
-    const num1 = parseFloat(req.query.num1);
-    const num2 = parseFloat(req.query.num2);
-    const result = num1 - num2;
-    res.json({ result });
+    subtractNumbers(req,res)
 })
 
-
-// route for multiplying two numbers
 router.get('/multiply', (req, res) => {
-    const num1 = parseFloat(req.query.num1);
-    const num2 = parseFloat(req.query.num2);
-    const result = num1 * num2;
-    res.json({ result });
+    multiplyNumbers(req,res)
 })
 
-
-// route for dividing two numbers
 router.get('/divide', (req, res) => {
-    const num1 = parseFloat(req.query.num1);
-    const num2 = parseFloat(req.query.num2);
-    if (num2 === 0) {
-        return res.status(400).json({ error: 'Cannot divide by zero' });
-    }
-    const result = num1 / num2;
-    res.json({ result });
+    divideNumbers(req,res)
 })
 
-module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// export the router object as a module so that it can be used in other parts of the app
 module.exports = router;  
 

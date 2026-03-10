@@ -249,3 +249,25 @@ app.listen(3000, () => {
 // Step 4: To open app, start the server by running `nodemon index.js` in the terminal
 // Then navigate to `http://localhost:3000/calculator.html`
 
+
+// EXERCISE 6: Adjust index.js to suppose Express being used in both dev and test environments
+
+// declare a variable called app and assign it the value of the imported app module from app.js
+// we us './' to indicate that the app.js file is in the same directory as index.js
+const app = require('./app');
+
+// declare a variable called port and assign it the value of 3000
+const port = 3000
+
+// start the server and listen on the specified port. 
+// when the server starts successfully, log a message to the console indicating it's running and on which port.
+app.listen(port, () => {
+console.log(`Example app listening at http://localhost:${port}`)
+   })
+
+   
+
+
+
+
+
