@@ -15,9 +15,34 @@
 
 
 // Import the Express module from the 'express' package and create an instance of an Express application.
+
 const express = require('express');
-const app = express();
+// const app = express();
 const path = require('path');
+
+// code below is for Exercise 6 to do unit testing with Jest and Supertest. We will import the Express application instance from the app.js file to use it in our tests.
+const app = require('./app');
+
+
+// code below is for Exercise 8: connect Swagger to your Express application
+const swaggerUi = require('swagger-ui-express');
+
+// code below is for Exercise 8 to import the Swagger document (which is typically a JSON file that defines your API documentation) into your `index.js` file.
+swaggerDocument = require('./swagger.json');
+
+
+// code below is for Exercise 8 to set up Swagger documentation for your Express application by defining a route that serves the Swagger UI at the /api-docs endpoint.
+
+
+app.use(
+'/api-docs',
+swaggerUi.serve,
+swaggerUi.setup(swaggerDocument)
+);
+// app = this is the Express application instance that we created earlier. It is used to define routes and middleware for our server.
+// .use() = a method in Express that allows us to add middleware functions to our application.
+// '/api-docs' = this is the base path for the Swagger UI. When users navigate to http://localhost:3000/api-docs, they will see the Swagger documentation.
+
 
 // define a route for the root URL that sends a simple response "Hello from server 1!" when accessed.
 app.get('/', (req, res) => {
@@ -254,7 +279,8 @@ app.listen(3000, () => {
 
 // declare a variable called app and assign it the value of the imported app module from app.js
 // we us './' to indicate that the app.js file is in the same directory as index.js
-const app = require('./app');
+
+// const app = require('./app');
 
 // declare a variable called port and assign it the value of 3000
 const port = 3000
@@ -268,6 +294,26 @@ console.log(`Example app listening at http://localhost:${port}`)
    
 
 
+// EXERCISE 8: connect Swagger to your Express application
+
+// Swagger is a common way to present any backend application to the outside world.
+// It provides a user interface to interact with the API endpoints and also serves as documentation for the API.
+
+// 1. At the top of the code, install the necessary packages for Swagger by running `npm install swagger-ui-express swagger-jsdoc` in the terminal.
+
+// const swaggerUi = require('swagger-ui-express');
 
 
+
+// 2. Import the Swagger UI package and the Swagger document (which is typically a JSON file that defines your API documentation) into your `index.js` file.
+// swaggerDocument = require('./swagger.json');
+
+
+/*
+app.use(
+'/api-docs',
+swaggerUi.serve,
+swaggerUi.setup(swaggerDocument)
+);
+*/
 
