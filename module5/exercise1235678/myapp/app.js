@@ -5,7 +5,15 @@ const swaggerUi = require('swagger-ui-express');
 const calculatorRoutes = require('./routes/calculatorRoutes');
 const swaggerDocument = require('./swagger.json');
 
+// import the CORS middleware to enable Cross-Origin Resource Sharing,
+// which allows your server to handle requests from different origins.
+const cors = require('cors');
+
 const app = express();
+
+
+// enable CORS for all routes in the application by using the cors middleware. 
+app.use(cors());
 
 app.use(express.json());
 app.use(express.static(__dirname));

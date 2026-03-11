@@ -15,6 +15,9 @@
 // The code below sets up an Express server that listens on port 3000 and serves a simple response at the root URL.
 // It also serves a static HTML file for the calculator and imports routes for handling calculator operations.
 
+// import the CORS middleware to enable Cross-Origin Resource Sharing,
+// which allows your server to handle requests from different origins.
+const cors = require('cors');
 
 // Import the Express module from the 'express' package and create an instance of an Express application.
 
