@@ -1,3 +1,5 @@
+// This is the main entry point of the application. It sets up the Express server, defines routes, and connects Swagger for API documentation.
+
 // EXERCISE 1: Create a basic back-end application with multiple web servers running on different ports.
 
 // 1. Create a new directory myapp for your project and navigate into it.
@@ -299,13 +301,13 @@ console.log(`Example app listening at http://localhost:${port}`)
 // Swagger is a common way to present any backend application to the outside world.
 // It provides a user interface to interact with the API endpoints and also serves as documentation for the API.
 
-// 1. At the top of the code, install the necessary packages for Swagger by running `npm install swagger-ui-express swagger-jsdoc` in the terminal.
+// Step 1. At the top of the code, install the necessary packages for Swagger by running `npm install swagger-ui-express swagger-jsdoc` in the terminal.
 
 // const swaggerUi = require('swagger-ui-express');
 
 
 
-// 2. Import the Swagger UI package and the Swagger document (which is typically a JSON file that defines your API documentation) into your `index.js` file.
+// Step 2. Import the Swagger UI package and the Swagger document (which is typically a JSON file that defines your API documentation) into your `index.js` file.
 // swaggerDocument = require('./swagger.json');
 
 
@@ -316,4 +318,14 @@ swaggerUi.serve,
 swaggerUi.setup(swaggerDocument)
 );
 */
+
+// Step 3. Add code to swagger.json file to define your API documentation. 
+// This file should include information about your API endpoints, request parameters, and response formats.
+// You can use the Swagger Editor (https://editor.swagger.io/) to create and edit your Swagger document easily.
+
+// See swagger.json file for the code to define API documentation for the calculator routes.
+
+
+// Step 4. Access the Swagger documentation by navigating to `http://localhost:3000/api-docs` in your web browser.
+// You should see the Swagger UI with your API documentation displayed.
 
