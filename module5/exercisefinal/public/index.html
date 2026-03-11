@@ -36,7 +36,7 @@
 
 <body>
 
-<h1 class="text-center my-4">Man Utd Official Merchandise</h1>
+<h1 class="text-center my-4">Man Utd Official Merchandise (200% genuine qual1ty)</h1>
 
 
 
@@ -80,32 +80,37 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <!-- CREATE CUSTOM JS TO DYNAMICALLY RENDER CARDS -->
-    <script>
-    
+<script>
     // DECLARE (SAMPLE) DATA FROM AN API OR DATABASE
-        const data = [
-            {
-                title: "Dirty Laundry",
-                description: "A large basket of dirty clothes that need to be washed.",
-                image: "https://www.household-management-101.com/image-files/wicker-laundry-basket.jpg",
-                price: 719.99,
-                category: "women's clothing"
-            },
-            {
-                title: "Undies of Doom",
-                description: "Soiled, smells like poo. Someone please deal with this.",
-                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjfjfAQDP4i3n6hcXpLojl_W7xXQf_PoCSuDDRi0huHZ24zwyoUNBTe7D06cz1eWaqt7FY08bQ8DHJhq4Oovg_JXxICiQeTf7O9dyGXT80ZvNePYKo1vr3vIYj3IFTLz-OAdSQZI9VdvJqT/s400/nasty+undies.jpg",
-                price: 239.99,
-                category: "men's clothing"
-            }
-        ];
+    const data = [
+        {
+            title: "Clean Dirty Laundry",
+            description: "A large basket of clean clothes that need to be washed again and again because life.",
+            image: "https://www.household-management-101.com/image-files/wicker-laundry-basket.jpg",
+            price: 719.99,
+            category: "women's clothing"
+        },
+        {
+            title: "Undies of Doom",
+            description: "Soiled, smells like hell. Someone please deal with this.",
+            image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjfjfAQDP4i3n6hcXpLojl_W7xXQf_PoCSuDDRi0huHZ24zwyoUNBTe7D06cz1eWaqt7FY08bQ8DHJhq4Oovg_JXxICiQeTf7O9dyGXT80ZvNePYKo1vr3vIYj3IFTLz-OAdSQZI9VdvJqT/s400/nasty+undies.jpg",
+            price: 239.99,
+            category: "men's clothing"
+        }
+    ];
 
-        // FUNCTION TO RENDER CARDS DYNAMICALLY
-    function renderItems(items) {
+    // STORE ALL PRODUCTS HERE FOR FILTERING
+    let allProducts = [];
+
+    // RENDER PRODUCTS TO PAGE
+    function renderProducts(products) {
         const container = document.getElementById('content-container');
         const template = document.getElementById('card-template');
 
-        items.forEach(item => {
+        // Clear the container first
+        container.innerHTML = '';
+
+        products.forEach(item => {
             const clone = template.content.cloneNode(true);
 
             clone.querySelector('img').src = item.image || 'https://via.placeholder.com/300x200?text=No+Image';
@@ -119,113 +124,39 @@
             container.appendChild(clone);
         });
     }
-        // NOTE: This line below is commented out because we now render both dummy data + API data together
-        // after the API fetch completes, as per STEP 0c below.
-        
-        // renderItems(data);
-    </script>
 
+    // POPULATE DROPDOWN WITH UNIQUE CATEGORIES
+    function populateCategories(products) {
+        const categories = [...new Set(products.map(p => p.category))];
+        const select = document.getElementById('category-filter');
 
-<!-- FUNCTION THAT ADDS NEW CARDS TO THE PAGE BASED ON FETCHED DATA -->
-
-<script>
-function addItem(productItem) {
-
-   const template = document.getElementById("card-template").content.cloneNode(true);
-
-   template.querySelector('img').src = productItem.image || 'https://via.placeholder.com/300x200?text=No+Image';
-   template.querySelector('img').alt = productItem.title;
-   template.querySelector('.card-title').textContent = productItem.title;
-   template.querySelector('.category').textContent = productItem.category || '';
-   template.querySelector('.description').textContent = productItem.description;
-   template.querySelector('.fw-bold').textContent = productItem.price ? `$${productItem.price}` : '';
-
-
-   document.querySelector('#content-container').appendChild(template);
-} // close function addItem
-
- </script>
-
-<!-- FILTERING BY CATEGORY FUNCTIONALITY -->
-<script>
-
-// STORE ALL PRODUCTS HERE FOR FILTERING
-let allProducts = [];
-
-// RENDER PRODUCTS TO PAGE
-function renderProducts(products) {
-    // Clear the container first
-    document.getElementById('content-container').innerHTML = '';
-    
-    // Render each product
-    products.forEach(item => {
-        addItem({ title: item.title, description: item.description, price: item.price, image: item.image, category: item.category });
-    });
-}
-
-// POPULATE DROPDOWN WITH UNIQUE CATEGORIES
-function populateCategories(products) {
-    const categories = [...new Set(products.map(p => p.category))];
-    const select = document.getElementById('category-filter');
-    
-    categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat;
-        option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-        select.appendChild(option);
-    });
-}
-
-// FILTER AND RENDER ON DROPDOWN CHANGE
-document.getElementById('category-filter').addEventListener('change', (e) => {
-    const selected = e.target.value;
-    if (selected === 'all') {
-        renderProducts(allProducts);
-    } else {
-        const filtered = allProducts.filter(p => p.category === selected);
-        renderProducts(filtered);
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+            select.appendChild(option);
+        });
     }
-});
 
- </script>
+    // FILTER AND RENDER ON DROPDOWN CHANGE
+    document.getElementById('category-filter').addEventListener('change', (e) => {
+        const selected = e.target.value;
+        if (selected === 'all') {
+            renderProducts(allProducts);
+        } else {
+            const filtered = allProducts.filter(p => p.category === selected);
+            renderProducts(filtered);
+        }
+    });
 
+    // STEP 0a: AXIOS GET REQUEST TO FETCH PRODUCTS FROM API
 
-
-
-<!-- STEP 0: AXIOS GET AND POST REQUESTS -->
-<!-- please note that this script needs to be at the bottom of the HTML because it relies on the DOM being fully loaded first. -->
-<!-- defer won't work here it is only for external style sheets -->
-
-<script>
-
-// STEP 0a TEST: AXIOS GET REQUEST TO FETCH PRODUCT DATA FROM FAKESTOREAPI.COM
-axios.get('/api/products')
-.then(response => console.log(response.data))
-// this is the response from the GET request, which includes an array of product objects. The response is logged to the console to verify that the data was fetched successfully.
-
-// STEP 0b TEST: AXIOS POST REQUEST TO CREATE A NEW PRODUCT ON FAKESTOREAPI.COM
-
-axios.post('/api/products',
-{
-title: 'Title of Product',
-description: 'Description of Product',
-price: 192.99,
-category: 'clothing',
-image: 'https://example.com/image.jpg'
-})
-
-// this is the response from the POST request, which includes the newly created product data. The response is logged to the console to verify that the product was created successfully.
-.then(response => console.log(response.data))
-
-
-// STEP 0c: FETCH PRODUCTS AND RENDER
-// Fetch products from the API, combine with dummy data, populate the category dropdown, and render all products.
-axios.get('/api/products').then((response) => {
-    allProducts = [...data, ...response.data]; // Combine dummy data + API products into one array (dummy first)
-    populateCategories(allProducts); // Fill the dropdown with unique category options
-    renderProducts(allProducts); // Render all products (dummy + API) to the page
-});
-
+    // Fetch products from the API, combine with dummy data, populate the category dropdown, and render all products.
+    axios.get('/api/products').then((response) => {
+        allProducts = [...data, ...response.data]; // Combine dummy data + API products into one array (dummy first)
+        populateCategories(allProducts); // Fill the dropdown with unique category options
+        renderProducts(allProducts); // Render all products (dummy + API) to the page
+    });
 </script>
 
 </body>

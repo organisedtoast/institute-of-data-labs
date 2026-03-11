@@ -1,7 +1,5 @@
 // use const to import the productService module which contains the business logic for handling products
-// The productService module will be in index.html (but normally it should be in a separate file like productService.js in a services subfolder)
-
-const productService = require('../services/index.html');
+const productService = require('../services/productService');
 
 
 // use exports to define the controller functions for handling product-related requests. 

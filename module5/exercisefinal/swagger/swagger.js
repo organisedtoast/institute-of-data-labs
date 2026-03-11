@@ -10,8 +10,8 @@ const swaggerDocument = {
   // Step 3: Add general information about the API
   // This appears as a header in the Swagger UI documentation page
   info: {
-    title: "Man Utd Store API",
-    version: "1.0.0",
+    title: "Man Utd Store API (200% genuine qual1ty)", // The name of our API
+    version: "1.0.8",
     description: "API for product data used by the Man Utd Store frontend"
   },
 
@@ -33,10 +33,10 @@ const swaggerDocument = {
     // This returns a list of ALL products in the store
     "/api/products": {
       get: {                          // 'get' means this is a GET HTTP request (fetching data)
-        summary: "Get all products",  // Short description shown in Swagger UI
+        summary: "Get all genuine products",  // Short description shown in Swagger UI
         responses: {
           "200": {                    // 200 means "success" in HTTP status codes
-            description: "Successfully returned a list of all products"
+            description: "Successfully returned a list of all genuine products"
           },
           "500": {                    // 500 means "server error" in HTTP status codes
             description: "Internal server error"
@@ -49,10 +49,10 @@ const swaggerDocument = {
     // This returns a list of product categories (e.g. jerseys, shorts, accessories)
     "/api/products/categories": {
       get: {
-        summary: "Get all product categories",
+        summary: "Get all genuine product categories",
         responses: {
           "200": {
-            description: "Successfully returned a list of all product categories"
+            description: "Successfully returned a list of all genuine product categories"
           },
           "500": {
             description: "Internal server error"
