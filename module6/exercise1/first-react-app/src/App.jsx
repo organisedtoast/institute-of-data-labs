@@ -64,7 +64,7 @@ function App() {
       {/* Children means that the Greeting component will display whatever is between the opening and closing tags of the component, instead of the default "Hello Fan" */}
       
       <Greeting>
-      Please express your support for our upcoming transaction by clicking on the green button below. 
+      Please express your support for this corporate transaction by clicking on the green button below. 
       </Greeting>
 
       <div className="card">
@@ -77,7 +77,7 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">
-        Click on the logos to learn more about our groundbreaking combination.
+        Click on the logos above to learn more about our groundbreaking combination
       </p>
     </>
   ) // end of return statement
