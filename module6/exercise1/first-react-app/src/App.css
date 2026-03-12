@@ -40,3 +40,40 @@
 .read-the-docs {
   color: #888;
 }
+
+ /* Custom styles for the fan approval yesButton */
+.yesButton {
+  background: linear-gradient(135deg, #1f9d40 0%, #2ecc71 100%);
+  color: #ffffff;
+  border: 1px solid #157a2f;
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.yesButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.7), 0 0 22px rgba(46, 204, 113, 0.5);
+}
+
+.yesButtonCelebrate {
+  animation: approval-flash 5s ease-out;
+}
+
+@keyframes approval-flash {
+  0% {
+    background: linear-gradient(135deg, #ffd700 0%, #ffec66 100%);
+    color: #1f2a00;
+    border-color: #e6be00;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.95), 0 0 34px rgba(255, 235, 102, 0.9), 0 0 50px rgba(255, 255, 160, 0.8);
+  }
+  100% {
+    background: linear-gradient(135deg, #1f9d40 0%, #2ecc71 100%);
+    color: #ffffff;
+    border-color: #157a2f;
+    box-shadow: none;
+  }
+}
