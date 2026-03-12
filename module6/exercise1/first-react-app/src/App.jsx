@@ -52,7 +52,7 @@ function App() {
         </a>
       </div>
       <h1>Man Utd + Tesla</h1>
-      <h3>Merging the world's leading football club with our era's predominant tech company</h3>
+      <h3>Merging the world's leading football club with the predominant tech company of our era</h3>
       
       {/* Greeting component with a name prop*/}
       {/* A name prop means that the Greeting component will display "Hello John" instead of the default "Hello Fan" */}

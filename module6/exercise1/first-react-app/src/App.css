@@ -60,7 +60,7 @@
 }
 
 .yesButtonCelebrate {
-  animation: approval-flash 5s ease-out;
+  animation: approval-flash 10s ease-out;
 }
 
 @keyframes approval-flash {
