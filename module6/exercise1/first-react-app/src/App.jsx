@@ -73,7 +73,7 @@ function App() {
           {/* {count.toLocaleString()} means that the number will be displayed with commas as thousands separators, e.g. 411,887,324 instead of 411887324 */}
         </button>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          Edit <code>src/App.jsx</code> and save to test hot reloading of the app.
         </p>
       </div>
       <p className="read-the-docs">
