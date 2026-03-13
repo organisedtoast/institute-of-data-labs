@@ -9,7 +9,7 @@ function TitleBlock({ manutdLogo, teslaLogo }) {
       </a>
 
       <h1>Man Utd + Tesla</h1>
-      <h3>Combining the world's most followed football club with the dominant tech company of our generation</h3>
+      <h3>Combining the world's most loved football club with the dominant tech company of our generation</h3>
     </div>
   )
 }

@@ -6,14 +6,16 @@
 }
 
 .logo {
-  height: 6em;
+  height: 12em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -79,5 +81,5 @@
 }
 
 .emoji-text {
-  font-size: 6rem;
+  font-size: 10rem; /* rem = root em, which is based on the font size of the root element (usually 16px) */
 }
