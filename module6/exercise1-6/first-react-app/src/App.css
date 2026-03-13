@@ -41,7 +41,7 @@
   color: #888;
 }
 
- /* Custom styles for the fan approval yesButton */
+/* Styles for the yesButton class */
 .yesButton {
   background: linear-gradient(135deg, #1f9d40 0%, #2ecc71 100%);
   color: #ffffff;
@@ -76,4 +76,8 @@
     border-color: #157a2f;
     box-shadow: none;
   }
+}
+
+.emoji-text {
+  font-size: 6rem;
 }

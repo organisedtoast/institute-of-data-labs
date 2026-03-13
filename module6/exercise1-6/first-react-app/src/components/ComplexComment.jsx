@@ -6,8 +6,8 @@ import FormattedDate from './FormattedDate'
 function ComplexComment(props) {
   return (
     <div className="Comment componentBox">
+    <h2>Fan Testimonial</h2>
     <UserInfo author={props.author} />
-    
     <p className="Comment-text">{props.text}</p>
     <FormattedDate date={props.date} />
     </div>

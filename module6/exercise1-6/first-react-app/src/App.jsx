@@ -3,9 +3,12 @@ import teslaLogo from './assets/tesla.svg'
 import manutdLogo from '/manutd.svg'
 import './App.css'
 import Greeting from './components/Greeting'
-import ComplexComment from './components/ComplexComment'
 import CatBreeds from './components/CatBreeds'
 import Emoji from './components/Emoji'
+import FanTestimonial from './components/FanTestimonial'
+import TitleBlock from './components/TitleBlock'
+
+
 
 // declare a new component called App that will be rendered to the DOM
 function App() {
@@ -49,18 +52,8 @@ function App() {
   return (
     <>
 
-      {/* TitleSection component*/}
-      <div className = "title" >
-        <a href="https://www.manutd.com" target="_blank">
-          <img src={manutdLogo} className="logo manutd" alt="Man Utd logo" />
-        </a>
-        <a href="https://www.tesla.com" target="_blank">
-          <img src={teslaLogo} className="logo tesla" alt="Tesla logo" />
-        </a>
-      
-      <h1>Man Utd + Tesla</h1>
-      <h3>Combining the world's most followed football club with the dominant tech company of our generation</h3>
-      </div>
+      {/* TitleBlock component */}
+      <TitleBlock manutdLogo={manutdLogo} teslaLogo={teslaLogo} />
 
       
       {/* Greeting component with a name prop*/}
@@ -72,38 +65,28 @@ function App() {
       {/* Greeting component with children */}
       {/* Children means that the Greeting component will display whatever is between the opening and closing tags of the component, instead of the default "Hello Fan" */}
 
-      <Greeting>
+<Greeting>
       Please express your support for this corporate transaction by clicking on the green Fan Approval button below your testimonial entry.
       </Greeting>
 
 
 <div className="testimonial">
-<h2>Fan Testimonial</h2>
+<FanTestimonial
 
-      <ComplexComment
-        author={{ name: 'John Burke', avatarUrl: 'https://pbs.twimg.com/profile_images/1956662011053449217/D0VfawSp_400x400.jpg' }}
-        text="John has been an avid follower of Man Utd for 30 years. His favourite player is Ole Gunnar Solskjaer. He is very excited about the upcoming merger with Tesla and believes it will usher in an era of sporting and commercial success to the club."
-        date={new Date()}
-      />
-
-<div className="approvalSection">
-<p>IMPORTANT: By clicking on the green button, you agree to submit the above testimonial for public redistribution.</p>
-      <div className="card">
-        <button className={`yesButton ${isCelebrating ? 'yesButtonCelebrate' : ''}`} onClick={handleApprovalClick}>
-          Fan approval count: {count.toLocaleString()}
-          {/* {count.toLocaleString()} means that the number will be displayed with commas as thousands separators, e.g. 411,887,324 instead of 411887324 */}
-        </button>
-      </div>
-
-      </div>
+// you can get rid of these props later and define them inside the FanTestimonial component, as long as the names are the same
+// my handleApprovalClick is currently defined as onApprovalClick, so inside FanTestimonial I have a function called onApprovalCLick atm, when it is actually handleApprovalClick
+  count={count}
+  isCelebrating={isCelebrating}
+  onApprovalClick={handleApprovalClick}
+/>
 </div>
 
-<div>
+<div className="catbreeds">
 <CatBreeds />
 </div>
 
 
-<div>
+<div className="emoji">
 <Emoji />
 </div>
 
