@@ -22,7 +22,9 @@ Step 1: Open the local folder \first-react-app
 Step 2: Type the following in terminal
 npm run dev
 
-Step 1: Open in your browser
+Step 3: Open in your browser
 http://localhost:5173/ 
 
+Step 4: Editing
 
+Edit <code>src/App.jsx</code> and save to test hot reloading of the app.

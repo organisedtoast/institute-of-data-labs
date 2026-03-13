@@ -8,7 +8,7 @@ export default function Greeting({ name = "Fan", children })
 {
   return (
     <div>
-      {children || `Hello ${name}`}
+      {children || `Hello ${name},`}
       {/* // if children is provided, it will be rendered instead of the default greeting message */}
       {/* // if children is not provided, the default greeting message will be rendered, which will say "Hello" followed by the value of the name prop */}
 
