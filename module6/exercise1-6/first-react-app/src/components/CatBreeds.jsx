@@ -84,7 +84,7 @@ function CatBreeds() {
 
   return (
     <div>
-      <h2>Man Utd Fan Cam Cat Breeds</h2>
+      <h2>Man Utd Fan Cam Cats</h2>
 
       {/* render the AddNewCat component and pass the addCat function as a prop called onAddCat */}
       {/* when the form is submitted, the addCat function will be called with the new cat object */}

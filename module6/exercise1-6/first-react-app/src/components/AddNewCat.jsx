@@ -40,78 +40,62 @@ function AddNewCat({ onAddCat }) {
   }
 
   return (
-    <div>
-      <h3>Add Your cat!</h3>
+    <div className="add-cat-form">
+      <h3>Add your cat!</h3>
 
-      {/* create a form element that will handle the submission of new cat data */}
       <form onSubmit={handleSubmit}>
 
-        {/* create a label and input field for the cat name */}
-        <div>
+        <div className="form-row">
           <label htmlFor="name">Cat Name:</label>
-          {/* the value attribute is controlled by the name state variable */}
-          {/* the onChange attribute updates the name state whenever the user types */}
           <input
             type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Enter cat name"
             required
           />
         </div>
 
-        {/* create a label and input field for the latin name */}
-        <div>
+        <div className="form-row">
           <label htmlFor="latinName">Latin Name:</label>
-          {/* the value attribute is controlled by the latinName state variable */}
-          {/* the onChange attribute updates the latinName state whenever the user types */}
           <input
             type="text"
             id="latinName"
             value={latinName}
             onChange={(e) => setLatinName(e.target.value)}
+            placeholder="Enter latin name"
             required
           />
         </div>
 
-        {/* create a label and input field for the image URL */}
-        <div>
+        <div className="form-row">
           <label htmlFor="imageUrl">Image URL:</label>
-          {/* the value attribute is controlled by the imageUrl state variable */}
-          {/* the onChange attribute updates the imageUrl state whenever the user types */}
           <input
             type="url"
             id="imageUrl"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="Enter image URL"
             required
           />
         </div>
 
-        {/* IMAGE & TEXT PREVIEW SECTION */}
-        {/* this section will show a live preview of the cat image as the user types the URL */}
-        {/* we use conditional rendering: the image only shows if imageUrl has a value (is not empty) */}
-        
-        {/* if imageUrl is not an empty string, render the preview section */}
-        {/* && = this is a common pattern in React for conditional rendering: if the condition before && is true, the JSX after && will be rendered */}
         {imageUrl && (
-          <div>
+          <div className="cat-preview-section">
             <h4>Press SUBMIT button to add your cat to the list!</h4>
-            {/* display the image using the current imageUrl state value */}
-            {/* the image will update automatically as the user types because imageUrl is a controlled state variable */}
             <img
+              className="cat-preview-image"
               src={imageUrl}
               alt="if you can read this, your image URL is broken. Please try another one."
-              style={{ width: '400px', height: '400px', objectFit: 'cover' }}
             />
-            {/* preview display the name and latinName below the image */}
-            {/* these update live as the user types in the name and latinName fields */}
-            {name && <p><strong>Name:</strong> {name}</p>}
-            {latinName && <p><strong>Latin Name:</strong> {latinName}</p>}
+            <div className="cat-preview-info">
+              {name && <p><strong>Name:</strong> {name}</p>}
+              {latinName && <p><strong>Latin Name:</strong> {latinName}</p>}
+            </div>
           </div>
-        )} {/* close the conditional rendering block */}
+        )}
 
-        {/* create a submit button that will trigger the handleSubmit function */}
         <button className="submit-cat-button" type="submit">SUBMIT</button>
       </form>
     </div>
