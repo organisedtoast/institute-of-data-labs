@@ -6,8 +6,7 @@ import CatBreeds from './components/CatBreeds'
 import Emoji from './components/Emoji'
 import FanTestimonial from './components/FanTestimonial'
 import TitleBlock from './components/TitleBlock'
-import AddNewCat from './components/AddNewCat'
-
+import FilterableProductTable from './components/ClassExercise/FilterableProductTable'
 
 
 // declare a new component called App that will be rendered to the DOM
@@ -46,6 +45,11 @@ function App() {
 
 <div className="emoji">
 <Emoji />
+</div>
+
+
+<div className="productstore">
+<FilterableProductTable />
 </div>
 
 
