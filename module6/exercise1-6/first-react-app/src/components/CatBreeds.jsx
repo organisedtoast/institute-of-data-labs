@@ -10,7 +10,7 @@ const cats = [
 { id: 1, name: 'Doraemon', latinName: 'doraemonus mechanicus', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROqjwu6euZ7Y-4S8n_ERj8p9DciT5oCoZvb4iKHqxp4vlzaRe3cEUXQ7-iEhowf3WGyyUuLhxaP4Nh_Hes-oaQ1LP_toPEGqhcZjNyYs63&s=10' },
 { id: 2, name: 'Bengal', latinName: 'felis catus bengalensis', imageUrl: 'https://image.petmd.com/files/inline-images/bengal-cat.jpeg?VersionId=X0xkDftr_klFvUhQpLarkxvJBbnUAd01' },
 { id: 3, name: 'Siamese', latinName: 'felis catus siamensis', imageUrl: 'https://www.purina.co.uk/sites/default/files/styles/square_medium_440x440/public/2022-06/Siamese%201.jpg?h=c17eaee4&itok=BRsemy6v' },
-{ id: 4, name: 'Scottish Fold', latinName: 'felis catus scottishfoldus', imageUrl: 'https://purebredkitties.com/cdn/shop/articles/scottish-fold-ear-health-caring-both-folded-standard-varieties.webp?v=1755326499' },
+{ id: 4, name: 'Scottish Fold', latinName: 'felis catus scottishfoldus', imageUrl: 'https://www.zookie.com.au/wp-content/uploads/2023/12/001-143.jpg' },
 { id: 5, name: 'Abyssinian', latinName: 'felis catus abyssinicus', imageUrl: 'https://cdn-ilecccn.nitrocdn.com/RanGABiTadbcbUtojmhXDdudFjKCdOMD/assets/images/optimized/rev-ebd86f6/www.worldsbestcatlitter.com/wp-content/uploads/2024/12/abyssinian-cats-blog_main-img.jpg' },
 { id: 6, name: 'Burmese', latinName: 'felis catus burmensis', imageUrl: 'https://www.burgesspetcare.com/wp-content/uploads/2025/12/All-about-Burmese-cats-.jpg' },
 

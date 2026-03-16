@@ -81,6 +81,8 @@ function AddNewCat({ onAddCat }) {
           />
         </div>
 
+
+{/* PREVIEW ADD NEW CAT SECTION */}
         {imageUrl && (
           <div className="cat-preview-section">
             <h4>Press SUBMIT button to add your cat to the list!</h4>
