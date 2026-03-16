@@ -35,10 +35,20 @@ function CatBreeds() {
     setSortedCats(sorted)
   } // close the sortByName function
 
+  // declare a function called reverseSort which will reverse the sortedCats array
+  const reverseSort = () => {
+    const reversed = [...sortedCats].reverse()
+    setSortedCats(reversed)
+  } // close the reverseSort function
+
+  // declare a function called resetSort which will reset the sortedCats array back to the original cats array
+  const resetSort = () => {
+    setSortedCats(cats)
+  } // close the resetSort function
 
   // declare a function called deleteCat which will take an id as a parameter and filter the sortedCats array to remove the cat breed object with that id
-  
-  
+  // this function will be called when the delete button is clicked in the SingleCat component,
+  // and it will update the state to reflect the deletion of the cat breed from the list  
   const deleteCat = (id) => {
 
     // call the setSortedCats function with a new array that is created by filtering the sortedCats array
@@ -51,6 +61,8 @@ function CatBreeds() {
     <div>
       <h2>Man Utd Fan Cam Cat Breeds</h2>
       <button onClick={sortByName}>Sort by Name</button>
+      <button onClick={reverseSort}>Reverse Sort</button>
+      <button onClick={resetSort}>Reset</button>
       <ul>
 
         {/*use the map method to iterate over the sortedCats array and render a SingleCat component for each cat breed object */}
