@@ -1,9 +1,28 @@
+/* ==========================================================================
+   GLOBAL STYLES
+   ========================================================================== */
+
+/* Main application container */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
+
+/* Card component styles */
+.card {
+  padding: 2em;
+}
+
+/* Documentation link styles */
+.read-the-docs {
+  color: #888;
+}
+
+/* ==========================================================================
+   LOGO STYLES
+   ========================================================================== */
 
 .logo {
   height: 12em;
@@ -35,13 +54,9 @@
   }
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+/* ==========================================================================
+   BUTTON STYLES
+   ========================================================================== */
 
 /* Styles for the yesButton class */
 .yesButton {
@@ -80,11 +95,7 @@
   }
 }
 
-.emoji-text {
-  font-size: 10rem; /* rem = root em, which is based on the font size of the root element (usually 16px) */
-}
-
-/* Styles for the submit cat button - bright blue color */
+/* Submit cat button - bright blue color */
 .submit-cat-button {
   background-color: #0066ff;
   color: #ffffff;
@@ -102,7 +113,20 @@
   transform: translateY(-2px);
 }
 
-/* AddNewCat form styles */
+/* ==========================================================================
+   TYPOGRAPHY STYLES
+   ========================================================================== */
+
+/* Emoji text styles */
+.emoji-text {
+  font-size: 10rem; /* rem = root em, which is based on the font size of the root element (usually 16px) */
+}
+
+/* ==========================================================================
+   FORM STYLES
+   ========================================================================== */
+
+/* AddNewCat FORM STYLES */
 .add-cat-form {
   max-width: 500px;
   margin: 0 auto 2rem auto;
