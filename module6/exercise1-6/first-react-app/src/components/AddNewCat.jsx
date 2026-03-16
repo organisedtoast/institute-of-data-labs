@@ -88,8 +88,31 @@ function AddNewCat({ onAddCat }) {
           />
         </div>
 
+        {/* IMAGE & TEXT PREVIEW SECTION */}
+        {/* this section will show a live preview of the cat image as the user types the URL */}
+        {/* we use conditional rendering: the image only shows if imageUrl has a value (is not empty) */}
+        
+        {/* if imageUrl is not an empty string, render the preview section */}
+        {/* && = this is a common pattern in React for conditional rendering: if the condition before && is true, the JSX after && will be rendered */}
+        {imageUrl && (
+          <div>
+            <h4>Press SUBMIT button to add your cat to the list!</h4>
+            {/* display the image using the current imageUrl state value */}
+            {/* the image will update automatically as the user types because imageUrl is a controlled state variable */}
+            <img
+              src={imageUrl}
+              alt="if you can read this, your image URL is broken. Please try another one."
+              style={{ width: '400px', height: '400px', objectFit: 'cover' }}
+            />
+            {/* preview display the name and latinName below the image */}
+            {/* these update live as the user types in the name and latinName fields */}
+            {name && <p><strong>Name:</strong> {name}</p>}
+            {latinName && <p><strong>Latin Name:</strong> {latinName}</p>}
+          </div>
+        )} {/* close the conditional rendering block */}
+
         {/* create a submit button that will trigger the handleSubmit function */}
-        <button type="submit">Add Cat</button>
+        <button className="submit-cat-button" type="submit">SUBMIT</button>
       </form>
     </div>
   )

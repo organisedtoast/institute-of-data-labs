@@ -6,7 +6,7 @@ import CatBreeds from './components/CatBreeds'
 import Emoji from './components/Emoji'
 import FanTestimonial from './components/FanTestimonial'
 import TitleBlock from './components/TitleBlock'
-import AddCatForm from './components/AddCatForm'
+import AddNewCat from './components/AddNewCat'
 
 
 
@@ -40,7 +40,6 @@ function App() {
 </div>
 
 <div className="catbreeds">
-<AddCatForm />
 <CatBreeds />
 </div>
 

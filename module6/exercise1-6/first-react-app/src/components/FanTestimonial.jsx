@@ -61,7 +61,7 @@ function FanTestimonial() {
       />
 
       <div className="approvalSection">
-        <p>IMPORTANT: By clicking on the green button, you agree to submit the above testimonial for public redistribution.</p>
+        <p><strong>IMPORTANT: By clicking on the green button, you agree to submit the above testimonial for public redistribution.</strong></p>
         <div className="card">
           <button className={`yesButton ${isCelebrating ? 'yesButtonCelebrate' : ''}`} onClick={handleApprovalClick}>
             Fan approval count: {count.toLocaleString()}

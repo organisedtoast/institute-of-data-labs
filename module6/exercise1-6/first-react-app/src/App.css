@@ -83,3 +83,21 @@
 .emoji-text {
   font-size: 10rem; /* rem = root em, which is based on the font size of the root element (usually 16px) */
 }
+
+/* Styles for the submit cat button - bright blue color */
+.submit-cat-button {
+  background-color: #0066ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 200ms ease, transform 180ms ease;
+}
+
+.submit-cat-button:hover {
+  background-color: #0052cc;
+  transform: translateY(-2px);
+}

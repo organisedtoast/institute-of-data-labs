@@ -74,15 +74,9 @@ function CatBreeds() {
   } // close the deleteCat function
 
   // ADD NEW CAT ENTRY
-  // declare a function called addCat which will take a newCat object as a parameter and add it to both the cats array and sortedCats state
+  // declare a function called addCat which will take a newCat object as a parameter and add it to the sortedCats state
   // this function will be called when the AddNewCat form is submitted
   const addCat = (newCat) => {
-
-    // add the new cat to the beginning of the cats array using unshift
-    // unshift ensures the new cat appears at the top of the original cats array
-    // push would have added the new cat to the end of the array
-    cats.unshift(newCat)
-
     // call the setSortedCats function with a new array that includes the new cat at the top
     // we create a new array with newCat first, then spread the existing sortedCats after it
     setSortedCats([newCat, ...sortedCats])
