@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SingleCat from './SingleCat'
+import AddNewCat from './AddNewCat'
 
 
 // use const to declare a constant variable that cannot be reassigned
@@ -63,7 +64,7 @@ function CatBreeds() {
   // DELETE CAT ENTRY
   // declare a function called deleteCat which will take an id as a parameter and filter the sortedCats array to remove the cat breed object with that id
   // this function will be called when the delete button is clicked in the SingleCat component,
-  // and it will update the state to reflect the deletion of the cat breed from the list  
+  // and it will update the state to reflect the deletion of the cat breed from the list
   const deleteCat = (id) => {
 
     // call the setSortedCats function with a new array that is created by filtering the sortedCats array
@@ -72,9 +73,29 @@ function CatBreeds() {
     setSortedCats(sortedCats.filter(cat => cat.id !== id))
   } // close the deleteCat function
 
+  // ADD NEW CAT ENTRY
+  // declare a function called addCat which will take a newCat object as a parameter and add it to both the cats array and sortedCats state
+  // this function will be called when the AddNewCat form is submitted
+  const addCat = (newCat) => {
+
+    // add the new cat to the beginning of the cats array using unshift
+    // unshift ensures the new cat appears at the top of the original cats array
+    // push would have added the new cat to the end of the array
+    cats.unshift(newCat)
+
+    // call the setSortedCats function with a new array that includes the new cat at the top
+    // we create a new array with newCat first, then spread the existing sortedCats after it
+    setSortedCats([newCat, ...sortedCats])
+  } // close the addCat function
+
   return (
     <div>
       <h2>Man Utd Fan Cam Cat Breeds</h2>
+
+      {/* render the AddNewCat component and pass the addCat function as a prop called onAddCat */}
+      {/* when the form is submitted, the addCat function will be called with the new cat object */}
+      <AddNewCat onAddCat={addCat} />
+
       <button onClick={sortByName}>Sort by Name</button>
       <button onClick={reverseSort}>Reverse Sort</button>
       <button onClick={resetSort}>Reset</button>
