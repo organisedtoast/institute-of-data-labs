@@ -7,6 +7,7 @@ import Emoji from './components/Emoji'
 import FanTestimonial from './components/FanTestimonial'
 import TitleBlock from './components/TitleBlock'
 import FilterableProductTable from './components/ClassExercise/FilterableProductTable'
+import Calculator from './components/Calculator'
 
 
 // declare a new component called App that will be rendered to the DOM
@@ -51,6 +52,13 @@ function App() {
 <div className="productstore">
 <FilterableProductTable />
 </div>
+
+
+<div className="calculator">
+<Calculator />
+</div>
+
+
 
 
     </>
