@@ -6,8 +6,8 @@ const currencies = ['USD', 'AUD', 'NZD', 'GBP', 'EUR', 'SGD'];
 // EXERCISE 2ext: Declare a functional component called BitcoinRates2reducer
 function BitcoinRates2reducer() {
   const [currency, setCurrency] = useState(currencies[0]);
-
-  // Use the custom useDataReducer hook to fetch Bitcoin price data
+  
+  // change the hook used to useDataReducer 
   const { exchangeRate, loading, error } = useDataReducer('bitcoin', currency);
 
   const options = currencies.map(curr => (

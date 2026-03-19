@@ -1,6 +1,18 @@
+// Note: comments here relate to Exercise 2ext only
+
+// The useDataReducer hook is an alternative implementation of the useData hook
+
+// useData hook used useState to manage 3 separate pieces of state: exchangeRate, loading and error.
+// In contrast, useDataReducer uses the useReducer hook to manage all 3 pieces of state together in a single state object. 
+// This can make the code more organized and easier to manage, especially as the complexity of the state logic increases.
+
+// The useData hook is is used in BitcoinRates2.jsx
+// The useDataReducer hook is used by BitcoinRates2reducer.jsx
+
+
 import { useEffect, useReducer } from 'react';
 
-// This object stores the starting values for our reducer-managed state.
+// EXERCISE 2ext: This object stores the starting values for our reducer-managed state.
 // We begin in a loading state because the hook should fetch data as soon as it runs.
 const initialState = {
   exchangeRate: null,
@@ -8,12 +20,20 @@ const initialState = {
   error: null,
 };
 
-// The reducer is a normal JavaScript function.
-// Its job is to decide how state should change based on the action we dispatch.
+// Declare a reducer function called dataReducer that takes in the current state and an action as parameters.
+// The reducer function is just a native hook to React that takes in a current state.
+// Its job is to decide how that state should change based on the action we dispatch.
+
+
 function dataReducer(state, action) {
-  switch (action.type) {
+
+  // The reducer function uses a switch statement to handle different action types.
+  switch (action.type) 
+    
+  {
     case 'FETCH_START':
-      // When a new request begins, we show loading again and clear any old error.
+      
+    // When a new request begins, we show loading again and clear any old error.
       return {
         ...state,
         loading: true,
@@ -36,17 +56,12 @@ function dataReducer(state, action) {
         error: action.payload,
       };
 
+
+      // The default case is important to return the current state if an unknown action type is dispatched.
     default:
       return state;
   }
 }
-
-/**
- * Custom hook to fetch cryptocurrency prices using one reducer-managed state object
- * @param {string} coinId - The CoinGecko ID of the cryptocurrency (for example: 'bitcoin')
- * @param {string} vsCurrency - The target currency code (for example: 'USD' or 'EUR')
- * @returns {Object} Object containing exchangeRate, loading and error values
- */
 
 // declare a custom hook called useDataReducer that takes in two parameters: coinId and vsCurrency.
 function useDataReducer(coinId, vsCurrency) {
@@ -76,22 +91,28 @@ function useDataReducer(coinId, vsCurrency) {
         }
         return response.json();
       })
-      .then(data => {
-      // If the fetch request was not aborted, we extract the exchange rate from the response data.
       
+    // Use a second .then() method (as per useData.jsx) to process the parsed JSON data, except instead of setting state directly,
+    // we dispatch a 'FETCH_SUCCESS' action with the fetched exchange rate as the payload.
+    
+
+      .then(data => {  
         if (!signal.aborted) {
+          
+        // define a variable called rate that extracts the exchange rate from the fetched data using optional chaining and nullish coalescing
+        // to handle cases where the data might not be available.
           const rate = data[coinId]?.[vsCurrency.toLowerCase()] ?? null;
 
-          // We then dispatch a 'FETCH_SUCCESS' action with the fetched exchange rate as the payload
-          // This updates the state to store the new exchange rate and mark loading as false.
+          // We dispatch a 'FETCH_SUCCESS' action with the fetched exchange rate as the payload.
+          // dispatch is a native function to reducers that sends an action object to the reducer function, which then updates the state based on the action type and payload.          
           dispatch({
             type: 'FETCH_SUCCESS',
             payload: rate,
           });
         }
       })
-      .catch(err => {
-        
+
+      .catch(err => {    
         if (!signal.aborted && err.name !== 'AbortError') {
           console.error('Error fetching price from CoinGecko:', err);
           

@@ -49,11 +49,15 @@ function useData(coinId, vsCurrency) {
 
       // Use a second .then() method to process the parsed JSON data.
       // It checks if the fetch request was not aborted and then updates the exchangeRate state with the fetched price.
-      // If the price is not available, it sets exchangeRate to null. 
-      // Finally, it sets loading to false to indicate that the data fetching is complete.
+      
+      // if (!signal.aborted) = this check ensures that we only update the state if the fetch request was not aborted,
       .then(data => {
         if (!signal.aborted) {
+      
+          // If the price is not available, it sets exchangeRate to null. 
           setExchangeRate(data[coinId]?.[vsCurrency.toLowerCase()] ?? null);
+
+          // Finally, it sets loading to false to indicate that the data fetching is complete.
           setLoading(false);
         }
       })
@@ -64,6 +68,8 @@ function useData(coinId, vsCurrency) {
       .catch(err => {
         if (!signal.aborted && err.name !== 'AbortError') {
           console.error('Error fetching price from CoinGecko:', err);
+
+          
           setError('Failed to fetch price. Please try again.');
           setLoading(false);
         }
