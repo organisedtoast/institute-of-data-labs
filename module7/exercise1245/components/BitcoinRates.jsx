@@ -19,6 +19,8 @@ function BitcoinRates() {
   const [error, setError] = useState(null);
 
   // Use the useEffect hook to fetch the exchange rate whenever the selected currency changes.
+  // The useEffect hook is used to perform side effects in functional components.
+  // Without it, the component would not know when to fetch new data based on changes in the selected currency.
   useEffect(() => {
     // Reset error state when currency changes
     setError(null);
@@ -69,13 +71,13 @@ function BitcoinRates() {
   ));
 
 
-  // The component should render a <div> with the class name "BitcoinRates componentBox". 
+  // Finally, the component should render a <div> with the class name "BitcoinRates componentBox". 
   // Inside this div, there should be an <h3> element with the text "Bitcoin Exchange Rate". 
   // Below the heading, there should be a <label> element that contains a dropdown <select> 
   // for choosing the currency. The select should have an onChange handler that updates the selected currency state.
   return (
     <div className="BitcoinRates componentBox">
-      <h3>Man Utd Bitcoin Exchange Rate</h3>
+      <h3>Man Utd Bitcoin Exchange Rate - useState useEffect in 1 component</h3>
       <label>
         Choose currency:
         <select 
