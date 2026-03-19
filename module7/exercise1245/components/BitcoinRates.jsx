@@ -77,7 +77,7 @@ function BitcoinRates() {
   // for choosing the currency. The select should have an onChange handler that updates the selected currency state.
   return (
     <div className="BitcoinRates componentBox">
-      <h3>Man Utd Bitcoin Exchange Rate - useState useEffect in 1 component</h3>
+      <h3>Man Utd Bitcoin Exchange Rate Exercise 1: useState and useEffect in 1 component</h3>
       <label>
         Choose currency:
         <select 

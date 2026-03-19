@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Custom hook to fetch cryptocurrency prices from CoinGecko API
+ * Custom hook to fetch cryptocurrency prices from CoinGecko API using
  * @param {string} coinId - The CoinGecko ID of the cryptocurrency (e.g., 'bitcoin')
  * @param {string} vsCurrency - The target currency code (e.g., 'USD', 'EUR')
  * @returns {Object} Object containing exchangeRate, loading and error states
@@ -58,7 +58,9 @@ function useData(coinId, vsCurrency) {
         }
       })
 
-      // Use the .catch() method to handle any errors that occur during the fetch call. It checks if the error is not due to an aborted request and then logs the error and updates the error state with a user-friendly message. It also sets loading to false since the fetch attempt has concluded, even though it failed.
+      // Use the .catch() method to handle any errors that occur during the fetch call. 
+      // It checks if the error is not due to an aborted request and then logs the error and updates the error state with a user-friendly message. 
+      // It also sets loading to false since the fetch attempt has concluded, even though it failed.
       .catch(err => {
         if (!signal.aborted && err.name !== 'AbortError') {
           console.error('Error fetching price from CoinGecko:', err);
