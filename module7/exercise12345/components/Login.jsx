@@ -1,3 +1,6 @@
+// NB: this line of code was copied from Module 6 Presentation slide 73
+// I made no changes to it at all.
+
 function Login() {
     
     const [userEmail, setUserEmail] = useState('');
