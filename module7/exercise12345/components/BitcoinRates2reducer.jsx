@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useDataReducer from '../hooks/useDataReducer';
+import Emoji from './Emoji';
 
 const currencies = ['USD', 'AUD', 'NZD', 'GBP', 'EUR', 'SGD'];
 
@@ -37,6 +38,8 @@ function BitcoinRates2reducer() {
           : 'Loading...'
         }
       </div>
+
+      <Emoji />
 
     </div>
   );

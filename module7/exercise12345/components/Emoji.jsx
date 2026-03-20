@@ -18,9 +18,9 @@ function Emoji() {
 
   return (
     <>
-      <h2>Man Utd Fan Transfer Window Reactions</h2>
+      <h2>Man Utd Fan Reaction to Bitcoin Price</h2>
       <p className = "emoji-text"  >{isHappy ? '😀' : '😡'}</p>
-      <button onClick={handleChangeMood}>Sign Star Player</button>
+      <button onClick={handleChangeMood}>Toggle change in BTC price</button>
     </>
   )
 }
