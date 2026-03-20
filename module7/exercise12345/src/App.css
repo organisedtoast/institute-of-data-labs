@@ -1,3 +1,77 @@
+/* NAVBAR STYLES */
+
+/* Main navbar container - spans full width at top of page */
+.NavBar {
+  background: linear-gradient(135deg, #DA0000 0%, #8B0000 100%); /* Manchester United red gradient */
+  border-bottom: 3px solid #000000; /* Black border at bottom */
+  padding: 15px 30px; /* Space inside navbar */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Drop shadow for depth */
+  position: sticky; /* Stays at top when scrolling */
+  top: 0;
+  z-index: 1000; /* Ensures navbar stays on top of other content */
+}
+
+/* Menu list - removes default bullet points and spacing */
+.NavBar .menu {
+  list-style: none; /* Removes bullet points */
+  margin: 0;
+  padding: 0;
+  display: flex; /* Arranges items horizontally */
+  justify-content: center; /* Centers menu items */
+  gap: 30px; /* Space between menu items */
+}
+
+/* Individual menu items */
+.NavBar .menu li {
+  display: inline-block;
+}
+
+/* Navigation links - the actual clickable text */
+.NavBar .menu li a {
+  color: #FFFFFF; /* White text */
+  text-decoration: none; /* Removes underline */
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase; /* Makes text all caps */
+  letter-spacing: 1px; /* Space between letters */
+  padding: 10px 20px;
+  border-radius: 6px;
+  transition: all 0.3s ease; /* Smooth hover effects */
+}
+
+/* Hover effect - when mouse is over a link */
+.NavBar .menu li a:hover {
+  background: #FFFFFF; /* White background */
+  color: #DA0000; /* Red text */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Active state - highlights the current page */
+.NavBar .menu li a.active {
+  background: #FFFFFF; /* White background */
+  color: #DA0000; /* Red text */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+/* Mobile responsive - adjusts for smaller screens */
+@media (max-width: 480px) {
+  .NavBar {
+    padding: 10px 15px;
+  }
+
+  .NavBar .menu {
+    flex-direction: column; /* Stacks items vertically */
+    gap: 10px;
+    text-align: center;
+  }
+
+  .NavBar .menu li a {
+    display: block; /* Full width clickable area */
+    font-size: 14px;
+  }
+}
+
 /* Manchester United themed styles for BitcoinRates component */
 
 .BitcoinRates.componentBox {
