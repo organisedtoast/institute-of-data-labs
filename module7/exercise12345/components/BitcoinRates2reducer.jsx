@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import useDataReducer from '../hooks/useDataReducer';
+
+// EXERCISE 3: import the Emoji component which will display an emoji based on the Bitcoin price change
 import Emoji from './Emoji';
 
 const currencies = ['USD', 'AUD', 'NZD', 'GBP', 'EUR', 'SGD'];
@@ -39,6 +41,8 @@ function BitcoinRates2reducer() {
         }
       </div>
 
+
+      {/* EXERCISE 3: Render the Emoji component */}        
       <Emoji />
 
     </div>
