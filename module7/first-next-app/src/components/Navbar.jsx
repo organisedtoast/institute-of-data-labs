@@ -18,6 +18,9 @@ function NavBar() {
                 <li><Link href="/contact"
                     className={path.startsWith('/contact') ? 'active' :
                         null}>Contact</Link></li>
+                                <li><Link href="/posts"
+                    className={path.startsWith('/posts') ? 'active' :
+                        null}>Posts</Link></li>        
             </ul>
         </nav>
     )
