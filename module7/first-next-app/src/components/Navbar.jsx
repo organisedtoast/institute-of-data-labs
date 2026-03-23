@@ -18,9 +18,11 @@ function NavBar() {
                 <li><Link href="/contact"
                     className={path.startsWith('/contact') ? 'active' :
                         null}>Contact</Link></li>
-                                <li><Link href="/posts"
+                <li><Link href="/posts"
                     className={path.startsWith('/posts') ? 'active' :
-                        null}>Posts</Link></li>        
+                        null}>Posts</Link></li>
+                <li><Link href="/bitcoinrates">Bitcoin Rates</Link></li>
+                <li><Link href="/login">Login</Link></li>
             </ul>
         </nav>
     )
