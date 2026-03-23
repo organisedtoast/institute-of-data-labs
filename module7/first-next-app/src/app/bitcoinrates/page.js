@@ -10,6 +10,7 @@
 import React, { useState } from 'react';
 import useDataReducer from '../../hooks/useDataReducer';
 import Emoji from '../../components/Emoji';
+import { EmojiProvider } from '../../contexts/EmojiContext';
 
 const currencies = ['USD', 'AUD', 'NZD', 'GBP', 'EUR', 'SGD'];
 
@@ -46,7 +47,9 @@ function BitcoinRates() {
         }
       </div>
 
-      <Emoji />
+      <EmojiProvider>
+        <Emoji />
+      </EmojiProvider>
 
     </div>
   );

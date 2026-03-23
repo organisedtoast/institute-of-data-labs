@@ -1,4 +1,4 @@
-'use client'
+'use client' // client component, not server rendered
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 

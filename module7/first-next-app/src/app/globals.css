@@ -1,3 +1,6 @@
+/* ========================================
+   CSS VARIABLES & COLOR SCHEME
+   ======================================== */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -10,6 +13,9 @@
   }
 }
 
+/* ========================================
+   GLOBAL RESET & BASE STYLES
+   ======================================== */
 html {
   height: 100%;
 }
@@ -48,6 +54,9 @@ a {
   }
 }
 
+/* ========================================
+   NAVIGATION BAR STYLES
+   ======================================== */
 .NavBar ul {
   display: flex;
   list-style: none;
@@ -67,3 +76,220 @@ a {
 
 .NavBar ul li a.active {
   font-weight: bold;
+}
+
+/* NAVBAR STYLES */
+
+/* Main navbar container - spans full width at top of page */
+.NavBar {
+  background: linear-gradient(135deg, #DA0000 0%, #8B0000 100%); /* Manchester United red gradient */
+  border-bottom: 3px solid #000000; /* Black border at bottom */
+  padding: 15px 30px; /* Space inside navbar */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Drop shadow for depth */
+  position: sticky; /* Stays at top when scrolling */
+  top: 0;
+  z-index: 1000; /* Ensures navbar stays on top of other content */
+}
+
+/* Menu list - removes default bullet points and spacing */
+.NavBar .menu {
+  list-style: none; /* Removes bullet points */
+  margin: 0;
+  padding: 0;
+  display: flex; /* Arranges items horizontally */
+  justify-content: center; /* Centers menu items */
+  gap: 30px; /* Space between menu items */
+}
+
+/* Individual menu items */
+.NavBar .menu li {
+  display: inline-block;
+}
+
+/* Navigation links - the actual clickable text */
+.NavBar .menu li a {
+  color: #FFFFFF; /* White text */
+  text-decoration: none; /* Removes underline */
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase; /* Makes text all caps */
+  letter-spacing: 1px; /* Space between letters */
+  padding: 10px 20px;
+  border-radius: 6px;
+  transition: all 0.3s ease; /* Smooth hover effects */
+}
+
+/* Hover effect - when mouse is over a link */
+.NavBar .menu li a:hover {
+  background: #FFFFFF; /* White background */
+  color: #DA0000; /* Red text */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Active state - highlights the current page */
+.NavBar .menu li a.active {
+  background: #FFFFFF; /* White background */
+  color: #DA0000; /* Red text */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+/* Mobile responsive - adjusts for smaller screens */
+@media (max-width: 480px) {
+  .NavBar {
+    padding: 10px 15px;
+  }
+
+  .NavBar .menu {
+    flex-direction: column; /* Stacks items vertically */
+    gap: 10px;
+    text-align: center;
+  }
+
+  .NavBar .menu li a {
+    display: block; /* Full width clickable area */
+    font-size: 14px;
+  }
+}
+
+/* ========================================
+   BITCOIN RATES COMPONENT STYLES
+   ======================================== */
+/* Manchester United themed styles for BitcoinRates component */
+
+.BitcoinRates.componentBox {
+  background: linear-gradient(135deg, #ffffff 0%, #fad0d0 100%); /* Manchester United red */
+  border: 3px solid #000000; /* Black border */
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.BitcoinRates.componentBox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #FFFFFF; /* White stripe */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.BitcoinRates h3 {
+  color: #000000;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 0 0 20px 0;
+  text-align: center;
+  border-bottom: 2px solid #FFFFFF;
+  padding-bottom: 10px;
+}
+
+.BitcoinRates label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.BitcoinRates label span {
+  color: #FFFFFF;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.BitcoinRates select {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.BitcoinRates select:hover {
+  background: #F0F0F0;
+  border-color: #DA0000;
+  transform: translateY(-1px);
+}
+
+.BitcoinRates select:focus {
+  border-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.BitcoinRates select option {
+  background: #FFFFFF;
+  color: #000000;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+}
+
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* Additional professional styling */
+.BitcoinRates.componentBox {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.BitcoinRates.componentBox:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .BitcoinRates.componentBox {
+    margin: 10px;
+    padding: 20px;
+  }
+
+
+  .BitcoinRates h3 {
+    font-size: 20px;
+  }
+}
+
+/* ========================================
+   EMOJI COMPONENT STYLES
+   ======================================== */
+/* Emoji sub-component styling */
+.emoji-text {
+  font-size: 10rem;
+  line-height: 1;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* ========================================
+   HOME PAGE LOGO STYLES
+   ======================================== */
+.logo {
+  width: 400px;
+  height: auto;
+}
+

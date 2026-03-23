@@ -1,3 +1,5 @@
+'use client' // client component, not server rendered
+
 import { useContext } from 'react'
 
 import EmojiContext from '../contexts/EmojiContext'
