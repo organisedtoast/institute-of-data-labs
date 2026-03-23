@@ -1,17 +1,31 @@
-// This code defines a React functional component called `Login`.
+// NB: this line of code was copied from 
+// institute-of-data-labs\module7\exercise12345\components\Login.jsx
 
-// It returns a JSX structure that includes a heading and a paragraph describing the login page of the Next.js application. 
+// I adapted it for use in a Next.js page component by simply adding a 'use client' directive
 
-// The component is then exported as the default export of the module, allowing it to be imported and used in other parts of the application.
+// Other than that, there were no changes to the code at all.
 
-function Login () {
+'use client';
+
+import { useState } from 'react';
+
+export default function Login() {
+    const [userEmail, setUserEmail] = useState('');
+    const [userPassword, setUserPassword] = useState('');
     return (
-        <div>
-            <h1>Login</h1>
-            <p>This is the login page of our Next.js application.</p>
+        <div className="LoginForm componentBox">
+            <div className="formRow">
+                <label>Email Address:
+                    <input type="email" value={userEmail} name="userEmail"
+                        onChange={(e) => setUserEmail(e.target.value)} />
+                </label>
+            </div>
+            <div className="formRow">
+                <label>Password:
+                    <input type="password" value={userPassword} name="password"
+                        onChange={(e) => setUserPassword(e.target.value)} />
+                </label>
+            </div>
         </div>
-    );
+    )
 }
-
-export default Login;
-

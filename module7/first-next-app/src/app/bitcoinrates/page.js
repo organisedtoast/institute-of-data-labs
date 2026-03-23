@@ -1,17 +1,55 @@
-// This code defines a React functional component called `BitcoinRates`.
+// this code was copied from institute-of-data-labs\module7\exercise12345\components\BitcoinRates2reducer.jsx
 
-// It returns a JSX structure that includes a heading and a paragraph describing the Bitcoin Rates page of the Next.js application. 
+// I added 'use client' at the top to make it work in Next.js 13 app directory
+ 
+// I also updated the import paths for useDataReducer custom hook and Emoji component.
 
-// The component is then exported as the default export of the module, allowing it to be imported and used in other parts of the application.
 
-function BitcoinRates () {
-    return (
-        <div>
-            <h1>Bitcoin Rates</h1>
-            <p>This is the Bitcoin Rates page of our Next.js application.</p>
-        </div>
-    );
+'use client';
+
+import React, { useState } from 'react';
+import useDataReducer from '../../hooks/useDataReducer';
+import Emoji from '../../components/Emoji';
+
+const currencies = ['USD', 'AUD', 'NZD', 'GBP', 'EUR', 'SGD'];
+
+function BitcoinRates() {
+  const [currency, setCurrency] = useState(currencies[0]);
+  
+  const { exchangeRate, loading, error } = useDataReducer('bitcoin', currency);
+
+  const options = currencies.map(curr => (
+    <option value={curr} key={curr}>
+      {curr}
+    </option>
+  ));
+
+  return (
+    <div className="BitcoinRates componentBox">
+      <h3>Man Utd Bitcoin Exchange Rate Exercise 2ext: links to useDataReducer hook which adds useReducer to handle internal state management</h3>
+      <label>
+        Choose currency:
+        <select
+          value={currency}
+          onChange={e => setCurrency(e.target.value)}
+        >
+          {options}
+        </select>
+      </label>
+
+      {error && <p className="error">{error}</p>}
+
+      <div className="exchange-rate-display">
+        {!loading && exchangeRate !== null
+          ? `${Number(exchangeRate).toLocaleString(undefined, { maximumFractionDigits: 2 })} ${currency}`
+          : 'Loading...'
+        }
+      </div>
+
+      <Emoji />
+
+    </div>
+  );
 }
 
 export default BitcoinRates;
-
