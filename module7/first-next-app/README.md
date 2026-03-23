@@ -75,8 +75,14 @@ first-next-app/
 │   └── hooks/                  # Custom React hooks
 │       └── useDataReducer.jsx  # Data fetching with useReducer
 ├── public/                     # Static assets (images, fonts)
+├── .gitignore                  # Git ignore rules
+├── AGENTS.md                   # AI agent configuration (Next.js 16 breaking changes notice)
+├── CLAUDE.md                   # Claude AI assistant configuration
+├── eslint.config.mjs           # ESLint flat config (extends eslint-config-next)
+├── jsconfig.json               # JavaScript path aliases (@/* → ./src/*)
+├── package-lock.json           # Dependency lockfile (pins exact versions)
 ├── package.json                # Dependencies & scripts
-└── next.config.mjs             # Next.js configuration (optional)
+└── README.md                   # Project documentation
 ```
 
 ---
