@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import NavBar from '../components/NavBar'
+import NavBar2 from '../components/NavBar2'
 import AppRoutes from '../approutes/AppRoutes'
 import { EmojiProvider } from '../contexts/EmojiContext'
 import { ThemeProvider } from "@mui/material/styles";
@@ -13,7 +13,7 @@ function App() {
   return (
     <ThemeProvider theme={tealTheme}>
       <EmojiProvider>
-        <NavBar />
+        <NavBar2 />
         <AppRoutes />
       </EmojiProvider>
     </ThemeProvider>
