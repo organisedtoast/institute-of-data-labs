@@ -8,7 +8,7 @@ import { createTheme } from "@mui/material/styles";
 // but then use <Button variant='outlined'> in your component, the button will be outlined, not contained.
 //  This allows you to set global defaults while still having the flexibility to override them on a case-by-case basis.
 
-const theme = createTheme({
+export const tealTheme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class',
   },
@@ -301,4 +301,5 @@ const theme = createTheme({
   },
 })
 
-export default theme;
+
+

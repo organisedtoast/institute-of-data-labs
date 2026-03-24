@@ -10,7 +10,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login2 />} />
       <Route path="/bitcoin" element={<BitcoinRates2reducer />} />
-      <Route path="/customcard" element={<CustomCard title=""></CustomCard>} />
+      <Route path="/customcard" element={<CustomCard />} /> 
     </Routes>
   )
 }

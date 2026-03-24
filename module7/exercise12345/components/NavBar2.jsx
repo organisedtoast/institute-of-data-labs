@@ -17,6 +17,12 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { NavLink } from 'react-router-dom';
 
+const navlinkStyle = {
+  color: '#d3eeea',
+  textDecoration: 'none',
+};
+
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -178,10 +184,10 @@ export default function PrimarySearchAppBar() {
             MUI
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/bitcoin">Bitcoin Rates</NavLink>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/customcard">Custom Card</NavLink>
+            <NavLink style={{color: 'white'}} to="/">Home</NavLink>
+            <NavLink style={{color: 'white'}} to="/bitcoin">Bitcoin Rates</NavLink>
+            <NavLink style={{color: 'white'}} to="/login">Login</NavLink>
+            <NavLink style={{color: 'white'}} to="/customcard">Custom Card</NavLink>
           </Box>
           <Search>
             <SearchIconWrapper>

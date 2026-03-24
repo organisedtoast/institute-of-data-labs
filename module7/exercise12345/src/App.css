@@ -2,7 +2,7 @@
 
 /* Main navbar container - spans full width at top of page */
 .NavBar {
-  background: linear-gradient(135deg, #DA0000 0%, #8B0000 100%); /* Manchester United red gradient */
+  background: linear-gradient(135deg, #DA0000 0%, #e4c8c8 100%); /* Manchester United red gradient */
   border-bottom: 3px solid #000000; /* Black border at bottom */
   padding: 15px 30px; /* Space inside navbar */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Drop shadow for depth */
@@ -31,11 +31,11 @@
   color: #FFFFFF; /* White text */
   text-decoration: none; /* Removes underline */
   font-family: 'Arial Black', Arial, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   text-transform: uppercase; /* Makes text all caps */
-  letter-spacing: 1px; /* Space between letters */
-  padding: 10px 20px;
+  letter-spacing: 0.5px; /* Space between letters */
+  padding: 6px 12px;
   border-radius: 6px;
   transition: all 0.3s ease; /* Smooth hover effects */
 }
