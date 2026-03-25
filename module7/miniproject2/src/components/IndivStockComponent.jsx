@@ -4,10 +4,10 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-// Import the SectorChart component to display inside the card
-import SectorChart from './SectorChart';
+// Import the IndivStockChart component to display inside the card
+import IndivStockChart from './IndivStockChart';
 
-export default function SectorCardComponent() {
+export default function IndivStockComponent() {
   return (
     <Card
       sx={{
@@ -21,16 +21,16 @@ export default function SectorCardComponent() {
     >
       <CardContent sx={{ paddingBottom: '16px !important', paddingTop: '16px !important' }}>
         <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, marginBottom: '8px' }}>
-          Factor
+          Stock
         </Typography>
         <Typography variant="h5" component="div" sx={{ marginBottom: '0 !important', marginTop: '0 !important' }}>
-          FactorName
+          StockName
         </Typography>
 
       </CardContent>
 
-      {/* Render the SectorChart component inside the card */}
-      <SectorChart />
+      {/* Render the IndivStockChart component inside the card */}
+      <IndivStockChart />
 
       <CardActions>
         <Button size="small">EXPAND</Button>

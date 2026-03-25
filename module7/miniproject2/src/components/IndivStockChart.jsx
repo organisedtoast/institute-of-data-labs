@@ -34,7 +34,7 @@ const xAxis = [
 const yAxis = [
   {
     // valueFormatter: function that formats the numbers on the y-axis
-    // Uses priceFormatter to show "36.00" instead of percentages
+    // Uses priceFormatter to show plain numeric values like "36.00"
     valueFormatter: priceFormatter,
 
     // Keep the y-axis labels compact and readable.
@@ -61,30 +61,30 @@ const series = [
   },
 ];
 
-// SectorChart component - renders a line chart showing share price over time
-export default function SectorChart() {
+// IndivStockChart component - renders a line chart showing share price over time
+export default function IndivStockChart() {
   return (
     // LineChart component with all configuration props:
     <LineChart
       // dataset: the array of data objects to visualize
       // Each object should have properties matching the dataKeys in xAxis and series
       dataset={SharePrice}
-      
+
       // xAxis: pass the x-axis configuration array defined above
       xAxis={xAxis}
-      
+
       // yAxis: pass the y-axis configuration array defined above
       yAxis={yAxis}
-      
+
       // series: pass the series configuration array defined above
       series={series}
-      
+
       // height: the height of the chart in pixels
       height={360}
 
       // Keep extra left padding so wider y-axis labels are fully visible.
       margin={{ top: 16, right: 16, left: 80 }}
-      
+
       // grid: configuration for the chart grid lines
       // vertical: true shows vertical grid lines
       // horizontal: true shows horizontal grid lines
