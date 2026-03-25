@@ -9,6 +9,7 @@ function App() {
   return (
     <>
       <NavBar />
+      {/* AppRoutes renders page components directly below the NavBar */}
       <AppRoutes />
     </>
   )

@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,38 +7,24 @@ import Typography from '@mui/material/Typography';
 // Import the SectorChart component to display inside the card
 import SectorChart from './SectorChart';
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
-
 export default function SectorCardComponent() {
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-          Word of the Day
+    <Card sx={{ minWidth: 275, margin: '0 auto', marginTop: '20px' }}>
+      <CardContent sx={{ paddingBottom: '16px !important', paddingTop: '16px !important' }}>
+        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, marginBottom: '8px' }}>
+          Factor
         </Typography>
-        <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
+        <Typography variant="h5" component="div" sx={{ marginBottom: '0 !important', marginTop: '0 !important' }}>
+          FactorName
         </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
+
       </CardContent>
-      
+
       {/* Render the SectorChart component inside the card */}
       <SectorChart />
-      
+
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small">EXPAND</Button>
       </CardActions>
     </Card>
   );
