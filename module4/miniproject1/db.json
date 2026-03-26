@@ -84,6 +84,16 @@
       "dividend_yield": 0.05,
       "fcast_dps_growth": 0.04,
       "id": "2a68"
+    },
+    {
+      "stock_code": "dfsad",
+      "name": "asdf",
+      "lenses_category": "profitable growth",
+      "share_price": 0.02,
+      "market_cap": 213,
+      "roe": 0.02,
+      "image": "https://via.placeholder.com/300x200?text=No+Image",
+      "id": "RUB46pjG8iM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
