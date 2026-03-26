@@ -18,6 +18,37 @@ const ROIC_API_KEY = process.env.ROIC_API_KEY;
 // This base URL is the common starting point for all ROIC stock-price requests.
 const ROIC_BASE_URL = 'https://api.roic.ai/v2/stock-prices';
 
+// Some APIs return number-looking values as strings, such as "1.59" instead of 1.59.
+// Charts and calculations are easier to work with when those values are real numbers,
+// so this helper converts a single value when possible and leaves it unchanged otherwise.
+const convertToNumberIfPossible = (value) => {
+  if (value === null || value === undefined || value === '') {
+    return value;
+  }
+
+  const numericValue = Number(value);
+
+  return Number.isNaN(numericValue) ? value : numericValue;
+};
+
+// This helper takes one ROIC price row and converts the fields we expect to be numeric.
+// Doing this work on the server means every frontend component receives clean, consistent data.
+const normalizePriceRow = (priceRow) => {
+  return {
+    ...priceRow,
+    open: convertToNumberIfPossible(priceRow.open),
+    high: convertToNumberIfPossible(priceRow.high),
+    low: convertToNumberIfPossible(priceRow.low),
+    close: convertToNumberIfPossible(priceRow.close),
+    adj_close: convertToNumberIfPossible(priceRow.adj_close),
+    volume: convertToNumberIfPossible(priceRow.volume),
+    unadjusted_volume: convertToNumberIfPossible(priceRow.unadjusted_volume),
+    change: convertToNumberIfPossible(priceRow.change),
+    change_percent: convertToNumberIfPossible(priceRow.change_percent),
+    vwap: convertToNumberIfPossible(priceRow.vwap),
+  };
+};
+
 // Add a lightweight health-check route so we can confirm the server is running.
 app.get('/api/health', (request, response) => {
   // This route does not need any request data, so we explicitly ignore it.
@@ -54,10 +85,16 @@ app.get('/api/stock-prices/:identifier', async (request, response) => {
       },
     });
 
+    // Normalize the numeric fields before sending the data to the browser.
+    // This prevents frontend chart logic from failing when the API returns strings for prices.
+    const normalizedPrices = Array.isArray(roicResponse.data)
+      ? roicResponse.data.map(normalizePriceRow)
+      : [];
+
     // Send the upstream data back to the frontend in a beginner-friendly wrapper object.
     response.json({
       identifier,
-      prices: roicResponse.data,
+      prices: normalizedPrices,
     });
   } catch (error) {
     // If ROIC sends back an HTTP error, Axios stores the server response on `error.response`.
