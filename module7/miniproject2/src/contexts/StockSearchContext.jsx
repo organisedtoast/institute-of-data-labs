@@ -76,6 +76,7 @@ export function StockSearchProvider({ children }) {
   const [searchResults, setSearchResults] = useState([]);
   const [searchStatus, setSearchStatus] = useState('idle');
   const [searchError, setSearchError] = useState('');
+  const [pendingStockToAdd, setPendingStockToAdd] = useState(null);
 
   // Save only the user-added cards.
   // This keeps localStorage focused on user customisation instead of storing the built-in defaults too.
@@ -97,6 +98,16 @@ export function StockSearchProvider({ children }) {
     setSearchResults([]);
     setSearchStatus('idle');
     setSearchError('');
+  }, []);
+
+  const queuePendingStockToAdd = useCallback((selectedStock) => {
+    // We store the stock temporarily when the user clicks "Add stock card" on Home.
+    // After navigation, the Stocks page will read this pending value and perform the actual add there.
+    setPendingStockToAdd(selectedStock);
+  }, []);
+
+  const clearPendingStockToAdd = useCallback(() => {
+    setPendingStockToAdd(null);
   }, []);
 
   const runStockSearch = useCallback(async () => {
@@ -140,21 +151,19 @@ export function StockSearchProvider({ children }) {
     }
   }, [searchText]);
 
-  const addStockFromResult = useCallback(async (selectedStock) => {
+  const addStockFromResult = useCallback(async (
+    selectedStock,
+    options = {},
+  ) => {
+    const {
+      suppressDuplicateError = false,
+    } = options;
     const normalizedIdentifier = selectedStock?.identifier?.trim().toUpperCase();
     const resolvedName = selectedStock?.name?.trim() || normalizedIdentifier;
 
     if (!normalizedIdentifier) {
       setSearchStatus('error');
       setSearchError('The selected stock was missing a ticker symbol.');
-      return false;
-    }
-
-    const alreadyExists = stocks.some((stock) => stock.identifier === normalizedIdentifier);
-
-    if (alreadyExists) {
-      setSearchStatus('error');
-      setSearchError(`${normalizedIdentifier} is already being displayed.`);
       return false;
     }
 
@@ -166,7 +175,24 @@ export function StockSearchProvider({ children }) {
       // This keeps search suggestions and real chart availability in sync.
       await axios.get(`/api/stock-prices/${normalizedIdentifier}`);
 
+      let didInsertNewStock = false;
+
       setStocks((currentStocks) => {
+        // We check for duplicates again here using the latest available state.
+        // This is more reliable than checking only once before the async request,
+        // because React may process multiple add attempts very close together.
+        // By reading `currentStocks` inside the updater, we stop the same ticker
+        // from being inserted twice even if two add flows overlap.
+        const stockAlreadyExists = currentStocks.some((stock) => {
+          return stock.identifier === normalizedIdentifier;
+        });
+
+        if (stockAlreadyExists) {
+          return currentStocks;
+        }
+
+        didInsertNewStock = true;
+
         // We insert the newest stock at the start of the array instead of the end.
         // React renders `.map()` output in array order, so putting the new stock first
         // makes the newly added card appear at the top of the page immediately.
@@ -184,6 +210,18 @@ export function StockSearchProvider({ children }) {
         ];
       });
 
+      if (!didInsertNewStock) {
+        // Some flows, such as "click add on Home and then navigate to Stocks",
+        // can intentionally tolerate a harmless second add attempt while React is
+        // coordinating page navigation. In those cases we silently ignore the
+        // duplicate instead of showing an error to the user.
+        if (!suppressDuplicateError) {
+          setSearchStatus('error');
+          setSearchError(`${normalizedIdentifier} is already being displayed.`);
+        }
+        return false;
+      }
+
       setSearchText('');
       setSearchResults([]);
       setSearchStatus('success');
@@ -197,7 +235,7 @@ export function StockSearchProvider({ children }) {
       );
       return false;
     }
-  }, [stocks]);
+  }, []);
 
   const removeStockByIdentifier = useCallback((identifierToRemove) => {
     // Only user-added cards should be removable.
@@ -222,15 +260,21 @@ export function StockSearchProvider({ children }) {
       searchResults,
       searchStatus,
       searchError,
+      pendingStockToAdd,
       setSearchText,
       runStockSearch,
       addStockFromResult,
       removeStockByIdentifier,
       clearSearchFeedback,
+      queuePendingStockToAdd,
+      clearPendingStockToAdd,
     };
   }, [
     addStockFromResult,
+    clearPendingStockToAdd,
     clearSearchFeedback,
+    pendingStockToAdd,
+    queuePendingStockToAdd,
     removeStockByIdentifier,
     runStockSearch,
     searchError,

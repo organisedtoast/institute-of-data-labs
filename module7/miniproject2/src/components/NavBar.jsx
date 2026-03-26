@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import useStockSearch from '../hooks/useStockSearch';
 
@@ -29,9 +29,12 @@ const Search = styled('form')(({ theme }) => ({
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
+  minWidth: 0,
+  flex: 1,
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
     width: 'auto',
+    flex: '0 1 auto',
   },
 }));
 
@@ -60,9 +63,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const {
     searchText,
     setSearchText,
@@ -91,15 +91,9 @@ export default function NavBar() {
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
 
-    const searchWorked = await runStockSearch();
-
-    if (!searchWorked) {
-      return;
-    }
-
-    if (location.pathname !== '/stocks') {
-      navigate('/stocks');
-    }
+    // The search itself should stay on the current page.
+    // Home can now show search results too, so we only navigate later if the user chooses to add a stock card.
+    await runStockSearch();
   };
 
   const menuId = 'nav-menu';
@@ -142,26 +136,49 @@ export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: '#4a148c' }}>
-        <Toolbar>
+        <Toolbar sx={{ gap: 1 }}>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
+            sx={{ mr: { xs: 0, sm: 2 } }}
             onClick={handleMenuOpen}
           >
             <MenuIcon />
           </IconButton>
+
+          {/* On very small screens, the search box is more important than the full title.
+              Hiding the long title on `xs` stops the text and search field from colliding.
+              We keep the full branding visible again from `sm` upward where there is enough room. */}
           <NavLink
             to="/"
-            sx={{ display: { xs: 'none', sm: 'block' }, color: '#ffffff !important', '&:hover': { color: '#ffffff !important' }, '&.active': { color: '#ffffff !important' } }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              color: '#ffffff',
+              textDecoration: 'none',
+              flexShrink: 0,
+            }}
           >
-            <Typography variant="h6" noWrap component="div" sx={{ color: '#ffffff' }}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                color: '#ffffff',
+                display: { xs: 'none', sm: 'block' },
+                flexShrink: 0,
+              }}
+            >
               Stock Gossip Monitor
             </Typography>
           </NavLink>
-          <Box sx={{ flexGrow: 1 }} />
+
+          {/* In a flex row, `minWidth: 0` is the key that allows the search area to shrink
+              instead of overflowing past its neighbours. Without it, long content can push
+              outside the toolbar even when `flex: 1` is present. */}
+          <Box sx={{ flexGrow: 1, minWidth: 0, display: 'flex', justifyContent: 'flex-end' }}>
           <Search onSubmit={handleSearchSubmit}>
             <SearchIconWrapper>
               <SearchIcon />
@@ -173,6 +190,7 @@ export default function NavBar() {
               onChange={(event) => setSearchText(event.target.value)}
             />
           </Search>
+          </Box>
         </Toolbar>
       </AppBar>
       {renderMenu}

@@ -92,6 +92,12 @@ export default function SectorChart() {
 
       // valueFormatter: formats the value shown in tooltips when hovering over the line
       valueFormatter: priceFormatter,
+
+      // Give the sector chart line a dark-orange color so it matches the desired chart styling.
+      color: '#c2410c',
+
+      // Make the line much easier to see by doubling the thickness from the default look.
+      strokeWidth: 4,
     },
   ];
 

@@ -58,6 +58,10 @@ export default function IndivStockChart({ data }) {
       dataKey: 'close',
       showMark: false,
       valueFormatter: priceFormatter,
+      // Give the stock line a dark-orange color instead of the default blue.
+      color: '#c2410c',
+      // Make the line much easier to see by doubling the thickness from the default look.
+      strokeWidth: 4,
     },
   ];
 
