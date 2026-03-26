@@ -3,14 +3,15 @@
 import { LineChart } from '@mui/x-charts/LineChart';
 
 // Import data and formatter functions from the dataset file
-// SharePrice: array of objects containing date and share price data
 // dateAxisFormatter: function to format dates on the x-axis
 // priceFormatter: function to format values as plain numbers on the y-axis
 import {
   dateAxisFormatter,
   priceFormatter,
-  SharePrice,
 } from '../dataset/SharePrice';
+// Import the dedicated dummy dataset for the sector chart.
+// Keeping this data in its own file makes the chart component easier to read.
+import { SectorPrice } from '../dataset/SectorPrice';
 
 // xAxis configuration array - defines how the horizontal axis (x-axis) behaves
 // Each object in the array configures one axis
@@ -68,7 +69,7 @@ export default function SectorChart() {
     <LineChart
       // dataset: the array of data objects to visualize
       // Each object should have properties matching the dataKeys in xAxis and series
-      dataset={SharePrice}
+      dataset={SectorPrice}
       
       // xAxis: pass the x-axis configuration array defined above
       xAxis={xAxis}

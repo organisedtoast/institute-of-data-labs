@@ -1,50 +1,45 @@
-// Sample share price data for the chart
-// This JS array of objects contains monthly share prices from 2020-2023
+// This file now contains helper functions instead of hard-coded sample data.
+// The goal is to keep data formatting logic in one place so our components stay easier to read.
 
-export const SharePrice = [
-  { date: "2020-01-01", close: 36.00 },
-  { date: "2020-02-01", close: 35.00 },
-  { date: "2020-03-01", close: 44.00 },
-  { date: "2020-04-01", close: 147.00 },
-  { date: "2020-05-01", close: 133.00 },
-  { date: "2020-06-01", close: 111.00 },
-  { date: "2020-07-01", close: 102.00 },
-  { date: "2020-08-01", close: 84.00 },
-  { date: "2020-09-01", close: 79.00 },
-  { date: "2020-10-01", close: 69.00 },
-  { date: "2020-11-01", close: 67.00 },
-  { date: "2020-12-01", close: 67.00 },
-  { date: "2021-01-01", close: 63.00 },
-  { date: "2021-02-01", close: 62.00 },
-  { date: "2021-03-01", close: 60.00 },
-  { date: "2021-04-01", close: 58.00 },
-  { date: "2021-05-01", close: 58.00 },
-  { date: "2021-06-01", close: 59.00 },
-  { date: "2021-07-01", close: 54.00 },
-  { date: "2021-08-01", close: 52.00 },
-  { date: "2021-09-01", close: 48.00 },
-  { date: "2021-10-01", close: 46.00 },
-  { date: "2021-11-01", close: 42.00 },
-  { date: "2021-12-01", close: 39.00 },
-  { date: "2022-01-01", close: 40.00 },
-  { date: "2022-02-01", close: 38.00 },
-  { date: "2022-03-01", close: 36.00 },
-  { date: "2022-04-01", close: 36.00 },
-  { date: "2022-05-01", close: 36.00 },
-  { date: "2022-06-01", close: 36.00 },
-  { date: "2022-07-01", close: 35.00 },
-  { date: "2022-08-01", close: 37.00 },
-  { date: "2022-09-01", close: 35.00 },
-  { date: "2022-10-01", close: 37.00 },
-  { date: "2022-11-01", close: 37.00 },
-  { date: "2022-12-01", close: 35.00 },
-  { date: "2023-01-01", close: 34.00 },
-  { date: "2023-02-01", close: 36.00 },
-  { date: "2023-03-01", close: 35.00 },
-  { date: "2023-04-01", close: 34.00 },
-];
+// Convert daily stock-price rows into monthly chart points.
+// ROIC returns one row per trading day, but our chart only needs one point per month.
+// To keep the chart intuitive, we store the LAST available closing price we see for each month.
+export const convertDailyPricesToMonthlyPrices = (dailyPrices = []) => {
+  // Guard against invalid input so the rest of the app does not crash.
+  if (!Array.isArray(dailyPrices)) {
+    return [];
+  }
 
-// Formatter for date axis - displays dates in a readable format (e.g., "Jan 2020")
+  // A Map is useful here because it lets us store one entry per month.
+  // The key will be a string like "2024-01" and the value will be the chart point for that month.
+  const monthlyPriceMap = new Map();
+
+  // Loop through every daily price row from the API.
+  dailyPrices.forEach((priceRow) => {
+    // Skip rows that do not have the minimum data our chart needs.
+    if (!priceRow?.date || typeof priceRow.close !== 'number') {
+      return;
+    }
+
+    // Slice the date so "2024-01-31" becomes "2024-01".
+    // That gives us one grouping key per month.
+    const monthKey = priceRow.date.slice(0, 7);
+
+    // Because the data is requested in ascending order, each new row for the same month
+    // naturally replaces the previous one. That means the final stored row is the last
+    // available trading day for that month.
+    monthlyPriceMap.set(monthKey, {
+      date: priceRow.date,
+      close: priceRow.close,
+    });
+  });
+
+  // Convert the Map values back into a plain array so the chart component can use them.
+  return Array.from(monthlyPriceMap.values());
+};
+
+// Format date labels on the chart x-axis into a beginner-friendly format.
+// Example: "2024-01-31" becomes "Jan 2024".
 export const dateAxisFormatter = (date) => {
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',
@@ -52,7 +47,8 @@ export const dateAxisFormatter = (date) => {
   }).format(new Date(date));
 };
 
-// Formatter for price values - displays as plain numbers (e.g., 36.00)
+// Format stock prices to always show two decimal places.
+// Example: 123.4 becomes "123.40".
 export const priceFormatter = (value) => {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
