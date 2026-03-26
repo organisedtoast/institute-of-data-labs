@@ -1,6 +1,155 @@
 // This file now contains helper functions instead of hard-coded sample data.
 // The goal is to keep data formatting logic in one place so our components stay easier to read.
 
+// A month string in this project always uses the format YYYY-MM.
+// Example: "2024-06"
+// This format is helpful because alphabetical string comparison and date order match.
+// That means "2024-01" is naturally less than "2024-12", which keeps our filtering logic beginner-friendly.
+const MONTH_STRING_PATTERN = /^\d{4}-\d{2}$/;
+
+// Check whether a value already matches our expected month format.
+// We use this before comparing or converting month strings so invalid values do not break the app.
+export const isValidMonthString = (monthString) => {
+  return typeof monthString === 'string' && MONTH_STRING_PATTERN.test(monthString);
+};
+
+// Convert a full date such as "2024-06-30" into the shorter month format "2024-06".
+// If the value is already a month string, we keep it as-is.
+export const getMonthStringFromDate = (dateValue) => {
+  if (typeof dateValue !== 'string') {
+    return '';
+  }
+
+  const trimmedDateValue = dateValue.trim();
+
+  if (isValidMonthString(trimmedDateValue)) {
+    return trimmedDateValue;
+  }
+
+  if (trimmedDateValue.length < 7) {
+    return '';
+  }
+
+  const monthString = trimmedDateValue.slice(0, 7);
+
+  return isValidMonthString(monthString) ? monthString : '';
+};
+
+// Compare two month strings safely.
+// Because YYYY-MM sorts naturally, a simple string comparison is enough once we know both values are valid.
+// The function returns:
+// -1 when monthA is earlier
+//  0 when both months are the same or invalid
+//  1 when monthA is later
+export const compareMonthStrings = (monthA, monthB) => {
+  if (!isValidMonthString(monthA) || !isValidMonthString(monthB)) {
+    return 0;
+  }
+
+  if (monthA === monthB) {
+    return 0;
+  }
+
+  return monthA < monthB ? -1 : 1;
+};
+
+// Find the earliest and latest months present in a dataset.
+// We use this to set the default date inputs so each chart begins by showing all available data.
+export const getMonthBoundsFromData = (dataRows = []) => {
+  if (!Array.isArray(dataRows) || dataRows.length === 0) {
+    return {
+      earliestMonth: '',
+      latestMonth: '',
+    };
+  }
+
+  let earliestMonth = '';
+  let latestMonth = '';
+
+  dataRows.forEach((dataRow) => {
+    const monthString = getMonthStringFromDate(dataRow?.date);
+
+    if (!monthString) {
+      return;
+    }
+
+    if (!earliestMonth || compareMonthStrings(monthString, earliestMonth) < 0) {
+      earliestMonth = monthString;
+    }
+
+    if (!latestMonth || compareMonthStrings(monthString, latestMonth) > 0) {
+      latestMonth = monthString;
+    }
+  });
+
+  return {
+    earliestMonth,
+    latestMonth,
+  };
+};
+
+// Filter a dataset so only rows inside the selected month range remain.
+// The range is inclusive, which means the selected start and end months are both kept.
+// If the user has not selected both dates yet, we return the original data unchanged.
+export const filterDataByMonthRange = (dataRows = [], startDate = '', endDate = '') => {
+  if (!Array.isArray(dataRows)) {
+    return [];
+  }
+
+  if (!isValidMonthString(startDate) || !isValidMonthString(endDate)) {
+    return dataRows;
+  }
+
+  if (compareMonthStrings(startDate, endDate) > 0) {
+    return [];
+  }
+
+  return dataRows.filter((dataRow) => {
+    const monthString = getMonthStringFromDate(dataRow?.date);
+
+    if (!monthString) {
+      return false;
+    }
+
+    return (
+      compareMonthStrings(monthString, startDate) >= 0 &&
+      compareMonthStrings(monthString, endDate) <= 0
+    );
+  });
+};
+
+// Convert a month string into the first calendar day of that month.
+// Example: "2024-06" becomes "2024-06-01".
+// The backend uses this when it forwards date filters to the external stock API.
+export const convertMonthStringToApiStartDate = (monthString) => {
+  if (!isValidMonthString(monthString)) {
+    return '';
+  }
+
+  return `${monthString}-01`;
+};
+
+// Convert a month string into the final calendar day of that month.
+// We create a JavaScript Date for "day 0" of the next month, which gives us the last day of the current month.
+// Example: "2024-02" becomes "2024-02-29" in a leap year.
+export const convertMonthStringToApiEndDate = (monthString) => {
+  if (!isValidMonthString(monthString)) {
+    return '';
+  }
+
+  const [yearText, monthText] = monthString.split('-');
+  const year = Number(yearText);
+  const month = Number(monthText);
+
+  if (Number.isNaN(year) || Number.isNaN(month)) {
+    return '';
+  }
+
+  const lastDayOfMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+
+  return `${monthString}-${String(lastDayOfMonth).padStart(2, '0')}`;
+};
+
 // Convert daily stock-price rows into monthly chart points.
 // ROIC returns one row per trading day, but our chart only needs one point per month.
 // To keep the chart intuitive, we store the LAST available closing price we see for each month.

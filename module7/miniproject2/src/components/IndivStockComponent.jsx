@@ -1,23 +1,172 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // Import the chart component that will render the monthly price line.
 import IndivStockChart from './IndivStockChart';
+import ChartDateRangeControls from './ChartDateRangeControls';
+import useChartDateRange from '../hooks/useChartDateRange';
+import { convertDailyPricesToMonthlyPrices } from '../dataset/SharePrice';
 
 // This component is responsible for one stock card.
-// The parent page passes in the stock information and loading/error state as props.
+// The parent page now only passes in the stock identity.
+// This component manages its own loading, chart data, and month-range state.
 export default function IndivStockComponent({
   identifier,
   name,
-  data,
-  isLoading,
-  error,
 }) {
+  const [data, setData] = useState([]);
+  const [fullRangeData, setFullRangeData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const {
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
+    minAvailableMonth,
+    maxAvailableMonth,
+    hasAvailableRange,
+    isRangeValid,
+    initializeRangeFromData,
+    resetToAvailableRange,
+  } = useChartDateRange();
+
+  // Load the complete available history once when the card first appears.
+  // We need this first request so we can discover the earliest and latest months that exist.
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const loadAllAvailableData = async () => {
+      setIsLoading(true);
+      setError('');
+
+      try {
+        const response = await axios.get(`/api/stock-prices/${identifier}`, {
+          signal: controller.signal,
+        });
+
+        const monthlyPrices = convertDailyPricesToMonthlyPrices(response.data.prices);
+
+        if (!isMounted) {
+          return;
+        }
+
+        // Store the full monthly dataset separately.
+        // This lets us instantly restore the "show everything" view without another full API request.
+        setData(monthlyPrices);
+        setFullRangeData(monthlyPrices);
+        initializeRangeFromData(monthlyPrices);
+      } catch (requestError) {
+        if (!isMounted || requestError.name === 'CanceledError') {
+          return;
+        }
+
+        setData([]);
+        setFullRangeData([]);
+        setError(
+          requestError.response?.data?.message ||
+            `Unable to load data for ${identifier}.`,
+        );
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadAllAvailableData();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [identifier, initializeRangeFromData]);
+
+  // After the default range has been discovered, this effect responds to user date changes.
+  // If the user selects a narrower month range, we request less data from the server.
+  useEffect(() => {
+    if (!hasAvailableRange || !startDate || !endDate) {
+      return;
+    }
+
+    if (!isRangeValid) {
+      setError('Start month must be earlier than or equal to end month.');
+      return;
+    }
+
+    // When the selected range matches the full available range, we can reuse the cached full dataset.
+    // This avoids an unnecessary second full-history request.
+    if (startDate === minAvailableMonth && endDate === maxAvailableMonth) {
+      setError('');
+      setData(fullRangeData);
+      setIsLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const loadFilteredData = async () => {
+      setIsLoading(true);
+      setError('');
+
+      try {
+        const response = await axios.get(`/api/stock-prices/${identifier}`, {
+          params: {
+            startDate,
+            endDate,
+          },
+          signal: controller.signal,
+        });
+
+        const monthlyPrices = convertDailyPricesToMonthlyPrices(response.data.prices);
+
+        if (!isMounted) {
+          return;
+        }
+
+        setData(monthlyPrices);
+      } catch (requestError) {
+        if (!isMounted || requestError.name === 'CanceledError') {
+          return;
+        }
+
+        setData([]);
+        setError(
+          requestError.response?.data?.message ||
+            `Unable to load filtered data for ${identifier}.`,
+        );
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadFilteredData();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [
+    endDate,
+    fullRangeData,
+    hasAvailableRange,
+    identifier,
+    isRangeValid,
+    maxAvailableMonth,
+    minAvailableMonth,
+    startDate,
+  ]);
+
   // Decide what should appear in the large middle area of the card.
   // This is a common React pattern: use conditions to render different UI for different states.
   let cardBody;
@@ -83,14 +232,19 @@ export default function IndivStockComponent({
         </Typography>
       </CardContent>
 
+      <ChartDateRangeControls
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        minAvailableMonth={minAvailableMonth}
+        maxAvailableMonth={maxAvailableMonth}
+        onReset={resetToAvailableRange}
+        disabled={!hasAvailableRange}
+      />
+
       {/* Render the appropriate UI for loading, error, or success. */}
       {cardBody}
-
-      <CardActions>
-        <Button size="small" disabled>
-          Monthly Closing Prices
-        </Button>
-      </CardActions>
     </Card>
   );
 }

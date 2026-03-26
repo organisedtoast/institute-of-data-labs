@@ -32,8 +32,8 @@ export default function SectorCardComponent() {
       {/* Render the SectorChart component inside the card */}
       <SectorChart />
 
-      <CardActions>
-        <Button size="small">EXPAND</Button>
+      <CardActions sx={{ justifyContent: 'center' }}>
+        <Button size="small">CONSTITUENTS</Button>
       </CardActions>
     </Card>
   );
