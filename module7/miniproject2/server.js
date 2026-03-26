@@ -17,8 +17,11 @@ const ROIC_API_KEY = process.env.ROIC_API_KEY;
 
 // This base URL is the common starting point for all ROIC stock-price requests.
 const ROIC_BASE_URL = 'https://api.roic.ai/v2/stock-prices';
+const ROIC_COMPANY_NAME_SEARCH_URL = 'https://api.roic.ai/v2/tickers/search/name';
 const MONTH_STRING_PATTERN = /^\d{4}-\d{2}$/;
+const TICKER_PATTERN = /^[A-Z.-]{1,10}$/;
 const ROIC_MAX_STOCK_PRICE_LIMIT = 100000;
+const MAX_SEARCH_RESULTS = 8;
 
 // Some APIs return number-looking values as strings, such as "1.59" instead of 1.59.
 // Charts and calculations are easier to work with when those values are real numbers,
@@ -69,6 +72,86 @@ const isValidMonthString = (monthString) => {
   return typeof monthString === 'string' && MONTH_STRING_PATTERN.test(monthString);
 };
 
+// Search input can be either a ticker like "AAPL" or a company-name fragment like "micro".
+// We normalize to uppercase later when comparing ticker symbols.
+const isTickerLikeQuery = (searchQuery) => {
+  return typeof searchQuery === 'string' && TICKER_PATTERN.test(searchQuery.toUpperCase());
+};
+
+// The ROIC search endpoints return extra fields like exchange and security type.
+// The frontend only needs a small, stable shape, so we normalize it here on the server.
+const normalizeTickerSearchResult = (searchResult) => {
+  return {
+    identifier: searchResult?.symbol || searchResult?.identifier || '',
+    name: searchResult?.name || searchResult?.symbol || searchResult?.identifier || '',
+    exchange: searchResult?.exchange || '',
+    exchangeName: searchResult?.exchange_name || '',
+    type: searchResult?.type || '',
+  };
+};
+
+// Merge search results from multiple ROIC endpoints while preventing duplicate symbols.
+// We use the ticker symbol as the unique key because the UI should only show one row per stock.
+const mergeTickerSearchResults = (...searchResultLists) => {
+  const mergedResultsMap = new Map();
+
+  searchResultLists.flat().forEach((searchResult) => {
+    const normalizedResult = normalizeTickerSearchResult(searchResult);
+
+    if (!normalizedResult.identifier) {
+      return;
+    }
+
+    if (!mergedResultsMap.has(normalizedResult.identifier)) {
+      mergedResultsMap.set(normalizedResult.identifier, normalizedResult);
+    }
+  });
+
+  return [...mergedResultsMap.values()].slice(0, MAX_SEARCH_RESULTS);
+};
+
+// ROIC's company-name search endpoint is useful for natural-language searches like "gitlab".
+// It returns company metadata directly, which makes it a good fit for our search-results list.
+const searchRoicByCompanyName = async (searchQuery) => {
+  const response = await axios.get(ROIC_COMPANY_NAME_SEARCH_URL, {
+    params: {
+      query: searchQuery,
+      limit: MAX_SEARCH_RESULTS,
+      apikey: ROIC_API_KEY,
+    },
+  });
+
+  return Array.isArray(response.data) ? response.data : [];
+};
+
+// ROIC's stock-price endpoint is a reliable way to validate an exact ticker symbol.
+// It does not return a company name, so we use the symbol itself as the display fallback.
+const searchRoicByExactTicker = async (tickerSymbol) => {
+  const response = await axios.get(`${ROIC_BASE_URL}/${tickerSymbol}`, {
+    params: {
+      apikey: ROIC_API_KEY,
+      order: 'desc',
+      limit: 1,
+    },
+  });
+
+  const priceRows = Array.isArray(response.data) ? response.data : [];
+
+  if (priceRows.length === 0) {
+    return [];
+  }
+
+  return [
+    {
+      identifier: tickerSymbol,
+      name: tickerSymbol,
+      exchange: '',
+      exchangeName: '',
+      type: 'stock',
+    },
+  ];
+};
+
 // Convert a month like "2024-06" into the first day of that month.
 // The ROIC API expects full dates, not month-only strings.
 const convertMonthStringToStartDate = (monthString) => {
@@ -108,6 +191,84 @@ app.get('/api/health', (request, response) => {
   response.json({
     message: 'ROIC proxy server is running.',
   });
+});
+
+// Provide a lightweight search route for the frontend.
+// This route now uses ROIC as the source of truth for all searches,
+// which means the app can find symbols that are not part of any local starter list.
+app.get('/api/stocks/search', async (request, response) => {
+  const rawQuery = typeof request.query.q === 'string' ? request.query.q.trim() : '';
+  const uppercaseQuery = rawQuery.toUpperCase();
+  const isTickerQuery = isTickerLikeQuery(rawQuery);
+
+  if (!rawQuery) {
+    response.status(400).json({
+      message: 'Please provide a search query with ?q=',
+    });
+    return;
+  }
+
+  if (!ROIC_API_KEY) {
+    response.status(500).json({
+      message: 'ROIC_API_KEY is missing on the server. Add it to your environment before making search requests.',
+    });
+    return;
+  }
+
+  try {
+    // Ticker-like searches should behave the same whether the user typed "azj", "AZJ", or "AzJ".
+    // We normalize those searches to uppercase once so every ticker-style branch sends the same query upstream.
+    //
+    // For ordinary company-name searches such as "gitlab", we keep the natural user text because
+    // the ROIC name-search endpoint is designed for name matching rather than strict ticker matching.
+    const companyNameSearchQuery = isTickerQuery ? uppercaseQuery : rawQuery;
+    const searchTasks = [searchRoicByCompanyName(companyNameSearchQuery)];
+
+    // When the query looks like a ticker, also validate it directly against the live price endpoint.
+    // This gives us exact-symbol support even when the company-name search endpoint focuses on names.
+    //
+    // We still combine both search branches because one branch can add exact-symbol confidence
+    // while the other can contribute richer company metadata when ROIC has it available.
+    if (isTickerQuery) {
+      searchTasks.unshift(searchRoicByExactTicker(uppercaseQuery));
+    }
+
+    const searchResults = await Promise.allSettled(searchTasks);
+
+    const successfulResultLists = searchResults
+      .filter((searchResult) => searchResult.status === 'fulfilled')
+      .map((searchResult) => searchResult.value);
+
+    const mergedResults = mergeTickerSearchResults(...successfulResultLists);
+
+    if (mergedResults.length === 0) {
+      const rejectedResults = searchResults.filter((searchResult) => searchResult.status === 'rejected');
+
+      if (rejectedResults.length === searchResults.length) {
+        const firstError = rejectedResults[0]?.reason;
+        const statusCode = firstError?.response?.status || 502;
+
+        response.status(statusCode).json({
+          message: `Unable to search stocks for "${rawQuery}".`,
+          details: firstError?.response?.data || firstError?.message || 'ROIC search request failed.',
+        });
+        return;
+      }
+    }
+
+    response.json({
+      query: rawQuery,
+      queryType: isTickerQuery ? 'ticker-or-name' : 'name',
+      results: mergedResults,
+    });
+  } catch (error) {
+    const statusCode = error.response?.status || 500;
+
+    response.status(statusCode).json({
+      message: `Unable to search stocks for "${rawQuery}".`,
+      details: error.response?.data || error.message,
+    });
+  }
 });
 
 // Create an API route that the React frontend can call.

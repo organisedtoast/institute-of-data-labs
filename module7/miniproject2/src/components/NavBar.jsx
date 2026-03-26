@@ -10,15 +10,16 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+
+import useStockSearch from '../hooks/useStockSearch';
 
 const navlinkStyle = {
   color: '#151d1c',
   textDecoration: 'none',
 };
 
-
-const Search = styled('div')(({ theme }) => ({
+const Search = styled('form')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -59,6 +60,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const {
+    searchText,
+    setSearchText,
+    runStockSearch,
+  } = useStockSearch();
+
   // State to track which element the menu is anchored to (null = menu is closed)
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -76,8 +86,24 @@ export default function NavBar() {
     setAnchorEl(null);
   };
 
+  // The navbar search is now a real form submit instead of a decorative input.
+  // Using a form means pressing Enter works automatically, which is a familiar browser behaviour.
+  const handleSearchSubmit = async (event) => {
+    event.preventDefault();
+
+    const searchWorked = await runStockSearch();
+
+    if (!searchWorked) {
+      return;
+    }
+
+    if (location.pathname !== '/stocks') {
+      navigate('/stocks');
+    }
+  };
+
   const menuId = 'nav-menu';
-  
+
   // This variable holds the JSX for the dropdown menu containing navigation links
   // The menu appears when anchorEl is set (i.e., when handleMenuOpen is called)
   const renderMenu = (
@@ -127,22 +153,24 @@ export default function NavBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+          <NavLink
+            to="/"
+            sx={{ display: { xs: 'none', sm: 'block' }, color: '#ffffff !important', '&:hover': { color: '#ffffff !important' }, '&.active': { color: '#ffffff !important' } }}
           >
-            Stock Gossip Monitor
-          </Typography>
+            <Typography variant="h6" noWrap component="div" sx={{ color: '#ffffff' }}>
+              Stock Gossip Monitor
+            </Typography>
+          </NavLink>
           <Box sx={{ flexGrow: 1 }} />
-          <Search>
+          <Search onSubmit={handleSearchSubmit}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search stocks..."
               inputProps={{ 'aria-label': 'search' }}
+              value={searchText}
+              onChange={(event) => setSearchText(event.target.value)}
             />
           </Search>
         </Toolbar>

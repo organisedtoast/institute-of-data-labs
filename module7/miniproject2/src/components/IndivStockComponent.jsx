@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -18,6 +20,8 @@ import { convertDailyPricesToMonthlyPrices } from '../dataset/SharePrice';
 export default function IndivStockComponent({
   identifier,
   name,
+  isRemovable = false,
+  onRemove = null,
 }) {
   const [data, setData] = useState([]);
   const [fullRangeData, setFullRangeData] = useState([]);
@@ -234,6 +238,16 @@ export default function IndivStockComponent({
           {identifier}
         </Typography>
       </CardContent>
+
+      {isRemovable ? (
+        <CardActions sx={{ pt: 0, px: 2 }}>
+          {/* Only user-added cards show this action.
+              This gives the learner a clear example of rendering extra UI from props. */}
+          <Button color="error" size="small" onClick={onRemove}>
+            Remove stock
+          </Button>
+        </CardActions>
+      ) : null}
 
       <ChartDateRangeControls
         startDate={startDate}
