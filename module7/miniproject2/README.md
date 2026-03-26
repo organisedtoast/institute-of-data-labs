@@ -445,6 +445,8 @@ Let's trace what happens when a user adds a stock:
 
 5. **Stocks page renders**
    - Reads `stocks` from context
+   - Restores saved user-added stocks in the same order they were last shown
+   - Appends the built-in default cards afterwards if those tickers are not already present
    - Creates an `IndivStockComponent` for each stock
 
 ---
@@ -933,6 +935,13 @@ export const defaultStocks = ['AAPL', 'MSFT', 'NVDA', 'TSLA', 'GOOGL'];
 ```
 
 Add any ticker symbol to this array.
+
+When the page first loads, the app rebuilds the visible stock list in this order:
+
+1. Saved user-added stocks from `localStorage`
+2. Default starter stocks from `stockCatalog.js` that are not already in the saved list
+
+This keeps the refresh behavior consistent with normal app use, where newly added stocks appear first.
 
 ---
 

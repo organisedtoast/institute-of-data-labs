@@ -50,16 +50,36 @@ function loadSavedStocksFromLocalStorage() {
   }
 }
 
-// Merge defaults with saved stocks while preventing duplicates.
-// The Map uses the ticker symbol as the unique key because each stock card should only appear once.
+// Rebuild the visible stock list for page load while preserving the same order users saw before refresh.
+// User-added stocks should stay first because new cards are inserted at the front during normal app use.
+// Default starter cards are only appended afterwards when that ticker is not already present.
 function mergeStocks(defaultStocks, savedStocks) {
-  const mergedStocksMap = new Map();
+  const mergedStocks = [];
+  const seenIdentifiers = new Set();
 
-  [...defaultStocks, ...savedStocks].forEach((stock) => {
-    mergedStocksMap.set(stock.identifier, stock);
+  // Keep the saved order exactly as it was written to localStorage.
+  // This preserves the "newest user-added stock first" experience after a browser refresh.
+  savedStocks.forEach((stock) => {
+    if (seenIdentifiers.has(stock.identifier)) {
+      return;
+    }
+
+    seenIdentifiers.add(stock.identifier);
+    mergedStocks.push(stock);
   });
 
-  return [...mergedStocksMap.values()];
+  // Add the built-in starter cards after the saved cards.
+  // If a saved stock uses the same ticker as a default card, we skip the default copy.
+  defaultStocks.forEach((stock) => {
+    if (seenIdentifiers.has(stock.identifier)) {
+      return;
+    }
+
+    seenIdentifiers.add(stock.identifier);
+    mergedStocks.push(stock);
+  });
+
+  return mergedStocks;
 }
 
 export function StockSearchProvider({ children }) {
@@ -290,3 +310,4 @@ export function StockSearchProvider({ children }) {
     </StockSearchContext.Provider>
   );
 }
+
