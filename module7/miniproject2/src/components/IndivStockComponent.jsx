@@ -55,6 +55,9 @@ export default function IndivStockComponent({
       setError('');
 
       try {
+        // React talks to our own "/api" route instead of the third-party ROIC URL.
+        // In local development, Vite forwards this request to the Express server on port 3001.
+        // That avoids browser CORS errors and keeps the API key hidden on the server.
         const response = await axios.get(`/api/stock-prices/${identifier}`, {
           signal: controller.signal,
         });
@@ -125,6 +128,9 @@ export default function IndivStockComponent({
       setError('');
 
       try {
+        // This filtered request follows the same safe path:
+        // React -> /api/... -> Vite dev proxy -> Express server -> ROIC API.
+        // The chart behavior stays the same for users, but the browser never calls ROIC directly.
         const response = await axios.get(`/api/stock-prices/${identifier}`, {
           params: {
             startDate,
@@ -249,6 +255,9 @@ export default function IndivStockComponent({
         </CardActions>
       ) : null}
 
+      {/* Render the appropriate UI for loading, error, or success. */}
+      {cardBody}
+
       <ChartDateRangeControls
         startDate={startDate}
         endDate={endDate}
@@ -261,9 +270,6 @@ export default function IndivStockComponent({
         onApplyTrailingRange={applyTrailingRange}
         disabled={!hasAvailableRange}
       />
-
-      {/* Render the appropriate UI for loading, error, or success. */}
-      {cardBody}
     </Card>
   );
 }

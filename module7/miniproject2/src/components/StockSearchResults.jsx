@@ -44,7 +44,7 @@ export default function StockSearchResults() {
     <Card sx={{ maxWidth: 960, mx: 'auto', mb: 3 }}>
       <CardContent>
         <Stack spacing={2}>
-          <Box>
+          <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h5" component="h1">
               Search results
             </Typography>

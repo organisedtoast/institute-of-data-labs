@@ -110,17 +110,6 @@ export default function SectorChart() {
           gap: 2,
         }}
       >
-        <ChartDateRangeControls
-          startDate={startDate}
-          endDate={endDate}
-          onStartDateChange={setStartDate}
-          onEndDateChange={setEndDate}
-          minAvailableMonth={minAvailableMonth}
-          maxAvailableMonth={maxAvailableMonth}
-          activePreset={activePreset}
-          onApplyMaxRange={applyMaxRange}
-          onApplyTrailingRange={applyTrailingRange}
-        />
         <Box
           sx={{
             minHeight: 360,
@@ -134,6 +123,17 @@ export default function SectorChart() {
             Start month must be earlier than or equal to end month.
           </Typography>
         </Box>
+        <ChartDateRangeControls
+          startDate={startDate}
+          endDate={endDate}
+          onStartDateChange={setStartDate}
+          onEndDateChange={setEndDate}
+          minAvailableMonth={minAvailableMonth}
+          maxAvailableMonth={maxAvailableMonth}
+          activePreset={activePreset}
+          onApplyMaxRange={applyMaxRange}
+          onApplyTrailingRange={applyTrailingRange}
+        />
       </Box>
     );
   }
@@ -147,17 +147,6 @@ export default function SectorChart() {
           gap: 2,
         }}
       >
-        <ChartDateRangeControls
-          startDate={startDate}
-          endDate={endDate}
-          onStartDateChange={setStartDate}
-          onEndDateChange={setEndDate}
-          minAvailableMonth={minAvailableMonth || earliestMonth}
-          maxAvailableMonth={maxAvailableMonth || latestMonth}
-          activePreset={activePreset}
-          onApplyMaxRange={applyMaxRange}
-          onApplyTrailingRange={applyTrailingRange}
-        />
         <Box
           sx={{
             minHeight: 360,
@@ -171,6 +160,17 @@ export default function SectorChart() {
             No sector chart data matches the selected month range.
           </Typography>
         </Box>
+        <ChartDateRangeControls
+          startDate={startDate}
+          endDate={endDate}
+          onStartDateChange={setStartDate}
+          onEndDateChange={setEndDate}
+          minAvailableMonth={minAvailableMonth || earliestMonth}
+          maxAvailableMonth={maxAvailableMonth || latestMonth}
+          activePreset={activePreset}
+          onApplyMaxRange={applyMaxRange}
+          onApplyTrailingRange={applyTrailingRange}
+        />
       </Box>
     );
   }
@@ -183,18 +183,6 @@ export default function SectorChart() {
         gap: 2,
       }}
     >
-      <ChartDateRangeControls
-        startDate={startDate}
-        endDate={endDate}
-        onStartDateChange={setStartDate}
-        onEndDateChange={setEndDate}
-        minAvailableMonth={minAvailableMonth || earliestMonth}
-        maxAvailableMonth={maxAvailableMonth || latestMonth}
-        activePreset={activePreset}
-        onApplyMaxRange={applyMaxRange}
-        onApplyTrailingRange={applyTrailingRange}
-      />
-
       {/* LineChart component with all configuration props: */}
       <LineChart
         // dataset: the array of data objects to visualize
@@ -220,6 +208,18 @@ export default function SectorChart() {
         // vertical: true shows vertical grid lines
         // horizontal: true shows horizontal grid lines
         grid={{ vertical: true, horizontal: true }}
+      />
+
+      <ChartDateRangeControls
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        minAvailableMonth={minAvailableMonth || earliestMonth}
+        maxAvailableMonth={maxAvailableMonth || latestMonth}
+        activePreset={activePreset}
+        onApplyMaxRange={applyMaxRange}
+        onApplyTrailingRange={applyTrailingRange}
       />
     </Box>
   );

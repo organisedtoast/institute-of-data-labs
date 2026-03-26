@@ -42,7 +42,9 @@ function Stocks() {
 
   return (
     <Box sx={{ px: 2, py: 3 }}>
-      <StockSearchResults />
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <StockSearchResults />
+      </Box>
 
       <Box
         sx={{

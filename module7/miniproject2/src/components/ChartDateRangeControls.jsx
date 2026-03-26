@@ -70,39 +70,8 @@ export default function ChartDateRangeControls({
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: 1,
-        }}
-      >
-        {/* Preset buttons are helpful because users can jump to common ranges without calculating months manually. */}
-        <Button
-          variant={activePreset === 'MAX' ? 'contained' : 'outlined'}
-          sx={activePreset === 'MAX' ? chartButtonContainedStyles : chartButtonStyles}
-          onClick={onApplyMaxRange}
-          disabled={disabled || !minAvailableMonth || !maxAvailableMonth}
-        >
-          Max
-        </Button>
-
-        {PRESET_BUTTONS.map((presetButton) => {
-          return (
-            <Button
-              key={presetButton.key}
-              variant={activePreset === presetButton.key ? 'contained' : 'outlined'}
-              sx={activePreset === presetButton.key ? chartButtonContainedStyles : chartButtonStyles}
-              onClick={() => onApplyTrailingRange(presetButton.monthCount, presetButton.key)}
-              disabled={disabled || !minAvailableMonth || !maxAvailableMonth}
-            >
-              {presetButton.label}
-            </Button>
-          );
-        })}
-      </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
           gap: 2,
+          justifyContent: 'center',
         }}
       >
         {/* `type="month"` gives us a native browser month picker that stores values like "2024-06". */}
@@ -133,6 +102,39 @@ export default function ChartDateRangeControls({
           disabled={disabled}
           InputLabelProps={{ shrink: true }}
         />
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 1,
+          justifyContent: 'center',
+        }}
+      >
+        {/* Preset buttons are helpful because users can jump to common ranges without calculating months manually. */}
+        <Button
+          variant={activePreset === 'MAX' ? 'contained' : 'outlined'}
+          sx={activePreset === 'MAX' ? chartButtonContainedStyles : chartButtonStyles}
+          onClick={onApplyMaxRange}
+          disabled={disabled || !minAvailableMonth || !maxAvailableMonth}
+        >
+          Max
+        </Button>
+
+        {PRESET_BUTTONS.map((presetButton) => {
+          return (
+            <Button
+              key={presetButton.key}
+              variant={activePreset === presetButton.key ? 'contained' : 'outlined'}
+              sx={activePreset === presetButton.key ? chartButtonContainedStyles : chartButtonStyles}
+              onClick={() => onApplyTrailingRange(presetButton.monthCount, presetButton.key)}
+              disabled={disabled || !minAvailableMonth || !maxAvailableMonth}
+            >
+              {presetButton.label}
+            </Button>
+          );
+        })}
       </Box>
     </Box>
   );

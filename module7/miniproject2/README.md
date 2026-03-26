@@ -76,6 +76,10 @@ The app has two parts that need to run together:
    npm run server
    ```
 
+   This starts the Express API server on `http://localhost:3001`.
+   It is the only part of the app that should talk to the ROIC API directly.
+   Your `ROIC_API_KEY` stays on the server, which keeps it out of the browser.
+
 2. **Start the frontend** (the React UI you see in the browser):
 
    Open a **new terminal window** and run:
@@ -83,6 +87,9 @@ The app has two parts that need to run together:
    ```bash
    npm run dev
    ```
+
+   This starts the Vite development server on `http://localhost:5173`.
+   In development, Vite forwards requests that begin with `/api` to the Express server on port `3001`.
 
 3. **Open your browser** and go to:
 
@@ -613,11 +620,14 @@ export default defineConfig({
 });
 ```
 
-This means:
-- When React calls `/api/stocks/search`, Vite forwards it to `http://localhost:3001/api/stocks/search`
-- React code can just use **relative paths** like `/api/...`
+  This means:
+  - When React calls `/api/stocks/search`, Vite forwards it to `http://localhost:3001/api/stocks/search`
+  - React code can just use **relative paths** like `/api/...`
+  - React code should not hard-code `http://localhost:3001` inside components
+  - React code should not call `https://api.roic.ai/...` directly from the browser
+  - This setup avoids browser CORS errors during local development and keeps the API key on the server
 
----
+  ---
 
 ### Data Fetching in React
 
@@ -934,6 +944,9 @@ Add any ticker symbol to this array.
 | Port 5173 already in use | Run `npm run dev -- --port 3000` |
 | Port 3001 already in use | Change `PORT` in `server.js` |
 | API requests failing | Check that `server.js` is running |
+| React page loads, but `/api` calls fail | Make sure both `npm run server` and `npm run dev` are running in separate terminals |
+| Browser shows a CORS error | Check that React is calling `/api/...` and not calling ROIC directly |
+| `/api` request says connection refused or cannot connect | Vite is running, but the Express server on port `3001` is not running |
 | "Invalid API key" error | Verify your `.env` file has the correct key |
 | Search returns nothing | Check the ROIC.ai API quota or search term |
 | Charts not showing | Ensure stock has price data available |

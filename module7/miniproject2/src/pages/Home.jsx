@@ -11,7 +11,7 @@ import SectorCardComponent from '../components/SectorCardComponent'
 function Home() {
   return (
     <Box sx={{ px: 2, py: 3 }}>
-      <Stack spacing={3}>
+      <Stack spacing={3} alignItems="center">
         {/* The search results are shared across pages, so Home can display them too.
             That lets the user search from the landing page without immediately leaving it. */}
         <StockSearchResults />

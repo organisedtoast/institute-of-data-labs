@@ -145,7 +145,7 @@ export const getMonthBoundsFromData = (dataRows = []) => {
 
 // Build a trailing month range such as 6M or 5Y.
 // The end date begins from a target month, then both ends are clamped into the dataset's real bounds.
-// We subtract `monthCount - 1` so a 1-month preset keeps just one month, a 12-month preset keeps 12 months, and so on.
+// We subtract `monthCount` so a 1-month preset keeps 2 months (e.g., Feb to Mar), a 6-month preset keeps 7 months, and so on.
 export const getTrailingMonthRange = ({
   monthCount = 1,
   targetEndMonth = getCurrentMonthString(),
@@ -169,7 +169,7 @@ export const getTrailingMonthRange = ({
     };
   }
 
-  const proposedStartDate = shiftMonthString(endDate, -(safeMonthCount - 1));
+  const proposedStartDate = shiftMonthString(endDate, -safeMonthCount);
   const startDate = clampMonthString(proposedStartDate, minAvailableMonth, maxAvailableMonth);
 
   return {
