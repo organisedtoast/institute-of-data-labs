@@ -1,7 +1,17 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+
+// These are the preset buttons that appear for every chart.
+// We store the button label and the number of months together so the rendering code stays small and readable.
+const PRESET_BUTTONS = [
+  { key: '1M', label: '1M', monthCount: 1 },
+  { key: '6M', label: '6M', monthCount: 6 },
+  { key: '1Y', label: '1Y', monthCount: 12 },
+  { key: '3Y', label: '3Y', monthCount: 36 },
+  { key: '5Y', label: '5Y', monthCount: 60 },
+  { key: '10Y', label: '10Y', monthCount: 120 },
+];
 
 // This small reusable component renders the month input controls for a chart.
 // Reusing one component keeps the stock cards and the sector chart visually consistent,
@@ -13,7 +23,9 @@ export default function ChartDateRangeControls({
   onEndDateChange,
   minAvailableMonth,
   maxAvailableMonth,
-  onReset,
+  activePreset,
+  onApplyMaxRange,
+  onApplyTrailingRange,
   disabled = false,
 }) {
   return (
@@ -26,6 +38,36 @@ export default function ChartDateRangeControls({
         pb: 2,
       }}
     >
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 1,
+        }}
+      >
+        {/* Preset buttons are helpful because users can jump to common ranges without calculating months manually. */}
+        <Button
+          variant={activePreset === 'MAX' ? 'contained' : 'outlined'}
+          onClick={onApplyMaxRange}
+          disabled={disabled || !minAvailableMonth || !maxAvailableMonth}
+        >
+          Max
+        </Button>
+
+        {PRESET_BUTTONS.map((presetButton) => {
+          return (
+            <Button
+              key={presetButton.key}
+              variant={activePreset === presetButton.key ? 'contained' : 'outlined'}
+              onClick={() => onApplyTrailingRange(presetButton.monthCount, presetButton.key)}
+              disabled={disabled || !minAvailableMonth || !maxAvailableMonth}
+            >
+              {presetButton.label}
+            </Button>
+          );
+        })}
+      </Box>
+
       <Box
         sx={{
           display: 'flex',
@@ -61,10 +103,6 @@ export default function ChartDateRangeControls({
           disabled={disabled}
           InputLabelProps={{ shrink: true }}
         />
-
-        <Button variant="outlined" onClick={onReset} disabled={disabled || !minAvailableMonth || !maxAvailableMonth}>
-          Reset range
-        </Button>
       </Box>
     </Box>
   );

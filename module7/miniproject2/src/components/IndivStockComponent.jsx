@@ -33,12 +33,15 @@ export default function IndivStockComponent({
     maxAvailableMonth,
     hasAvailableRange,
     isRangeValid,
+    activePreset,
     initializeRangeFromData,
-    resetToAvailableRange,
+    applyMaxRange,
+    applyTrailingRange,
   } = useChartDateRange();
 
   // Load the complete available history once when the card first appears.
-  // We need this first request so we can discover the earliest and latest months that exist.
+  // We need this first request so we can discover the earliest and latest months that exist,
+  // even though the default visible range will become trailing 5 years instead of full history.
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -239,7 +242,9 @@ export default function IndivStockComponent({
         onEndDateChange={setEndDate}
         minAvailableMonth={minAvailableMonth}
         maxAvailableMonth={maxAvailableMonth}
-        onReset={resetToAvailableRange}
+        activePreset={activePreset}
+        onApplyMaxRange={applyMaxRange}
+        onApplyTrailingRange={applyTrailingRange}
         disabled={!hasAvailableRange}
       />
 

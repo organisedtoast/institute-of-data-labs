@@ -53,6 +53,61 @@ export const compareMonthStrings = (monthA, monthB) => {
   return monthA < monthB ? -1 : 1;
 };
 
+// Convert a JavaScript Date into the YYYY-MM format used throughout the chart controls.
+// By storing months in one consistent string format, the hook and UI can share the same values.
+export const getCurrentMonthString = (dateValue = new Date()) => {
+  const year = dateValue.getFullYear();
+  const month = dateValue.getMonth() + 1;
+
+  return `${year}-${String(month).padStart(2, '0')}`;
+};
+
+// Move a month string backward or forward by a certain number of months.
+// Example: shifting "2026-03" by -1 gives "2026-02".
+// This is the core helper used by trailing presets like 6M, 1Y, and 5Y.
+export const shiftMonthString = (monthString, monthsToShift = 0) => {
+  if (!isValidMonthString(monthString)) {
+    return '';
+  }
+
+  const [yearText, monthText] = monthString.split('-');
+  const year = Number(yearText);
+  const month = Number(monthText);
+
+  if (Number.isNaN(year) || Number.isNaN(month)) {
+    return '';
+  }
+
+  const shiftedDate = new Date(Date.UTC(year, month - 1 + monthsToShift, 1));
+  const shiftedYear = shiftedDate.getUTCFullYear();
+  const shiftedMonth = shiftedDate.getUTCMonth() + 1;
+
+  return `${shiftedYear}-${String(shiftedMonth).padStart(2, '0')}`;
+};
+
+// Clamp a month string so it stays inside a known available range.
+// If the requested month is earlier than the earliest available month, we use the earliest one instead.
+// If it is later than the latest available month, we use the latest one instead.
+export const clampMonthString = (
+  monthString,
+  minAvailableMonth = '',
+  maxAvailableMonth = '',
+) => {
+  if (!isValidMonthString(monthString)) {
+    return '';
+  }
+
+  if (isValidMonthString(minAvailableMonth) && compareMonthStrings(monthString, minAvailableMonth) < 0) {
+    return minAvailableMonth;
+  }
+
+  if (isValidMonthString(maxAvailableMonth) && compareMonthStrings(monthString, maxAvailableMonth) > 0) {
+    return maxAvailableMonth;
+  }
+
+  return monthString;
+};
+
 // Find the earliest and latest months present in a dataset.
 // We use this to set the default date inputs so each chart begins by showing all available data.
 export const getMonthBoundsFromData = (dataRows = []) => {
@@ -85,6 +140,41 @@ export const getMonthBoundsFromData = (dataRows = []) => {
   return {
     earliestMonth,
     latestMonth,
+  };
+};
+
+// Build a trailing month range such as 6M or 5Y.
+// The end date begins from a target month, then both ends are clamped into the dataset's real bounds.
+// We subtract `monthCount - 1` so a 1-month preset keeps just one month, a 12-month preset keeps 12 months, and so on.
+export const getTrailingMonthRange = ({
+  monthCount = 1,
+  targetEndMonth = getCurrentMonthString(),
+  minAvailableMonth = '',
+  maxAvailableMonth = '',
+}) => {
+  if (!isValidMonthString(minAvailableMonth) || !isValidMonthString(maxAvailableMonth)) {
+    return {
+      startDate: '',
+      endDate: '',
+    };
+  }
+
+  const safeMonthCount = Math.max(1, Number(monthCount) || 1);
+  const endDate = clampMonthString(targetEndMonth, minAvailableMonth, maxAvailableMonth);
+
+  if (!endDate) {
+    return {
+      startDate: '',
+      endDate: '',
+    };
+  }
+
+  const proposedStartDate = shiftMonthString(endDate, -(safeMonthCount - 1));
+  const startDate = clampMonthString(proposedStartDate, minAvailableMonth, maxAvailableMonth);
+
+  return {
+    startDate,
+    endDate,
   };
 };
 

@@ -30,8 +30,10 @@ export default function SectorChart() {
     minAvailableMonth,
     maxAvailableMonth,
     isRangeValid,
+    activePreset,
     initializeRangeFromData,
-    resetToAvailableRange,
+    applyMaxRange,
+    applyTrailingRange,
   } = useChartDateRange();
 
   // The sector chart uses local demo data instead of the external stock API.
@@ -109,7 +111,9 @@ export default function SectorChart() {
           onEndDateChange={setEndDate}
           minAvailableMonth={minAvailableMonth}
           maxAvailableMonth={maxAvailableMonth}
-          onReset={resetToAvailableRange}
+          activePreset={activePreset}
+          onApplyMaxRange={applyMaxRange}
+          onApplyTrailingRange={applyTrailingRange}
         />
         <Box
           sx={{
@@ -144,7 +148,9 @@ export default function SectorChart() {
           onEndDateChange={setEndDate}
           minAvailableMonth={minAvailableMonth || earliestMonth}
           maxAvailableMonth={maxAvailableMonth || latestMonth}
-          onReset={resetToAvailableRange}
+          activePreset={activePreset}
+          onApplyMaxRange={applyMaxRange}
+          onApplyTrailingRange={applyTrailingRange}
         />
         <Box
           sx={{
@@ -178,7 +184,9 @@ export default function SectorChart() {
         onEndDateChange={setEndDate}
         minAvailableMonth={minAvailableMonth || earliestMonth}
         maxAvailableMonth={maxAvailableMonth || latestMonth}
-        onReset={resetToAvailableRange}
+        activePreset={activePreset}
+        onApplyMaxRange={applyMaxRange}
+        onApplyTrailingRange={applyTrailingRange}
       />
 
       {/* LineChart component with all configuration props: */}

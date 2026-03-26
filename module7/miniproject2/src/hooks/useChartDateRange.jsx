@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import {
+  getCurrentMonthString,
   compareMonthStrings,
+  getTrailingMonthRange,
   getMonthBoundsFromData,
 } from '../dataset/SharePrice';
 
@@ -15,29 +17,88 @@ import {
 // Keeping this logic in a hook is helpful because both the stock cards and the sector chart
 // need the same behaviour, and we only want to teach this once in the codebase.
 export default function useChartDateRange() {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDateValue] = useState('');
+  const [endDate, setEndDateValue] = useState('');
   const [minAvailableMonth, setMinAvailableMonth] = useState('');
   const [maxAvailableMonth, setMaxAvailableMonth] = useState('');
+  const [activePreset, setActivePreset] = useState('');
+
+  // Store one shared helper for applying a fully computed range.
+  // This keeps our preset actions and initialisation logic consistent.
+  const applyRange = useCallback((nextStartDate, nextEndDate, presetKey = '') => {
+    setStartDateValue(nextStartDate);
+    setEndDateValue(nextEndDate);
+    setActivePreset(presetKey);
+  }, []);
 
   // This helper reads a dataset and stores the full month range available in it.
-  // We also set the selected start/end months to those bounds so the default chart
-  // view always shows all available data.
+  // Instead of defaulting to the full range, we default to a trailing 5-year window.
+  // If the dataset has less than five years available, the helper automatically clamps
+  // the start month to the earliest available month.
   const initializeRangeFromData = useCallback((dataRows = []) => {
     const { earliestMonth, latestMonth } = getMonthBoundsFromData(dataRows);
 
     setMinAvailableMonth(earliestMonth);
     setMaxAvailableMonth(latestMonth);
-    setStartDate(earliestMonth);
-    setEndDate(latestMonth);
+
+    if (!earliestMonth || !latestMonth) {
+      applyRange('', '', '');
+      return;
+    }
+
+    const defaultRange = getTrailingMonthRange({
+      monthCount: 60,
+      targetEndMonth: getCurrentMonthString(),
+      minAvailableMonth: earliestMonth,
+      maxAvailableMonth: latestMonth,
+    });
+
+    applyRange(defaultRange.startDate, defaultRange.endDate, '5Y');
+  }, [applyRange]);
+
+  // Apply the "Max" preset by restoring the entire available month span for the chart.
+  const applyMaxRange = useCallback(() => {
+    if (!minAvailableMonth || !maxAvailableMonth) {
+      return;
+    }
+
+    applyRange(minAvailableMonth, maxAvailableMonth, 'MAX');
+  }, [applyRange, maxAvailableMonth, minAvailableMonth]);
+
+  // Apply a trailing preset like 1M, 6M, 1Y, or 5Y.
+  // The end month is based on today's month first, then clamped back to the latest data we actually have.
+  const applyTrailingRange = useCallback((monthCount, presetKey) => {
+    if (!minAvailableMonth || !maxAvailableMonth) {
+      return;
+    }
+
+    const trailingRange = getTrailingMonthRange({
+      monthCount,
+      targetEndMonth: getCurrentMonthString(),
+      minAvailableMonth,
+      maxAvailableMonth,
+    });
+
+    applyRange(trailingRange.startDate, trailingRange.endDate, presetKey);
+  }, [applyRange, maxAvailableMonth, minAvailableMonth]);
+
+  // Manual changes should clear the active preset highlight because the user is no longer
+  // looking at one of the standard saved ranges.
+  const setStartDate = useCallback((nextStartDate) => {
+    setStartDateValue(nextStartDate);
+    setActivePreset('');
+  }, []);
+
+  const setEndDate = useCallback((nextEndDate) => {
+    setEndDateValue(nextEndDate);
+    setActivePreset('');
   }, []);
 
   // Resetting the selection back to the full available range is useful when the user
   // wants to undo their custom filters without reloading the page.
   const resetToAvailableRange = useCallback(() => {
-    setStartDate(minAvailableMonth);
-    setEndDate(maxAvailableMonth);
-  }, [minAvailableMonth, maxAvailableMonth]);
+    applyMaxRange();
+  }, [applyMaxRange]);
 
   // This derived value tells components whether both dates are in a valid order.
   // We only treat the range as invalid when both dates exist and the start comes after the end.
@@ -62,7 +123,10 @@ export default function useChartDateRange() {
     maxAvailableMonth,
     hasAvailableRange,
     isRangeValid,
+    activePreset,
     initializeRangeFromData,
+    applyMaxRange,
+    applyTrailingRange,
     resetToAvailableRange,
   };
 }
