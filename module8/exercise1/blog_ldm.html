@@ -1,90 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Logical Data Model</title>
+  <style>
+    :root {
+      --bg: #f7f3ea;
+      --surface: #fffdf8;
+      --surface-alt: #f0e7d5;
+      --text: #2b2a26;
+      --muted: #5a584f;
+      --line: #d4c8af;
+      --accent: #aa6c2f;
+      --accent-soft: #f6ddbf;
+      --good: #2f6b45;
+      --good-soft: #dff1e5;
+      --warn: #8a4b1f;
+      --warn-soft: #f9e2cf;
+      --shadow: 0 14px 35px rgba(64, 53, 33, 0.08);
+    }
 
-<style>
-#erd svg.erDiagram .divider path { stroke-opacity: 0.5; }
-#erd svg.erDiagram .row-rect-odd path,
-#erd svg.erDiagram .row-rect-odd rect,
-#erd svg.erDiagram .row-rect-even path,
-#erd svg.erDiagram .row-rect-even rect { stroke: none !important; }
-</style>
-<div id="erd" style="padding:8px 0"></div>
-<script type="module">
-import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
-const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-await document.fonts.ready;
-mermaid.initialize({
-  startOnLoad: false,
-  theme: 'base',
-  fontFamily: '"Anthropic Sans", sans-serif',
-  themeVariables: {
-    darkMode: dark,
-    fontSize: '13px',
-    fontFamily: '"Anthropic Sans", sans-serif',
-    lineColor: dark ? '#9c9a92' : '#73726c',
-    textColor: dark ? '#c2c0b6' : '#3d3d3a',
-    primaryColor: dark ? '#2a2a28' : '#f1efe8',
-    primaryBorderColor: dark ? '#5f5e5a' : '#b4b2a9',
-    primaryTextColor: dark ? '#c2c0b6' : '#3d3d3a',
-  },
-});
-const diagram = `erDiagram
-  User {
-    int user_id PK
-    string username
-    string email "UNIQUE"
-    timestamp created_at
-  }
-  Post {
-    int post_id PK
-    int user_id FK
-    string title
-    text description
-    string image_url
-    timestamp created_at
-    timestamp updated_at
-  }
-  Comment {
-    int comment_id PK
-    int post_id FK
-    int user_id FK
-    text comment_text
-    timestamp created_at
-  }
-  Like {
-    int user_id PK,FK
-    int post_id PK,FK
-    timestamp created_at
-  }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1c18;
+        --surface: #28251f;
+        --surface-alt: #343027;
+        --text: #f3eee2;
+        --muted: #cbc1b0;
+        --line: #5a5347;
+        --accent: #efb471;
+        --accent-soft: #4d3922;
+        --good: #8fd3a8;
+        --good-soft: #22362b;
+        --warn: #f1b489;
+        --warn-soft: #473227;
+        --shadow: 0 14px 35px rgba(0, 0, 0, 0.25);
+      }
+    }
 
-  User ||--o{ Post : "authors"
-  User ||--o{ Comment : "writes"
-  Post ||--o{ Comment : "has"
-  User ||--o{ Like : "gives"
-  Post ||--o{ Like : "receives"
-`;
-const { svg } = await mermaid.render('erd-svg', diagram);
-document.getElementById('erd').innerHTML = svg;
+    * {
+      box-sizing: border-box;
+    }
 
-document.querySelectorAll('#erd svg .node').forEach(node => {
-  const firstPath = node.querySelector('path[d]');
-  if (!firstPath) return;
-  const d = firstPath.getAttribute('d');
-  const nums = d.match(/-?[\d.]+/g)?.map(Number);
-  if (!nums || nums.length < 8) return;
-  const xs = [nums[0], nums[2], nums[4], nums[6]];
-  const ys = [nums[1], nums[3], nums[5], nums[7]];
-  const x = Math.min(...xs), y = Math.min(...ys);
-  const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
-  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rect.setAttribute('x', x); rect.setAttribute('y', y);
-  rect.setAttribute('width', w); rect.setAttribute('height', h);
-  rect.setAttribute('rx', '8');
-  for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
-    if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
-  }
-  firstPath.replaceWith(rect);
-});
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(239, 180, 113, 0.18), transparent 28%),
+        linear-gradient(180deg, var(--bg), #ebe3d3);
+    }
 
-document.querySelectorAll('#erd svg .row-rect-odd path, #erd svg .row-rect-even path').forEach(p => {
-  p.setAttribute('stroke', 'none');
-});
-</script>
+    main {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.2;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    .hero,
+    .panel,
+    .example-card,
+    .table-card,
+    .quiz-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      max-width: 70ch;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .panel {
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .lede {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface-alt);
+      font-size: 0.95rem;
+    }
+
+    .legend,
+    .comparison,
+    .problems,
+    .mistakes,
+    .relationship-list,
+    .quiz-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .legend li,
+    .comparison li,
+    .problems li,
+    .mistakes li,
+    .relationship-list li,
+    .quiz-list li {
+      margin-bottom: 10px;
+    }
+
+    .definition-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 16px;
+    }
+
+    .callout {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface-alt);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .callout-key {
+      background: var(--accent-soft);
+    }
+
+    .callout-good {
+      background: var(--good-soft);
+      border-color: rgba(47, 107, 69, 0.28);
+    }
+
+    .callout-warn {
+      background: var(--warn-soft);
+      border-color: rgba(138, 75, 31, 0.28);
+    }
+
+    .mini-note {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    #erd {
+      overflow-x: auto;
+      padding: 8px 0 0;
+    }
+
+    #erd svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #erd svg.erDiagram .divider path {
+      stroke-opacity: 0.5;
+    }
+
+    #erd svg.erDiagram .row-rect-odd path,
+    #erd svg.erDiagram .row-rect-odd rect,
+    #erd svg.erDiagram .row-rect-even path,
+    #erd svg.erDiagram .row-rect-even rect {
+      stroke: none !important;
+    }
+
+    #erd svg .erd-keyword-pk {
+      fill: #c84f33 !important;
+      color: #c84f33 !important;
+    }
+
+    #erd svg .erd-keyword-fk {
+      fill: #2d6aa6 !important;
+      color: #2d6aa6 !important;
+    }
+
+    #erd svg .erd-keyword-unique {
+      fill: #3f7a43 !important;
+      color: #3f7a43 !important;
+    }
+
+    #erd svg .erd-keyword-composite {
+      fill: #7f4aa3 !important;
+      color: #7f4aa3 !important;
+    }
+
+    .story-steps {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .step {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--surface), var(--surface-alt));
+    }
+
+    .step-number {
+      display: inline-block;
+      min-width: 32px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #fffdf8;
+      background: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .table-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+
+    .table-card {
+      padding: 18px;
+    }
+
+    .table-card table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin: 12px 0;
+      table-layout: auto;
+    }
+
+    .table-card th,
+    .table-card td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .table-card th {
+      background: var(--surface-alt);
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .table-card td {
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .table-card td[data-label]::before {
+      content: none;
+    }
+
+    .comparison-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 16px;
+    }
+
+    .comparison-card {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface-alt);
+    }
+
+    code {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.95em;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      code {
+        background: rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-pk {
+      background: #c84f33;
+      color: #fff;
+    }
+
+    .badge-fk {
+      background: #2d6aa6;
+      color: #fff;
+    }
+
+    .badge-unique {
+      background: #3f7a43;
+      color: #fff;
+    }
+
+    .badge-composite {
+      background: #7f4aa3;
+      color: #fff;
+    }
+
+    .quiz-card {
+      padding: 18px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .table-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+
+      .table-card table {
+        font-size: 0.88rem;
+      }
+
+      .table-card th,
+      .table-card td {
+        padding: 7px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .table-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .table-card {
+        padding: 16px;
+      }
+
+      .table-card table,
+      .table-card thead,
+      .table-card tbody,
+      .table-card tr,
+      .table-card th,
+      .table-card td {
+        display: block;
+        width: 100%;
+      }
+
+      .table-card table {
+        border-collapse: separate;
+        font-size: 0.95rem;
+        margin: 12px 0 14px;
+      }
+
+      .table-card thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .table-card tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      .table-card tr {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .table-card td {
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 10px 12px;
+      }
+
+      .table-card td:last-child {
+        border-bottom: 0;
+      }
+
+      .table-card td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>Blog Logical Data Model</h1>
+      <p>
+        This page is designed for complete beginners. It shows the logical data model for a blog
+        and explains how to read it, why each table exists, and how the relationships work together.
+      </p>
+      <div class="tag-row" aria-label="Key learning concepts">
+        <span class="tag"><span class="badge badge-pk">PK</span> Primary Key</span>
+        <span class="tag"><span class="badge badge-fk">FK</span> Foreign Key</span>
+        <span class="tag"><span class="badge badge-unique">UNIQUE</span> No duplicates allowed</span>
+        <span class="tag"><span class="badge badge-composite">COMPOSITE</span> Two fields act together</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>What You Are Looking At</h2>
+      <p class="lede">
+        A logical data model is a picture of how information is organised. Each box is a table,
+        each row inside a box is a field, and the lines between boxes show how tables are related.
+      </p>
+
+      <div class="definition-grid">
+        <div class="callout callout-key">
+          <strong>How to read one table</strong>
+          Start with the table name, then read the fields underneath it. For example, the
+          <code>Post</code> table stores details about blog posts such as the title and the user who wrote it.
+        </div>
+        <div class="callout callout-good">
+          <strong>How to spot keys</strong>
+          A field marked <span class="badge badge-pk">PK</span> uniquely identifies a row.
+          A field marked <span class="badge badge-fk">FK</span> points to a row in another table.
+        </div>
+        <div class="callout callout-warn">
+          <strong>How to read relationships</strong>
+          If one table connects to many rows in another table, that is a one-to-many relationship.
+          Example: one user can create many posts.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Key Concepts</h2>
+      <div class="grid grid-2">
+        <div class="callout">
+          <strong><span class="badge badge-pk">PK</span> Primary Key</strong>
+          A primary key is the field that uniquely identifies each row in a table. No two rows in the same table can share the same primary key value.
+        </div>
+        <div class="callout">
+          <strong><span class="badge badge-fk">FK</span> Foreign Key</strong>
+          A foreign key stores a value that points to the primary key in another table. This is what links tables together.
+        </div>
+        <div class="callout">
+          <strong><span class="badge badge-unique">UNIQUE</span> Unique Attribute</strong>
+          A unique field does not have to be the primary key, but its value still cannot be repeated. In this model, two users cannot share the same email.
+        </div>
+        <div class="callout">
+          <strong><span class="badge badge-composite">COMPOSITE</span> Composite Key</strong>
+          A composite key means two fields work together as the unique identifier for a row. In the <code>Like</code> table, <code>user_id</code> and <code>post_id</code> together identify one like.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>The Entity Relationship Diagram ('ERD')</h2>
+      <p class="lede">
+        The diagram below is the main map of the system. Read it slowly: table name first, then fields, then relationships.
+      </p>
+      <div id="erd" style="padding: 8px 0"></div>
+      <p class="footer-note">
+        Tip: if you feel overwhelmed, focus on just one path first:
+        <code>User</code> → <code>Post</code> → <code>Comment</code>.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Relationships in Plain English</h2>
+      <ul class="relationship-list">
+        <li>One <code>User</code> can author many <code>Post</code> rows.</li>
+        <li>Each <code>Post</code> belongs to one <code>User</code> through <code>Post.user_id</code>.</li>
+        <li>One <code>User</code> can write many <code>Comment</code> rows.</li>
+        <li>One <code>Post</code> can have many <code>Comment</code> rows.</li>
+        <li>One <code>User</code> can give many <code>Like</code> rows.</li>
+        <li>One <code>Post</code> can receive many <code>Like</code> rows.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Worked Example</h2>
+      <p class="lede">
+        Here is one small story that matches the model exactly. Following a real example makes the diagram easier to understand.
+      </p>
+      <div class="story-steps">
+        <div class="step">
+          <div class="step-number">Step 1</div>
+          <strong>Alice signs up.</strong>
+          <p class="mini-note">A row is created in <code>User</code> for Alice.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">Step 2</div>
+          <strong>Alice writes a blog post.</strong>
+          <p class="mini-note">A row is created in <code>Post</code> and its <code>user_id</code> points back to Alice.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">Step 3</div>
+          <strong>Bob leaves a comment.</strong>
+          <p class="mini-note">A row is created in <code>Comment</code> with both a <code>post_id</code> and a <code>user_id</code>.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">Step 4</div>
+          <strong>Bob likes the post.</strong>
+          <p class="mini-note">A row is created in <code>Like</code> using Bob's <code>user_id</code> and the post's <code>post_id</code>.</p>
+        </div>
+      </div>
+      <div class="callout callout-key">
+        <strong>Why this story matters</strong>
+        One simple scenario shows how all four tables connect: users create posts, users write comments,
+        and users like posts. The model is not just four separate boxes; it is one connected system.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Example Data</h2>
+      <p class="lede">
+        These are sample rows only. They help you connect the fields in the diagram to actual values you might store in a database.
+      </p>
+      <div class="table-grid">
+        <article class="table-card">
+          <h3>User</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>user_id</th>
+                <th>username</th>
+                <th>email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="user_id">1</td>
+                <td data-label="username">alice</td>
+                <td data-label="email">alice@example.com</td>
+              </tr>
+              <tr>
+                <td data-label="user_id">2</td>
+                <td data-label="username">bob</td>
+                <td data-label="email">bob@example.com</td>
+              </tr>
+              <tr>
+                <td data-label="user_id">3</td>
+                <td data-label="username">maya</td>
+                <td data-label="email">maya@example.com</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="mini-note">
+            <strong>Why this table exists:</strong> it stores account details for each person using the blog.
+          </p>
+        </article>
+
+        <article class="table-card">
+          <h3>Post</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>post_id</th>
+                <th>user_id</th>
+                <th>title</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="post_id">101</td>
+                <td data-label="user_id">1</td>
+                <td data-label="title">My First Blog Post</td>
+              </tr>
+              <tr>
+                <td data-label="post_id">102</td>
+                <td data-label="user_id">1</td>
+                <td data-label="title">Learning SQL Basics</td>
+              </tr>
+              <tr>
+                <td data-label="post_id">103</td>
+                <td data-label="user_id">3</td>
+                <td data-label="title">Why Data Models Matter</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="mini-note">
+            <strong>Why this table exists:</strong> it stores each blog post and links the post back to its author.
+          </p>
+        </article>
+
+        <article class="table-card">
+          <h3>Comment</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>comment_id</th>
+                <th>post_id</th>
+                <th>user_id</th>
+                <th>comment_text</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="comment_id">501</td>
+                <td data-label="post_id">101</td>
+                <td data-label="user_id">2</td>
+                <td data-label="comment_text">Great first post!</td>
+              </tr>
+              <tr>
+                <td data-label="comment_id">502</td>
+                <td data-label="post_id">101</td>
+                <td data-label="user_id">3</td>
+                <td data-label="comment_text">Thanks for sharing this.</td>
+              </tr>
+              <tr>
+                <td data-label="comment_id">503</td>
+                <td data-label="post_id">103</td>
+                <td data-label="user_id">1</td>
+                <td data-label="comment_text">This explanation helped a lot.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="mini-note">
+            <strong>Why this table exists:</strong> it stores comments and links each one to both the post and the user who wrote it.
+          </p>
+        </article>
+
+        <article class="table-card">
+          <h3>Like</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>user_id</th>
+                <th>post_id</th>
+                <th>created_at</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="user_id">2</td>
+                <td data-label="post_id">101</td>
+                <td data-label="created_at">2026-03-29 09:10</td>
+              </tr>
+              <tr>
+                <td data-label="user_id">3</td>
+                <td data-label="post_id">101</td>
+                <td data-label="created_at">2026-03-29 09:20</td>
+              </tr>
+              <tr>
+                <td data-label="user_id">1</td>
+                <td data-label="post_id">103</td>
+                <td data-label="created_at">2026-03-29 09:35</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="mini-note">
+            <strong>Why this table exists:</strong> it records which user liked which post. The combination of <code>user_id</code> and <code>post_id</code> prevents the same user liking the same post twice.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Primary Key vs Foreign Key</h2>
+      <p class="lede">
+        Beginners often confuse these because both are important identifiers, but they do different jobs.
+      </p>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>Primary Key</h3>
+          <ul class="comparison">
+            <li>Uniquely identifies one row in its own table.</li>
+            <li>Example: <code>User.user_id</code> identifies one specific user.</li>
+            <li>Think: "Who is this row?"</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <h3>Foreign Key</h3>
+          <ul class="comparison">
+            <li>Points to a primary key in another table.</li>
+            <li>Example: <code>Post.user_id</code> points to <code>User.user_id</code>.</li>
+            <li>Think: "Which other row is this connected to?"</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Composite Key in the Like Table</h2>
+      <div class="callout callout-key">
+        <strong>Why does <code>Like</code> use two key fields?</strong>
+        A like is not just about the user and not just about the post. It is about the specific combination
+        of one user liking one post. That is why <code>user_id</code> and <code>post_id</code> together form the key.
+      </div>
+      <p class="footer-note">
+        If Bob has <code>user_id = 2</code> and Alice's post has <code>post_id = 101</code>, then the pair
+        <code>(2, 101)</code> identifies one specific like.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>What Problem Would Happen Without This?</h2>
+      <ul class="problems">
+        <li>Without a <strong>primary key</strong>, it would be hard to uniquely identify a specific row.</li>
+        <li>Without a <strong>foreign key</strong>, a comment could point to a post that does not exist.</li>
+        <li>Without <strong>UNIQUE</strong> on email, two users could register with the same email address.</li>
+        <li>Without the composite key in <code>Like</code>, one user could like the same post again and again as duplicate rows.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>From Diagram to Database</h2>
+      <div class="grid grid-2">
+        <div class="callout">
+          <strong>Entities become tables</strong>
+          The boxes named <code>User</code>, <code>Post</code>, <code>Comment</code>, and <code>Like</code> become tables in a database.
+        </div>
+        <div class="callout">
+          <strong>Attributes become columns</strong>
+          Fields such as <code>username</code>, <code>title</code>, and <code>created_at</code> become columns inside those tables.
+        </div>
+        <div class="callout">
+          <strong>Keys become constraints</strong>
+          Primary keys, foreign keys, and unique rules are turned into database constraints so the data stays valid.
+        </div>
+        <div class="callout">
+          <strong>Relationships become links</strong>
+          Columns like <code>Post.user_id</code> and <code>Comment.post_id</code> are what let SQL join related data together.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Common Beginner Mistakes</h2>
+      <ul class="mistakes">
+        <li>Mixing up <code>Post.post_id</code> with <code>Post.user_id</code>. One identifies the post; the other points to the author.</li>
+        <li>Thinking a comment belongs only to a user. It belongs to both a user and a post.</li>
+        <li>Not understanding why <code>Like</code> is a separate table. It exists because many users can like many posts.</li>
+        <li>Assuming <code>UNIQUE</code> means the same thing as <code>PK</code>. They are related, but not identical.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Quick Quiz</h2>
+      <div class="grid grid-4">
+        <div class="quiz-card">
+          <h3>Question 1</h3>
+          <p>Which table stores who wrote a comment?</p>
+          <p class="mini-note"><strong>Answer:</strong> <code>Comment</code>, using <code>user_id</code>.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 2</h3>
+          <p>What field links a post back to its author?</p>
+          <p class="mini-note"><strong>Answer:</strong> <code>Post.user_id</code>.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 3</h3>
+          <p>Why does <code>Like</code> need both <code>user_id</code> and <code>post_id</code>?</p>
+          <p class="mini-note"><strong>Answer:</strong> Because a like is defined by one user liking one post.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 4</h3>
+          <p>Why is <code>email</code> marked <code>UNIQUE</code>?</p>
+          <p class="mini-note"><strong>Answer:</strong> So two users cannot share the same email address.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import mermaid from "https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs";
+
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    await document.fonts.ready;
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "base",
+      fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+      themeVariables: {
+        darkMode: dark,
+        fontSize: "13px",
+        fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+        lineColor: dark ? "#aaa38f" : "#756b58",
+        textColor: dark ? "#ece4d6" : "#332f28",
+        primaryColor: dark ? "#2f2b24" : "#fbf7ef",
+        primaryBorderColor: dark ? "#6d6557" : "#bcae94",
+        primaryTextColor: dark ? "#ece4d6" : "#332f28"
+      }
+    });
+
+    const diagram = `erDiagram
+      User {
+        int user_id PK "Primary Key"
+        string username "Attribute"
+        string email "Attribute, UNIQUE"
+        timestamp created_at "Attribute"
+      }
+      Post {
+        int post_id PK "Primary Key"
+        int user_id FK "Foreign Key -> User"
+        string title "Attribute"
+        text description "Attribute"
+        string image_url "Attribute"
+        timestamp created_at "Attribute"
+        timestamp updated_at "Attribute"
+      }
+      Comment {
+        int comment_id PK "Primary Key"
+        int post_id FK "Foreign Key -> Post"
+        int user_id FK "Foreign Key -> User"
+        text comment_text "Attribute"
+        timestamp created_at "Attribute"
+      }
+      Like {
+        int user_id PK,FK "PK + FK -> User"
+        int post_id PK,FK "PK + FK -> Post"
+        timestamp created_at "Attribute"
+      }
+
+      User ||--o{ Post : "authors"
+      User ||--o{ Comment : "writes"
+      Post ||--o{ Comment : "has"
+      User ||--o{ Like : "gives"
+      Post ||--o{ Like : "receives"
+    `;
+
+    const { svg } = await mermaid.render("erd-svg", diagram);
+    document.getElementById("erd").innerHTML = svg;
+
+    document.querySelectorAll("#erd svg .node").forEach((node) => {
+      const firstPath = node.querySelector("path[d]");
+      if (!firstPath) return;
+
+      const d = firstPath.getAttribute("d");
+      const nums = d.match(/-?[\d.]+/g)?.map(Number);
+      if (!nums || nums.length < 8) return;
+
+      const xs = [nums[0], nums[2], nums[4], nums[6]];
+      const ys = [nums[1], nums[3], nums[5], nums[7]];
+      const x = Math.min(...xs);
+      const y = Math.min(...ys);
+      const w = Math.max(...xs) - x;
+      const h = Math.max(...ys) - y;
+
+      const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      rect.setAttribute("x", x);
+      rect.setAttribute("y", y);
+      rect.setAttribute("width", w);
+      rect.setAttribute("height", h);
+      rect.setAttribute("rx", "8");
+
+      for (const attr of ["fill", "stroke", "stroke-width", "class", "style"]) {
+        if (firstPath.hasAttribute(attr)) {
+          rect.setAttribute(attr, firstPath.getAttribute(attr));
+        }
+      }
+
+      firstPath.replaceWith(rect);
+    });
+
+    document.querySelectorAll("#erd svg .row-rect-odd path, #erd svg .row-rect-even path").forEach((path) => {
+      path.setAttribute("stroke", "none");
+    });
+
+    const erdKeywordTargets = document.querySelectorAll(
+      "#erd svg text, #erd svg tspan, #erd svg foreignObject span, #erd svg foreignObject div"
+    );
+
+    erdKeywordTargets.forEach((element) => {
+      const rawText = element.textContent ?? "";
+      const text = rawText.trim();
+      const upperText = text.toUpperCase();
+      if (!text) return;
+
+      if (text === "Primary Ke") {
+        element.textContent = rawText.replace("Primary Ke", "Primary Key");
+      }
+
+      if (upperText.includes("PK + FK") || upperText.includes("PK,FK")) {
+        element.classList.add("erd-keyword-composite");
+        return;
+      }
+
+      if (upperText.includes("UNIQUE")) {
+        element.classList.add("erd-keyword-unique");
+      }
+
+      if (upperText === "FK" || text.includes("Foreign Key")) {
+        element.classList.add("erd-keyword-fk");
+      }
+
+      if (upperText === "PK" || text.includes("Primary Key")) {
+        element.classList.add("erd-keyword-pk");
+      }
+    });
+  </script>
+</body>
+</html>
