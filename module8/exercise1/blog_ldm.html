@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Logical Data Model</title>
+  <title>Relational DB 101 (Blog)</title>
   <style>
     :root {
       --bg: #f7f3ea;
@@ -100,7 +100,6 @@
     }
 
     .hero p {
-      max-width: 70ch;
       color: var(--muted);
       margin-bottom: 0;
     }
@@ -470,10 +469,9 @@
 <body>
   <main>
     <section class="hero">
-      <h1>Blog Logical Data Model</h1>
+      <h1>Relational Databases 101 - Blog</h1>
       <p>
-        This page is designed for complete beginners. It shows the logical data model for a blog
-        and explains how to read it, why each table exists, and how the relationships work together.
+        This page teaches you relational database fundamentals using a blog as a real-world example. You'll learn how tables, keys, and relationships work together to organise data.
       </p>
       <div class="tag-row" aria-label="Key learning concepts">
         <span class="tag"><span class="badge badge-pk">PK</span> Primary Key</span>
@@ -817,24 +815,64 @@
       <h2>Quick Quiz</h2>
       <div class="grid grid-4">
         <div class="quiz-card">
-          <h3>Question 1</h3>
+          <h3>Question 1 (Tables & Fields)</h3>
           <p>Which table stores who wrote a comment?</p>
           <p class="mini-note"><strong>Answer:</strong> <code>Comment</code>, using <code>user_id</code>.</p>
         </div>
         <div class="quiz-card">
-          <h3>Question 2</h3>
+          <h3>Question 2 (Tables & Fields)</h3>
+          <p>What does the <code>created_at</code> field store?</p>
+          <p class="mini-note"><strong>Answer:</strong> A timestamp showing when the row was created.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 3 (Tables & Fields)</h3>
+          <p>Which table would you query to find all comments on a specific post?</p>
+          <p class="mini-note"><strong>Answer:</strong> The <code>Comment</code> table, filtered by <code>post_id</code>.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 4 (Primary Keys & Uniqueness)</h3>
+          <p>Can two users have the same <code>user_id</code>?</p>
+          <p class="mini-note"><strong>Answer:</strong> No - <code>user_id</code> is a primary key, so each value must be unique.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 5 (Primary Keys & Uniqueness)</h3>
+          <p>Why is <code>email</code> marked <code>UNIQUE</code>?</p>
+          <p class="mini-note"><strong>Answer:</strong> So two users cannot share the same email address.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 6 (Foreign Keys)</h3>
           <p>What field links a post back to its author?</p>
           <p class="mini-note"><strong>Answer:</strong> <code>Post.user_id</code>.</p>
         </div>
         <div class="quiz-card">
-          <h3>Question 3</h3>
+          <h3>Question 7 (Foreign Keys)</h3>
+          <p>The <code>Comment</code> table has two foreign keys. What are they and what do they point to?</p>
+          <p class="mini-note"><strong>Answer:</strong> <code>post_id</code> points to <code>Post</code> (which post), and <code>user_id</code> points to <code>User</code> (who wrote it).</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 8 (Relationships)</h3>
+          <p>What type of relationship exists between User and Post?</p>
+          <p class="mini-note"><strong>Answer:</strong> One-to-many (one user can author many posts).</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 9 (Composite Keys)</h3>
           <p>Why does <code>Like</code> need both <code>user_id</code> and <code>post_id</code>?</p>
           <p class="mini-note"><strong>Answer:</strong> Because a like is defined by one user liking one post.</p>
         </div>
         <div class="quiz-card">
-          <h3>Question 4</h3>
-          <p>Why is <code>email</code> marked <code>UNIQUE</code>?</p>
-          <p class="mini-note"><strong>Answer:</strong> So two users cannot share the same email address.</p>
+          <h3>Question 10 (Composite Keys)</h3>
+          <p>Why is the <code>Like</code> table separate instead of being a field in the <code>Post</code> table?</p>
+          <p class="mini-note"><strong>Answer:</strong> Because many users can like many posts - a separate table handles this many-to-many relationship.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 11 (Data Integrity)</h3>
+          <p>If Alice deletes her account, what happens to her posts?</p>
+          <p class="mini-note"><strong>Answer:</strong> They would become orphaned (point to a non-existent user) - this is why foreign key constraints matter.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 12 (Queries & Joins)</h3>
+          <p>If you wanted to display all posts by a specific author, which two tables would you join?</p>
+          <p class="mini-note"><strong>Answer:</strong> <code>User</code> and <code>Post</code>, joined on <code>User.user_id = Post.user_id</code>.</p>
         </div>
       </div>
     </section>
