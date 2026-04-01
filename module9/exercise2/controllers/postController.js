@@ -8,7 +8,7 @@
 
 
 
-const Post = require('./models/Post');
+const Post = require('../models/Post');
  
 // GET /api/posts  — get all posts, populated with author and commenter data
 const getAllPosts = async (req, res) => {

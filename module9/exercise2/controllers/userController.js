@@ -10,7 +10,7 @@
 // The getUserById function handles GET requests to retrieve a single user by their id
 // Finally, the controller exports the functions so they can be used in the routes definition
 
-const User = require('./models/User');
+const User = require('../models/User');
  
 // POST /api/users  — create a new user
 const createUser = async (req, res) => {
