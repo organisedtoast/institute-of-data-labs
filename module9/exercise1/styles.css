@@ -1,0 +1,277 @@
+/* 0: GENERAL STYLES */
+
+/* universal selector to reset default styles and ensure consistent box sizing */
+* {
+    box-sizing: border-box;  /* Include padding/border in element's width/height */
+    margin: 0;               /* Remove default margin */
+    padding: 0;              /* Remove default padding */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background-color: #f0f0f0;
+
+    /*
+       Flexbox centering - centers the calculator both horizontally and vertically
+       - display: flex enables flexbox layout
+       - justify-content: center centers horizontally
+       - align-items: center centers vertically
+       - min-height: 100vh means at least full viewport height
+    */
+    display: flex;
+    justify-content: center;   /* Center horizontally */
+    align-items: center;       /* Center vertically */
+    min-height: 100vh;         /* Full viewport height */
+}
+
+/* STEP 0: STYLE ENTIRE CALCULATOR AREA */
+
+.calculator-container {
+    /* Background and border */
+    background-color: #ffffff;           /* White background */
+    border-radius: 10px;                 /* Rounded corners (10 pixels) */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);  /* Drop shadow for depth */
+
+    /* Size and spacing */
+    width: 320px;                        /* Fixed width */
+    padding: 20px;                       /* Space inside the container */
+
+    /* Center text inside */
+    text-align: center;
+}
+
+.calculator-title {
+    color: #1a1a2e;                      /* Dark blue-black color */
+    font-size: 28px;                     /* Large text */
+    font-weight: bold;                   /* Bold text */
+    margin-bottom: 20px;                 /* Space below the title */
+}
+
+.display-container {
+    background-color: #1a2a3a;           /* Dark blue background */
+    border-radius: 8px;                  /* Rounded corners */
+    padding: 15px;                       /* Space inside */
+    margin-bottom: 15px;                 /* Space below display */
+}
+
+/* STEP 1: STYLE INPUTS AREA */
+.input-display {
+    /* Size and layout */
+    width: 100%;                         /* Full width of container */
+    height: 50px;                        /* Fixed height */
+
+    /* Text styling */
+    font-size: 24px;                     /* Large numbers */
+    text-align: right;                   /* Numbers align to right (like real calculators) */
+    padding: 10px;                       /* Space inside input */
+
+    /* Colors */
+    background-color: #ffffff;           /* White background */
+    color: #1a1a2e;                      /* Dark text */
+
+    /* Border styling */
+    border: 2px solid #3a4a5a;           /* Dark border */
+    border-radius: 5px;                  /* Slightly rounded corners */
+
+    /* Margin between inputs */
+    margin-bottom: 10px;                 /* Space between first and second input */
+}
+
+/*
+   Remove spinner arrows from number inputs (Chrome, Safari, Edge)
+   These are the up/down arrows that appear on number inputs
+*/
+.input-display::-webkit-outer-spin-button,
+.input-display::-webkit-inner-spin-button {
+    -webkit-appearance: none;            /* Remove default appearance */
+    margin: 0;                           /* Remove any margin */
+}
+
+/* Remove spinner arrows from Firefox */
+.input-display[type=number] {
+    -moz-appearance: textfield;          /* Remove default appearance */
+}
+
+/* STEP 2: STYLE RESULT DISPLAY AREA */
+
+.result-display {
+    /* Size and layout */
+    width: 100%;                         /* Full width */
+    height: 50px;                        /* Same height as inputs */
+
+    /* Colors - green gradient background */
+    background: linear-gradient(to right, #a8e063, #56ab2f);  /* Green gradient */
+    
+    /* Border styling */
+    border: 2px solid #3a4a5a;           /* Dark border */
+    border-radius: 5px;                  /* Rounded corners */
+
+    /* Flexbox to arrange = symbol and result */
+    display: flex;
+    align-items: center;                 /* Center vertically */
+    justify-content: space-between;      /* Space between = and result */
+    padding: 10px 15px;                  /* Horizontal padding for spacing */
+}
+
+.equals-symbol {
+    font-size: 24px;                     /* Large = symbol */
+    font-weight: bold;                   /* Bold text */
+    color: #1a1a2e;                      /* Dark color */
+}
+
+#result-value {
+    font-size: 24px;                     /* Large numbers */
+    font-weight: bold;                   /* Bold text */
+    color: #1a1a2e;                      /* Dark text */
+}
+
+/* STEP 3: STYLE OPERATION BUTTONS AREA */
+
+.operation-buttons-row {
+    /* Layout: flexbox for 4 buttons in a row */
+    display: flex;
+    justify-content: space-between;      /* Equal space between buttons */
+    gap: 8px;                            /* Gap between buttons */
+    margin-bottom: 15px;                 /* Space below */
+}
+
+.op-btn {
+    /* Size - flex: 1 means all buttons equal width */
+    flex: 1;
+    height: 45px;                        /* Fixed height */
+
+    /* Text styling */
+    font-size: 22px;                     /* Large symbol */
+    font-weight: bold;                   /* Bold text */
+
+    /* Colors - gradient background (light gray) */
+    background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);  /* Light gray gradient */
+    color: #1a1a2e;                      /* Dark text */
+
+    /* Border styling */
+    border: 2px solid #3a4a5a;           /* Dark border */
+    border-radius: 5px;                  /* Rounded corners */
+
+    /* Cursor changes to pointer on hover */
+    cursor: pointer;
+
+    /* Transition for smooth hover effect */
+    transition: transform 0.1s, box-shadow 0.1s, background 0.2s;
+}
+
+.op-btn:hover {
+    transform: scale(1.05);              /* Slightly enlarge */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);  /* Add shadow */
+}
+
+.op-btn:active {
+    transform: scale(0.95);              /* Slightly shrink */
+}
+
+.op-btn.selected {
+    /* Green background to show it is selected */
+    background: linear-gradient(to bottom, #56ab2f, #a8e063);
+    color: #ffffff;                      /* White text */
+}
+
+
+/* STEP 4: STYLE ACTION BUTTONS AREA */
+
+.action-buttons-row {
+    /* Stack buttons vertically */
+    display: flex;
+    flex-direction: column;              /* Vertical layout */
+    gap: 10px;                           /* Space between buttons */
+}
+
+.equals-btn {
+    /* Size */
+    width: 100%;                         /* Full width */
+    height: 50px;                        /* Fixed height */
+
+    /* Text styling */
+    font-size: 24px;                     /* Large = symbol */
+    font-weight: bold;                   /* Bold text */
+
+    /* Colors - blue background */
+    background-color: #1e90ff;           /* Bright blue */
+    color: #ffffff;                      /* White text */
+
+    /* Border styling */
+    border: 2px solid #3a4a5a;           /* Dark border */
+    border-radius: 5px;                  /* Rounded corners */
+
+    /* Cursor changes to pointer on hover */
+    cursor: pointer;
+
+    /* Transition for smooth hover effect */
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.equals-btn:hover {
+    background-color: #187bcd;           /* Darker blue on hover */
+    transform: scale(1.02);              /* Slightly enlarge */
+}
+
+.equals-btn:active {
+    transform: scale(0.98);              /* Slightly shrink */
+}
+
+.reset-btn {
+    /* Size */
+    width: 100%;                         /* Full width */
+    height: 50px;                        /* Fixed height */
+
+    /* Text styling */
+    font-size: 20px;                     /* Large text */
+    font-weight: bold;                   /* Bold text */
+
+    /* Colors - red background */
+    background-color: #e74c3c;           /* Bright red */
+    color: #ffffff;                      /* White text */
+
+    /* Border styling */
+    border: 2px solid #3a4a5a;           /* Dark border */
+    border-radius: 5px;                  /* Rounded corners */
+
+    /* Cursor changes to pointer on hover */
+    cursor: pointer;
+
+    /* Transition for smooth hover effect */
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.reset-btn:hover {
+    background-color: #c0392b;           /* Darker red on hover */
+    transform: scale(1.02);              /* Slightly enlarge */
+}
+
+.reset-btn:active {
+    transform: scale(0.98);              /* Slightly shrink */
+}
+
+/* STEP 5: STYLE STATUS MESSAGE AREA */
+
+.status-message {
+    /* Text styling */
+    font-size: 14px;                     /* Smaller text */
+    color: #e74c3c;                      /* Red color for errors */
+    font-weight: bold;                   /* Bold text */
+
+    /* Spacing */
+    margin-top: 10px;                    /* Space above */
+    padding: 8px;                        /* Space inside */
+
+    /* Hidden by default - shown only when there's an error */
+    display: none;
+
+    /* Background for visibility */
+    background-color: #ffe6e6;           /* Light red background */
+    border-radius: 5px;                  /* Rounded corners */
+}
+
+/* Class to show the status message */
+.status-message.visible {
+    display: block;                      /* Show when visible class is added */
+}

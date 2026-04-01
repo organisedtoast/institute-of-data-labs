@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Calculator</title>
+    <!-- page title shown in browser tab -->
+
+    <link rel="stylesheet" href="styles.css"> 
+    <!-- link = this tag is used to link external resources -->    
+    <!-- rel= = this attribute specifies the relationship between the current document and the linked resource -->
+    <!-- "stylesheet" = indicates that the linked resource is a CSS stylesheet --> 
+    <!-- href= = this attribute specifies the path to the CSS file -->
+    <!-- "xxxxxx.css" = the CSS file is in the same directory as this HTML file. If it were in a subfolder called "styles", it would be "styles/xxxxxx.css" -->
+    
+    <!-- Step 6a: Link to Axios library in the head of your HTML file -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
+    <!-- This line links to the Axios library, which allows us to make HTTP requests from our JavaScript code. 
+    We will use it to call our calculator API endpoints when the user clicks the operation buttons. -->
+
+</head>
+<body>
+
+
+
+<!-- Step 0a: Create application flow diagram for the calculator -->
+
+<!-- Image of application flow diagram here: <a href="/institute-of-data-labs/module4/exercise2/calc_appflow.jpg" target="_blank">App Flow Diagram</a> -->
+
+<!-- Step 0b: Create low-fidelity design for the calculator -->
+
+<!-- Image of low-fidelity design here: <a href="/institute-of-data-labs/module4/exercise2/calc_lofidel.jpg" target="_blank">Low-Fidelity Design</a> -->
+
+<!-- Step 0c: Create high-fidelity design for the calculator -->
+
+<!-- Image of high-fidelity design here: <a href="/institute-of-data-labs/module4/exercise2/calc_hifidel.jpg" target="_blank">Final Design</a> -->
+
+
+    <!-- Step 0c: Create div container with class "calculator-container" for the purposes of styling and layout -->
+    <div class="calculator-container">
+        
+        <!-- Step 0c: Create a heading with class "calculator-title" and text. -->
+        <h1 class="calculator-title">My Calculator</h1>
+        
+                 <!-- Step 0c: Create div container with class "display-container" for the purposes of styling just the input fields and result display -->          
+                <div class="display-container">
+            
+            <!-- Step 1: CREATE INPUTS AREA-->
+
+            
+            <!-- Step 1a: create First Input-->
+            <input type="number" id="first-number" class="input-display" placeholder="0" value="0">
+            <!-- 
+                - type="number": only allows numeric input
+                - id: unique identifier for JavaScript to access this element
+                - placeholder: shows hint text when empty
+                - value="0": default value -->
+
+            <!-- Step 1b: create Second Input-->
+            <input type="number" id="second-number" class="input-display" placeholder="0" value="0">
+            
+            <!-- Step 2: CREATE RESULT DISPLAY AREA-->
+            
+            <!-- Step 2a: create div container with id "result" and class "result-display" -->
+            <div id="result" class="result-display">
+                
+                <!-- Step 2b: Create span for = symbol with class "equals-symbol" -->
+                <!-- a span is an inline element used for styling a part of the text --> 
+                <span class="equals-symbol">=</span>
+                
+                <!-- Step 2c: Create span for result value with id "result-value" -->
+                <!-- This is where the calculated result will be displayed. It starts at 0 and will be updated by JavaScript when the user clicks the = action button --> 
+                <span id="result-value">0</span>
+
+            </div>
+
+        </div>
+
+        <!-- Step 3: CREATE OPERATION BUTTONS AREA -->
+ 
+        <!-- Step 3a: Create a div container with class "operation-buttons-row" to allow styling and layout -->
+        <div class="operation-buttons-row">
+            
+            <!-- Step 3b: Create + Button with class "op-btn". Upon clicking, it calls selectOperation('+') -->
+            <button class="op-btn" onclick="selectOperation('+')">+</button>
+            
+            <!-- Step 3c: Create - Button with class "op-btn". Upon clicking, it calls selectOperation('-') -->
+            <button class="op-btn" onclick="selectOperation('-')">-</button>
+            
+            <!-- Step 3d: Create × Button with class "op-btn". Upon clicking, it calls selectOperation('×') -->
+            <button class="op-btn" onclick="selectOperation('×')">×</button>
+            
+            <!-- Step 3e: Create ÷ Button with class "op-btn". Upon clicking, it calls selectOperation('÷') -->
+            <button class="op-btn" onclick="selectOperation('÷')">÷</button>
+        </div>
+        
+        <!-- Step 4: CREATE ACTION BUTTONS AREA -->
+
+        <!-- Step 4a: Create a div container with class "action-buttons-row" to allow styling and layout -->
+        <div class="action-buttons-row">
+            
+            <!-- Step 4b: Create = Button with class "equals-btn". Upon clicking, it calls calculate() -->
+            <button id="equals-btn" class="equals-btn" onclick="calculate()">=</button>
+            
+            <!-- Step 4c: Create Reset Button with class "reset-btn". Upon clicking, it calls resetCalculator() -->
+            <button id="reset-btn" class="reset-btn" onclick="resetCalculator()">Reset</button>
+        </div>
+        
+        <!-- Step 5: CREATE STATUS MESSAGE AREA -->
+        
+        <!-- Step 5a: Create a div container with id "status-message" to display error messages or other status updates. This will be updated dynamically by JavaScript -->
+        <!-- Apply class attribute "status-message" to allow styling and layout -->
+        <div id="status-message" class="status-message"></div>
+        
+    </div>
+
+    
+<!-- Step 6: WRITE JS CODE TO MAKE THE CALCULATOR FUNCTIONAL USING AXIOS -->
+    <script>
+        // this variable will keep track of the currently selected operation (+, -, ×, ÷)
+        let currentOperation = null;
+
+        // declare function selectOperation that takes in the selected operation as an argument
+        function selectOperation(operation) {
+            currentOperation = operation;
+            
+            // visual feedback - highlight selected operation
+            const buttons = document.querySelectorAll('.op-btn');
+            buttons.forEach(btn => {
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+            });
+            
+            // highlight the selected button by changing its background color and text color
+            event.target.style.backgroundColor = '#007bff';
+            event.target.style.color = 'red';
+            
+            // update status message to show the current operation and input values
+            const num1 = document.getElementById('first-number').value;
+            const num2 = document.getElementById('second-number').value;
+            document.getElementById('status-message').textContent = 
+                `Ready to calculate: ${num1} ${operation} ${num2}`;
+        } // close selectOperation function
+
+        // declare function calculate that is called when user clicks the = button. This function will read the input values, determine which operation is selected, call the appropriate API endpoint using Axios, and update the result display and status message based on the API response.
+        function calculate() {
+            const num1 = parseFloat(document.getElementById('first-number').value);
+            const num2 = parseFloat(document.getElementById('second-number').value);
+            
+            // use if statement to check if the inputs are valid numbers.
+            // if not, display an error message in the status message area and set the result display to "Error"
+            if (isNaN(num1) || isNaN(num2)) {
+                document.getElementById('status-message').textContent = 'Error: Please enter valid numbers';
+                document.getElementById('result-value').textContent = 'Error';
+                return;
+            }
+            
+            // use if statement to check if an operation has been selected.
+            // if not, display an error message in the status message area and set the result display to "Error"
+            if (!currentOperation) {
+                document.getElementById('status-message').textContent = 'Error: Please select an operation (+, -, ×, ÷)';
+                return;
+            }
+
+            // use a mapping object to map the selected operation symbol to the corresponding API endpoint name
+            const operationMap = {
+                '+': 'add',
+                '-': 'subtract',
+                '×': 'multiply',
+                '÷': 'divide'
+            };
+
+            // use the currentOperation to get the corresponding endpoint from the operationMap
+            const endpoint = operationMap[currentOperation];
+
+            // use Axios to make a GET request to the appropriate API endpoint with the input numbers as query parameters
+            axios.get(`/calculator/${endpoint}?num1=${num1}&num2=${num2}`)
+                .then(response => {
+                    if (response.data.error) {
+                        document.getElementById('status-message').textContent = 'Error: ' + response.data.error;
+                        document.getElementById('result-value').textContent = 'Error';
+                    } else {
+                        document.getElementById('result-value').textContent = response.data.result;
+                        document.getElementById('status-message').textContent = 
+                            `${num1} ${currentOperation} ${num2} = ${response.data.result}`;
+                    }
+                })
+
+                // add a catch block to handle any errors that occur during the API request. 
+                // If an error occurs, log it to the console and display an error message in the status message area and set the result display to "Error"
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('status-message').textContent = 'Error: Failed to calculate';
+                    document.getElementById('result-value').textContent = 'Error';
+                });
+        }
+
+        // declare function resetCalculator that is called when user clicks the Reset button. 
+        // This function will reset the input fields, result display, status message, and current operation variable to their default states. 
+        // It will also reset the styles of the operation buttons.
+        function resetCalculator() {
+            document.getElementById('first-number').value = '0';
+            document.getElementById('second-number').value = '0';
+            document.getElementById('result-value').textContent = '0';
+            document.getElementById('status-message').textContent = '';
+            currentOperation = null;
+            
+            // Reset button styles
+            const buttons = document.querySelectorAll('.op-btn');
+            buttons.forEach(btn => {
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+            });
+        }
+    </script>
+
+    <!-- <script src="calculator.js" defer></script>
+    This line links your HTML to a JS file that will handle the calculator's functionality.
+    See module 4 exercise 2 for the code that would go in `calculator.js`.
+    We did not use it in this example because the JavaScript code is included directly in the HTML file.
+    
+    The difference between module 4 exercise 2 and this exercise is that in module 4 exercise 2, the
+    business logic was handled entirely in the front-end JS.
+    
+    Whereas in this exercise, the business logic is handled by the back-end API endpoints
+    that we created in `calculatorRoutes.js`.
+
+    The front-end JS in this exercise is only responsible for making API calls to those endpoints
+    and updating the UI based on the responses.
+
+    This new approach is known as a client-server model architecture. It separates the concerns of the front-end and back-end.
+    The back-end can be tested independently of the front-end, and vice versa.
+    
+    The main advantage of this modularity is cleaner code organization, making the application easier to maintain.
+    For example, if we wanted to change how the addition operation works, 
+    we could just update the logic in the `/add` endpoint in `calculatorRoutes.js`
+    We wouldn't need to make any changes to the front-end code in `calculator.html` or `calculator.js` 
+    since they would still call the same API endpoint and handle the response in the same way.
+
+    In addition, this architecture allows for the possibility of having multiple different front-ends (e.g. web app, mobile app, etc.)
+    that all interact with the same back-end API, which can be a powerful way to scale an application.
+
+    Next, there is more security in this architecture since the business logic and data handling is done on the server side,
+    which can be better protected from malicious users compared to client-side code.
+
+    Next, this architecture can improve performance since the server can handle complex calculations and data processing,
+    while the front-end can focus on providing a responsive user interface.
+
+    Next, this architecture is easier to integrate with other services and APIs, 
+    since the back-end can act as a central hub for data and business logic.
+
+    Last but not least, this architecture offers superior intellectual property protection since the core logic of the application
+    is hidden on the server side, making it more difficult for competitors to copy or reverse-engineer the application
+    compared to a front-end only implementation where all the code gets exposed to the user!
+
+    What are the disadvantages of a client server model architecture compared to a front-end only architecture?
+
+    The main disadvantage is that it can be more complex to set up and maintain,
+    since it involves both front-end and back-end development. It also requires knowledge of server-side programming 
+    and API development, which may be a barrier for some developers.
+
+    Also, it can introduce latency since the front-end needs to make API calls to the back-end to perform operations,
+    which can be slower than performing all the logic on the client side, especially if the server
+    is under heavy load or if the user's internet connection is slow.
+
+    This architecture can be more difficult to debug since issues can arise in either the front-end or back-end,
+    and it may not always be clear where the problem is occurring.
+    
+    It can require more resources to host and maintain a server, compared to a front-end only application 
+    that can be hosted on a static site hosting service.
+
+    Lastly, if not implemented with proper security measures, this architecture can be vulnerable to attacks such as DDoS attacks,
+    SQL injection, and other common web vulnerabilities that can compromise the server and the data it handles.
+    Wheras a front-end only application may have fewer attack vectors since it does not involve server-side code or databases,
+    although it can still be vulnerable to client-side attacks such as XSS and CSRF if not implemented securely.
+
+    One last thing, while the client-server model architecture can offer better intellectual property protection since the core logic is hidden on the server side,
+    it can also be more difficult to share code and collaborate between developers since the front-end and
+    back-end codebases are separate. In a front-end only architecture, all the code is in one place, 
+    making it easier for developers to understand and contribute to the entire codebase. 
+    In a client-server architecture, developers may need to specialize in either front-end or back-end development,
+    which can create silos and make collaboration more challenging.
+
+    -->
+
+</body>
+
+ <!-- Step 7: TEST YOUR CALCULATOR APP -->
+ <!-- Open your browser and navigate to http://localhost:3000/calculator.html -->
+
+
+
+
+
+
+</html>
+
+
+
+
+
