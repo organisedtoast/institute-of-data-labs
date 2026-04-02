@@ -414,6 +414,10 @@
                 Think of MVC like building with LEGO blocks – each piece has a specific job, and they all work 
                 together to create something amazing!
             </p>
+            <p>
+                In this project, we use an <strong>MVC-like structure with a service layer</strong>.
+                The controller handles web requests, and the service layer performs the math.
+            </p>
 
             <div class="mvc-diagram">
                 <div class="mvc-box model">
@@ -452,7 +456,7 @@
                     <p class="role">Where the magic happens</p>
                     <p>
                         The kitchen prepares the food. It knows the recipes and has all the ingredients. 
-                        In our calculator, the <strong>Model</strong> does the math (addition, subtraction, etc.).
+                        In our calculator, the <strong>service layer</strong> does the math (addition, subtraction, etc.).
                     </p>
                 </div>
 
@@ -470,7 +474,7 @@
                     <p class="role">Connects kitchen and customers</p>
                     <p>
                         The waiter takes your order to the kitchen and brings food back. 
-                        In our calculator, the <strong>Controller</strong> receives your clicks and calls the right functions.
+                        In our calculator, the <strong>Controller</strong> receives the request, reads the inputs, and calls the service.
                     </p>
                 </div>
             </div>
@@ -482,6 +486,10 @@
         <section class="example-section">
             <h2>🔢 How MVC Works: Calculator Example</h2>
             <p>Let's see what happens when you calculate <strong>10 + 5</strong>:</p>
+            <!-- Beginner note:
+                 The router chooses the path,
+                 the controller handles the HTTP details,
+                 and the service performs the actual calculation. -->
 
             <div class="flow-diagram">
                 <div class="flow-step">
@@ -505,7 +513,7 @@
                 <div class="flow-step">
                     <span class="step-number">3</span>
                     <div>
-                        <strong>Controller receives the request</strong>
+                        <strong>Router receives the request</strong>
                         <br>
                         <small><code>calculatorRoutes.js</code> sees "/add" and calls <code>addNumbers()</code></small>
                     </div>
@@ -514,14 +522,23 @@
                 <div class="flow-step">
                     <span class="step-number">4</span>
                     <div>
-                        <strong>Model performs the calculation</strong>
+                        <strong>Controller prepares the request data</strong>
                         <br>
-                        <small><code>calculatorController.js</code> computes: 10 + 5 = <strong>15</strong></small>
+                        <small><code>calculatorController.js</code> reads <code>req.query</code>, converts the values into numbers, and calls the service</small>
                     </div>
                 </div>
 
                 <div class="flow-step">
                     <span class="step-number">5</span>
+                    <div>
+                        <strong>Service performs the calculation</strong>
+                        <br>
+                        <small><code>services/calculatorService.js</code> computes: 10 + 5 = <strong>15</strong></small>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <span class="step-number">6</span>
                     <div>
                         <strong>Result travels back to View</strong>
                         <br>
@@ -530,9 +547,9 @@
                 </div>
 
                 <div class="flow-step">
-                    <span class="step-number">6</span>
+                    <span class="step-number">7</span>
                     <div>
-                        <strong>User sees "15" on screen!</strong> 🎉
+                        <strong>User sees "15" on screen!</strong>
                         <br>
                         <small>The View updates to display the result</small>
                     </div>
@@ -572,14 +589,14 @@ function calculate() {
 
                 <div class="code-box good">
                     <h4>✅ With MVC (Organized!)</h4>
-                    <code><span class="comment">// MODEL - Just does math</span>
-function addNumbers(a, b) {
+                    <code><span class="comment">// SERVICE - Just does math</span>
+function add(a, b) {
     return a + b;
 }
 
-<span class="comment">// CONTROLLER - Connects things</span>
+<span class="comment">// CONTROLLER - Handles HTTP details</span>
 app.get('/add', (req, res) => {
-    let result = addNumbers(req.num1, req.num2);
+    let result = add(Number(req.query.num1), Number(req.query.num2));
     res.json({ result });
 });
 
@@ -648,11 +665,11 @@ app.get('/add', (req, res) => {
         <section class="summary-box">
             <h3>📌 Key Takeaways</h3>
             <ul class="summary-list">
-                <li><strong>Model</strong> = Data and logic (the brain)</li>
+                <li><strong>Service / model logic</strong> = Business rules and calculations (the brain)</li>
                 <li><strong>View</strong> = What users see (the face)</li>
-                <li><strong>Controller</strong> = Connects Model and View (the traffic cop)</li>
+                <li><strong>Controller</strong> = Handles the request and calls the service</li>
                 <li>MVC keeps code <strong>organized</strong> and <strong>maintainable</strong></li>
-                <li>It's like a restaurant: Kitchen (Model), Dining Area (View), Waiter (Controller)</li>
+                <li>It's like a restaurant: Kitchen (service logic), Dining Area (View), Waiter (Controller)</li>
                 <li>Used by almost all modern web applications!</li>
             </ul>
         </section>

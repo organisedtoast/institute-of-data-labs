@@ -145,97 +145,44 @@ Before you begin, make sure you have the following installed:
 ---
 
 ## Understanding the Project Structure (MVC Pattern)
-
-This application follows the **MVC (Model-View-Controller)** architecture pattern. This is a common way of organizing code that separates concerns and makes the application easier to understand and maintain.
-
+This application follows an **MVC-like structure with a service layer**. This is a common way of organizing code that separates concerns and makes the application easier to understand, test, and maintain.
 ### What is MVC?
-
-MVC stands for **Model – View – Controller**. Think of it like a restaurant:
-
-| MVC Component | Restaurant Analogy | What It Does in Our App |
-|---------------|-------------------|------------------------|
-| **Model** | The kitchen where food is prepared | Handles the data and business logic (the actual math calculations) |
-| **View** | The dining area where customers see and enjoy their food | What the user sees and interacts with (the HTML calculator interface) |
-| **Controller** | The waiter who takes orders and brings food | Connects the View and Model – receives user requests and calls the appropriate functions |
-
+MVC stands for **Model - View - Controller**. In this project, we also use a **service layer** so business logic does not live directly inside the controller. Think of it like a restaurant:
+| Component | Restaurant Analogy | What It Does in Our App |
+|-----------|--------------------|-------------------------|
+| **Service / Model logic** | The kitchen where food is prepared | Handles the business logic and calculations |
+| **View** | The dining area where customers see and enjoy their food | What the user sees and interacts with in calculator.html |
+| **Controller** | The waiter who takes orders and brings food | Handles the HTTP request, calls the service, and sends the response |
+| **Router** | The host who sends people to the right table | Matches the URL and sends the request to the correct controller function |
 ### How MVC Works in Our Calculator
+Note: the simple diagram below is conceptual. In the actual code, the request flows through a router, then a controller, then the `services/calculatorService.js` file before the response is returned.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                         USER                                │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  VIEW (calculator.html)                                     │
-│  - Displays the calculator interface                        │
-│  - Collects user input (numbers, operation selection)       │
-│  - Shows the result                                         │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            │ HTTP Request (via Axios)
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  CONTROLLER (calculatorRoutes.js)                           │
-│  - Receives the request from the View                       │
-│  - Decides which function to call                           │
-│  - Routes the request to the appropriate handler            │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  MODEL (calculatorController.js)                            │
-│  - Performs the actual calculation                          │
-│  - Contains the business logic                              │
-│  - Returns the result                                       │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            │ JSON Response
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  VIEW (calculator.html)                                     │
-│  - Displays the result to the user                          │
-└─────────────────────────────────────────────────────────────┘
+```text
+User
+  -> View (`calculator.html`)
+  -> Router (`routes/calculatorRoutes.js`)
+  -> Controller (`controllers/calculatorController.js`)
+  -> Service (`services/calculatorService.js`)
+  -> Controller sends JSON response
+  -> View updates the screen
 ```
 
 ### Step-by-Step Flow Example: Calculating 10 + 5
-
-1. **User enters numbers and clicks + then =** in the browser
-
-2. **View (calculator.html)**:
-   - JavaScript in the HTML page captures the input values (10 and 5)
-   - Uses the Axios library to send an HTTP request to the server
-   - Request URL: `/calculator/add?num1=10&num2=5`
-
-3. **Server receives the request**:
-   - The request travels through `app.js` which directs it to the calculator routes
-
-4. **Controller (calculatorRoutes.js)**:
-   - The `/add` route is matched
-   - The route calls the `addNumbers` function from the controller
-
-5. **Model (calculatorController.js)**:
-   - The `addNumbers` function extracts the numbers from the request
-   - Performs the addition: `10 + 5 = 15`
-   - Returns a JSON response: `{ "result": 15 }`
-
-6. **Response travels back to the View**:
-   - The browser receives the JSON response
-   - JavaScript updates the result display to show `15`
-
-7. **User sees the result!**
-
+1. **User enters numbers and clicks + then =** in the browser.
+2. **View (`calculator.html`)** collects the input values and sends a request to `/calculator/add?num1=10&num2=5`.
+3. **Router (`calculatorRoutes.js`)** matches `/add` and calls `addNumbers`.
+4. **Controller (`calculatorController.js`)** reads `req.query`, converts the values into numbers, and calls the calculator service.
+5. **Service (`services/calculatorService.js`)** performs the addition: `10 + 5 = 15`.
+6. **Controller** sends the JSON response `{ "result": 15 }`.
+7. **View** receives the response and updates the result on the page.
 ### Why Use MVC?
-
 | Benefit | Explanation |
 |---------|-------------|
-| **Separation of Concerns** | Each part has a specific job. The View doesn't need to know how calculations work, and the Model doesn't need to know about the user interface. |
-| **Easier to Maintain** | If you want to change how the calculator looks, you only modify the View. If you want to change the calculation logic, you only modify the Model. |
-| **Team Collaboration** | Different developers can work on different parts simultaneously without conflicts. |
-| **Reusability** | The same Model (calculation logic) could be used by a different View (e.g., a mobile app) without changes. |
-| **Testability** | Each component can be tested independently. |
-
----
+| **Separation of Concerns** | Each part has one clear job. The view does not perform the math, and the service does not deal with HTML or Express response objects. |
+| **Easier to Maintain** | If you want to change the UI, you update the view. If you want to change the calculator rules, you update the service. |
+| **Team Collaboration** | Different developers can work on different layers without stepping on each other. |
+| **Reusability** | The same service logic could be reused by a different interface, such as a mobile app or another API route. |
+| **Testability** | The service can be unit tested directly, and the routes can still be tested end to end. |
 
 ## File-by-File Explanation
 
@@ -326,27 +273,24 @@ Here's a breakdown of all the important files and folders in this project:
 
 ---
 
-### The `controllers` Folder
-
-#### `controllers/calculatorController.js` – The Business Logic (Model)
-**Purpose:** Contains the actual calculation functions.
-
+### The controllers Folder
+#### controllers/calculatorController.js - The HTTP Controller
+**Purpose:** Handles the web request and response part of each calculator action.
 **What it does:**
-- Defines four functions:
-  - `addNumbers` – adds two numbers
-  - `subtractNumbers` – subtracts one number from another
-  - `multiplyNumbers` – multiplies two numbers
-  - `divideNumbers` – divides one number by another (with zero-division protection)
+- Defines four controller functions:
+  - ddNumbers
+  - subtractNumbers
+  - multiplyNumbers
+  - divideNumbers
 - Each function:
   - Extracts numbers from the request query parameters
-  - Performs the calculation
+  - Converts query string values into numbers
+  - Calls the matching function in services/calculatorService.js
   - Returns the result as JSON
-
-**Key concept:** This is the "brain" of the application – where the actual work happens.
-
+**Key concept:** This file is intentionally thin. It translates web requests into service calls.
 ---
-
-### The `routes` Folder
+### The 
+outes Folder
 
 #### `routes/calculatorRoutes.js` – The Router (Controller)
 **Purpose:** Defines the API endpoints and connects them to controller functions.
@@ -360,11 +304,19 @@ Here's a breakdown of all the important files and folders in this project:
   - `/divide` → calls `divideNumbers`
 - Exports the router so it can be used in `app.js`
 
-**Key concept:** This is the "receptionist" – it receives requests and directs them to the right handler.
-
+**Key concept:** This is the "receptionist" - it receives requests and directs them to the right handler.
 ---
-
-### The `scripts` Folder
+### The services Folder
+#### services/calculatorService.js - The Business Logic Layer
+**Purpose:** Contains the reusable calculator rules and math operations.
+**What it does:**
+- Defines the dd, subtract, multiply, and divide functions
+- Performs the actual calculations
+- Keeps the divide-by-zero rule in one place
+- Returns plain JavaScript values or objects without knowing anything about Express
+**Key concept:** This is the part of the app that knows how the calculator works.
+---
+### The scripts Folder
 
 This folder contains **test files** that verify the calculator functions work correctly.
 
@@ -375,17 +327,12 @@ This folder contains **test files** that verify the calculator functions work co
 | `multiply.test.js` | Tests the multiplication function |
 | `divide.test.js` | Tests the division function |
 | `app.test.js` | Tests the overall application behavior |
+| `calculatorService.test.js` | Tests the service layer directly |
 
 **How to run tests:**
 ```
 npm test
 ```
-
----
-
-### The `libraries` Folder
-
-Currently empty. This folder is reserved for future custom libraries or utility functions that you might want to create and reuse across the project.
 
 ---
 
@@ -537,3 +484,6 @@ Congratulations! You now have a working understanding of:
 5. **How to test** the application both manually and automatically
 
 This calculator is a simplified example of the same architecture used by major web applications. The principles you've learned here apply to much larger and more complex systems!
+
+
+
