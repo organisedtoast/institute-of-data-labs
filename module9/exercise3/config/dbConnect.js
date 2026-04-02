@@ -10,7 +10,8 @@ const sequelize = new Sequelize(
   {
     host:    process.env.DB_HOST,   // 'localhost'
     port:    process.env.DB_PORT,   // 3306
-    dialect: 'mysql2',              // tells Sequelize which driver to use
+    dialect: 'mysql',               // Sequelize dialect name for MySQL
+                                     // The mysql2 package is still required as the Node driver underneath.
     logging: false,                 // set to console.log to see raw SQL in terminal
   }
 );
