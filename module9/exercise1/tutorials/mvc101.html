@@ -407,13 +407,28 @@
         <section>
             <h2>What is MVC?</h2>
             <p>
-                <strong>MVC</strong> stands for <strong>Model-View-Controller</strong>. It's a way of organizing code 
+                <strong>MVC</strong> stands for <strong>Model-View-Controller</strong>. It's a way of organizing code
                 that makes web applications easier to understand, build, and maintain.
             </p>
             <p>
-                Think of MVC like building with LEGO blocks – each piece has a specific job, and they all work 
+                Think of MVC like building with LEGO blocks – each piece has a specific job, and they all work
                 together to create something amazing!
             </p>
+
+            <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h4 style="margin-top: 0; color: #856404;">💡 Why "services" Instead of "models"?</h4>
+                <p style="margin-bottom: 10px;">
+                    You might notice this project has a <strong>services/</strong> folder instead of the traditional <strong>models/</strong> folder.
+                    Here's why:
+                </p>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Traditional MVC:</strong> The "Model" handles database operations AND business logic together.</li>
+                    <li><strong>Our Approach:</strong> We separate concerns further. The <strong>services/</strong> folder contains pure business logic (like math calculations) that doesn't need a database.</li>
+                    <li><strong>Why?</strong> Not every app needs a database! Our calculator performs calculations – that's business logic, not data storage.</li>
+                    <li><strong>Real-World Pattern:</strong> Many modern apps use a "service layer" between controllers and models for cleaner, more testable code.</li>
+                </ul>
+            </div>
+
             <p>
                 In this project, we use an <strong>MVC-like structure with a service layer</strong>.
                 The controller handles web requests, and the service layer performs the math.
@@ -452,11 +467,12 @@
 
             <div class="analogy-grid">
                 <div class="analogy-card model">
-                    <h4>👨‍🍳 Model = The Kitchen</h4>
+                    <h4>👨‍🍳 Service Layer = The Kitchen</h4>
                     <p class="role">Where the magic happens</p>
                     <p>
-                        The kitchen prepares the food. It knows the recipes and has all the ingredients. 
-                        In our calculator, the <strong>service layer</strong> does the math (addition, subtraction, etc.).
+                        The kitchen prepares the food. It knows the recipes and has all the ingredients.
+                        In our calculator, the <strong>service layer</strong> (services/calculatorService.js) does the math (addition, subtraction, etc.).
+                        <br><em>Note: We use "services" instead of "models" because our business logic doesn't involve database operations.</em>
                     </p>
                 </div>
 
@@ -665,7 +681,7 @@ app.get('/add', (req, res) => {
         <section class="summary-box">
             <h3>📌 Key Takeaways</h3>
             <ul class="summary-list">
-                <li><strong>Service / model logic</strong> = Business rules and calculations (the brain)</li>
+                <li><strong>Service layer</strong> = Business rules and calculations (the brain). We use "services/" instead of "models/" when there's no database involved.</li>
                 <li><strong>View</strong> = What users see (the face)</li>
                 <li><strong>Controller</strong> = Handles the request and calls the service</li>
                 <li>MVC keeps code <strong>organized</strong> and <strong>maintainable</strong></li>
