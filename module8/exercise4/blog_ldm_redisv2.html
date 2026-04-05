@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relational DB 101 (Blog)</title>
+  <title>Blog Data Model and Redis Basics</title>
   <style>
     :root {
       --bg: #f7f3ea;
@@ -208,12 +208,14 @@
       color: var(--muted);
     }
 
-    #erd {
+    #erd,
+    #cache-flow {
       overflow-x: auto;
       padding: 8px 0 0;
     }
 
-    #erd svg {
+    #erd svg,
+    #cache-flow svg {
       max-width: 100%;
       height: auto;
       display: block;
@@ -421,7 +423,6 @@
 
     .redis-feature .lede {
       font-size: 1.05rem;
-      max-width: 70ch;
     }
 
     .redis-grid {
@@ -563,23 +564,25 @@
 <body>
   <main>
     <section class="hero">
-      <h1>Relational Databases 101 (w Redis intro) - Blog</h1>
+      <h1>Blog Data Model and Redis Basics</h1>
       <p>
-        This page teaches you relational database fundamentals using a blog as a real-world example. You'll learn how tables, keys, and relationships work together to organise data. There is also a special emphasis on the Redis performance layer.
+        This page teaches two ideas in order. First, it explains the blog's relational data model using SQL tables, keys, and relationships. Then it shows how Redis can sit beside that database as a fast cache layer for repeated reads.
       </p>
       <div class="tag-row" aria-label="Key learning concepts">
         <span class="tag"><span class="badge badge-pk">PK</span> Primary Key</span>
         <span class="tag"><span class="badge badge-fk">FK</span> Foreign Key</span>
         <span class="tag"><span class="badge badge-unique">UNIQUE</span> No duplicates allowed</span>
         <span class="tag"><span class="badge badge-composite">COMPOSITE</span> Two fields act together</span>
+        <span class="tag">Redis comes after the ERD</span>
       </div>
     </section>
 
     <section class="panel">
       <h2>What You Are Looking At</h2>
       <p class="lede">
-        A logical data model is a picture of how information is organised. Each box is a table,
-        each row inside a box is a field, and the lines between boxes show how tables are related.
+        A logical data model is a picture of how information is organised inside the main relational database.
+        In the ERD below, each box is a table, each row inside a box is a field, and the lines between boxes show table relationships.
+        Redis is important too, but Redis is not a relational table, so we will teach it separately after the ERD.
       </p>
 
       <div class="definition-grid">
@@ -626,16 +629,14 @@
     <section class="panel">
       <h2>The Entity Relationship Diagram ('ERD')</h2>
       <p class="lede">
-        The diagram below now shows two layers working together: the relational database structure that stores the permanent blog data,
-        and a Redis cache layer that helps the system serve popular reads faster.
+        This ERD shows only the relational data model, because an ERD is for permanent entities, columns, and relationships in the main database.
       </p>
       <div id="erd" style="padding: 8px 0"></div>
-      <div class="callout callout-redis">
-        <strong>How to read the new Redis box and arrows</strong>
-        The SQL-style tables are still the source of truth. The new <code>Redis</code> box is a performance layer beside them.
-        Its arrows show cache and data flow, not primary-key or foreign-key relationships. Read one main path first:
-        <code>User</code> &rarr; <code>Post</code> &rarr; <code>Comment</code>, then notice how Redis helps the system return hot post pages,
-        comment counts, and like counts more quickly.
+      <div class="callout callout-key">
+        <strong>How to read this ERD correctly</strong>
+        Start with the core path <code>User</code> &rarr; <code>Post</code> &rarr; <code>Comment</code>.
+        Then notice that <code>Like</code> is a separate table because many users can like many posts.
+        Redis is not shown here on purpose because it is a cache layer, not part of the relational schema.
       </div>
     </section>
 
@@ -648,9 +649,8 @@
         <li>One <code>Post</code> can have many <code>Comment</code> rows.</li>
         <li>One <code>User</code> can give many <code>Like</code> rows.</li>
         <li>One <code>Post</code> can receive many <code>Like</code> rows.</li>
-        <li><code>Redis</code> is not replacing those tables. It temporarily stores fast copies of high-demand results.</li>
-        <li><code>Post</code> pages are the strongest Redis candidate because readers often request the same posts again and again.</li>
-        <li><code>Comment</code> counts and <code>Like</code> counts are excellent Redis candidates because they are quick summary values used often.</li>
+        <li>The <code>Like</code> table exists because this is a many-to-many relationship, not a simple field on <code>Post</code>.</li>
+        <li>All of these relationships belong to the SQL database, which remains the source of truth for the blog data.</li>
       </ul>
     </section>
 
@@ -909,78 +909,153 @@
         <li>Thinking a comment belongs only to a user. It belongs to both a user and a post.</li>
         <li>Not understanding why <code>Like</code> is a separate table. It exists because many users can like many posts.</li>
         <li>Assuming <code>UNIQUE</code> means the same thing as <code>PK</code>. They are related, but not identical.</li>
+        <li>Trying to draw Redis as if it were another SQL table. Redis can store useful copies of results, but it is not part of the relational ERD.</li>
       </ul>
     </section>
 
     <section class="panel redis-feature">
       <div class="redis-badge">Redis Performance Layer</div>
-      <h2>Why Redis Is Worth Calling Out</h2>
+      <h2>Redis Primer for a Complete Beginner</h2>
       <p class="lede">
-        Redis deserves a more prominent place in this page because it answers a different question from the ERD.
-        The ERD explains <em>where the true data lives</em>. Redis explains <em>how the system can return that data faster</em>
-        when lots of readers ask for the same post pages, comment totals, and like totals over and over.
+        The ERD answered the question "where does the real blog data live?" Redis answers a different question:
+        "how can the app return repeated reads faster?" In this example, Redis is used mainly for read caching, not as the primary database.
       </p>
 
       <div class="redis-grid">
         <div class="callout callout-redis">
           <strong>What Redis is</strong>
-          Redis is an in-memory data store. In plain English, that means it keeps data in RAM so it can be read much faster than
-          repeatedly asking the main database for the same result.
+          Redis is an in-memory data store. In plain English, that means it keeps data in RAM so it can be read much faster than a full database query.
         </div>
         <div class="callout callout-key">
-          <strong>What a cache is</strong>
-          A cache is a temporary fast copy of data. In the diagram, the Redis box holds useful copies of hot post pages,
-          comment counts, and like counts so the app can respond quickly.
+          <strong>What "in-memory" means</strong>
+          RAM is very fast. Because Redis keeps its values in memory, it is a good place to store temporary data that the app needs to read quickly.
         </div>
         <div class="callout callout-good">
-          <strong>What stays the source of truth</strong>
-          The relational tables <code>User</code>, <code>Post</code>, <code>Comment</code>, and <code>Like</code> still own the real data.
-          Redis helps with speed, but it does not replace the main database.
+          <strong>What a cache is</strong>
+          A cache is a temporary fast copy of data. The app checks the cache first so it does not have to rebuild the same answer every time.
+        </div>
+        <div class="callout callout-warn">
+          <strong>What "source of truth" means</strong>
+          The SQL tables <code>User</code>, <code>Post</code>, <code>Comment</code>, and <code>Like</code> still own the real data.
+          Redis helps with speed, but it should not be the only copy of beginner-facing blog data in this example.
         </div>
       </div>
 
       <div class="callout callout-redis">
-        <strong>How to connect this back to the ERD</strong>
-        In the updated ERD, the <code>Redis</code> box is linked to <code>Post</code>, <code>Comment</code>, and <code>Like</code>
-        because those are the parts of the blogging system most likely to be read frequently. The arrows mean the application can
-        fetch from Redis first, then fall back to the database when needed.
+        <strong>Two useful Redis words</strong>
+        <p><b>Cache hit:</b> Redis already has the value the app needs.</p>
+        <p><b>Cache miss:</b> Redis does not have it yet, so the app must read from SQL, build the answer, and store a copy in Redis for next time.</p>
       </div>
 
+      <h3>How Redis Fits This Blog</h3>
+      <p class="mini-note">
+        Redis is best used here for repeated read results that many visitors ask for again and again.
+      </p>
       <div class="redis-grid">
         <div class="callout">
-          <strong>Best Redis target: posts</strong>
-          Full post pages and recent-post lists are the strongest caching candidates because many readers may request the same post
-          repeatedly, especially on a homepage or a popular article page.
+          <strong>Cache post pages by <code>post_id</code></strong>
+          A full post page or JSON payload is a strong caching candidate because the same popular post may be requested many times.
         </div>
         <div class="callout">
-          <strong>Very strong Redis target: counts</strong>
-          Like counts and comment counts are cheap summary values, so they are excellent things to store in Redis for quick display.
+          <strong>Cache comment counts by <code>post_id</code></strong>
+          Comment totals are simple summary values that are read often and quick to store.
         </div>
-        <div class="callout callout-warn">
-          <strong>Use more caution with full threads</strong>
-          Full comment threads can be cached for very popular posts, but this page should teach them as a secondary use case.
-          The counts are simpler, more stable, and easier for a beginner to understand first.
+        <div class="callout">
+          <strong>Cache like counts by <code>post_id</code></strong>
+          Like totals are another common summary value that works well as a Redis key.
         </div>
+        <div class="callout callout-good">
+          <strong>Optional: cache recent or popular lists</strong>
+          A homepage list of recent or popular post IDs is another sensible Redis use case because many readers may request the same list.
+        </div>
+      </div>
+
+      <h3>Request Flow: App, Redis, and SQL</h3>
+      <div id="cache-flow" style="padding: 8px 0"></div>
+      <div class="callout callout-key">
+        <strong>Why this is a different diagram from the ERD</strong>
+        This picture shows system flow. It explains how the app checks Redis before SQL. It is not a table relationship diagram and should not be read like PK/FK links.
       </div>
 
       <h3>Worked Example: Reading One Popular Post</h3>
       <div class="redis-flow">
         <div class="redis-step">
           <strong>Step 1: A reader opens a post</strong>
-          The app first checks the <code>Redis</code> box from the diagram to see if a cached copy already exists.
+          The app first checks Redis to see whether a cached post payload already exists for that <code>post_id</code>.
         </div>
         <div class="redis-step">
           <strong>Step 2: Cache hit</strong>
-          If Redis already has the post page, comment count, and like count, the system can return that information very quickly.
+          If Redis already has the post page, comment count, and like count, the app can respond very quickly.
         </div>
         <div class="redis-step">
           <strong>Step 3: Cache miss</strong>
-          If Redis does not have it, the app reads from the relational database tables, builds the page, then stores a fast temporary copy in Redis.
+          If Redis does not have it, the app reads from the SQL tables, builds the result, then stores a temporary copy in Redis with a TTL.
         </div>
         <div class="redis-step">
           <strong>Step 4: Later readers benefit</strong>
           The next visitor can be served from Redis instead of rebuilding the same result from scratch.
         </div>
+      </div>
+
+      <h3>When Data Changes</h3>
+      <div class="redis-flow">
+        <div class="redis-step">
+          <strong>Post edit</strong>
+          If a post title or body changes, the app should delete or refresh the cached post payload for that <code>post_id</code>.
+        </div>
+        <div class="redis-step">
+          <strong>New comment</strong>
+          If a new comment is added, the app should refresh or invalidate the post page cache and the comment-count cache.
+        </div>
+        <div class="redis-step">
+          <strong>New like</strong>
+          If a new like is added, the app should refresh or invalidate the like-count cache for that post.
+        </div>
+        <div class="redis-step">
+          <strong>Default strategy</strong>
+          A simple beginner-friendly approach is TTL plus targeted invalidation when the underlying SQL data changes.
+        </div>
+      </div>
+
+      <h3>Redis Data Structures for This Example</h3>
+      <div class="table-grid">
+        <article class="table-card">
+          <h3>Suggested Redis Keys</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Redis type</th>
+                <th>Example key</th>
+                <th>What it stores</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Redis type">String</td>
+                <td data-label="Example key"><code>post:101:page</code></td>
+                <td data-label="What it stores">Rendered post page or JSON payload for one post</td>
+              </tr>
+              <tr>
+                <td data-label="Redis type">String</td>
+                <td data-label="Example key"><code>post:101:comment_count</code></td>
+                <td data-label="What it stores">The current comment total for that post</td>
+              </tr>
+              <tr>
+                <td data-label="Redis type">String</td>
+                <td data-label="Example key"><code>post:101:like_count</code></td>
+                <td data-label="What it stores">The current like total for that post</td>
+              </tr>
+              <tr>
+                <td data-label="Redis type">Sorted Set</td>
+                <td data-label="Example key"><code>posts:popular</code></td>
+                <td data-label="What it stores">Popular or recent post IDs ordered by score</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="mini-note">
+            <strong>Why this matters:</strong> these keys model cache design, not SQL entities. They belong in the Redis layer, not the ERD.
+          </p>
+        </article>
       </div>
 
       <div class="callout callout-warn">
@@ -1054,12 +1129,42 @@
         <div class="quiz-card">
           <h3>Question 11 (Data Integrity)</h3>
           <p>If Alice deletes her account, what happens to her posts?</p>
-          <p class="mini-note"><strong>Answer:</strong> They would become orphaned (point to a non-existent user) - this is why foreign key constraints matter.</p>
+          <p class="mini-note"><strong>Answer:</strong> It depends on the foreign-key rule the database uses. A system might block the delete, delete the posts too, or set the link differently.</p>
         </div>
         <div class="quiz-card">
           <h3>Question 12 (Queries & Joins)</h3>
           <p>If you wanted to display all posts by a specific author, which two tables would you join?</p>
           <p class="mini-note"><strong>Answer:</strong> <code>User</code> and <code>Post</code>, joined on <code>User.user_id = Post.user_id</code>.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 13 (Redis Basics)</h3>
+          <p>What does "in-memory" mean when talking about Redis?</p>
+          <p class="mini-note"><strong>Answer:</strong> It means Redis keeps data in RAM so it can be read very quickly.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 14 (Redis Basics)</h3>
+          <p>What is a cache hit?</p>
+          <p class="mini-note"><strong>Answer:</strong> Redis already has the value the app needs, so the app can return it immediately.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 15 (Redis Basics)</h3>
+          <p>Which is the source of truth in this blog example: SQL or Redis?</p>
+          <p class="mini-note"><strong>Answer:</strong> SQL is the source of truth. Redis only stores temporary fast copies.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 16 (Redis Design)</h3>
+          <p>What Redis key could store the comment total for post 101?</p>
+          <p class="mini-note"><strong>Answer:</strong> Something like <code>post:101:comment_count</code>.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 17 (Redis Design)</h3>
+          <p>What should the app do if a new like makes a cached like count stale?</p>
+          <p class="mini-note"><strong>Answer:</strong> Refresh or invalidate the affected Redis key so the next read is correct.</p>
+        </div>
+        <div class="quiz-card">
+          <h3>Question 18 (Diagram Reading)</h3>
+          <p>Why is Redis not drawn as a box in the ERD?</p>
+          <p class="mini-note"><strong>Answer:</strong> Because Redis is a cache layer and key design concern, not a relational entity with PK/FK relationships.</p>
         </div>
       </div>
     </section>
@@ -1115,25 +1220,34 @@
         int post_id PK,FK "PK + FK -> Post"
         timestamp created_at "Attribute"
       }
-      Redis {
-        string cached_post_pages "Hot post reads"
-        string cached_comment_counts "Fast totals"
-        string cached_like_counts "Fast totals"
-        int expires_in "Temporary lifetime"
-      }
 
       User ||--o{ Post : "authors"
       User ||--o{ Comment : "writes"
       Post ||--o{ Comment : "has"
       User ||--o{ Like : "gives"
       Post ||--o{ Like : "receives"
-      Post ||..|| Redis : "cache post reads"
-      Comment ||..|| Redis : "cache comment counts"
-      Like ||..|| Redis : "cache like counts"
+    `;
+
+    const cacheFlowDiagram = `flowchart LR
+      browser[Browser]
+      app[Application]
+      redis[(Redis Cache)]
+      sql[(SQL Database)]
+
+      browser --> app
+      app --> redis
+      redis -- cache hit --> app
+      redis -- cache miss --> sql
+      sql --> app
+      app --> redis
+      app --> browser
     `;
 
     const { svg } = await mermaid.render("erd-svg", diagram);
     document.getElementById("erd").innerHTML = svg;
+
+    const { svg: flowSvg } = await mermaid.render("cache-flow-svg", cacheFlowDiagram);
+    document.getElementById("cache-flow").innerHTML = flowSvg;
 
     document.querySelectorAll("#erd svg .node").forEach((node) => {
       const firstPath = node.querySelector("path[d]");
@@ -1168,13 +1282,6 @@
 
     document.querySelectorAll("#erd svg .row-rect-odd path, #erd svg .row-rect-even path").forEach((path) => {
       path.setAttribute("stroke", "none");
-    });
-
-    document.querySelectorAll("#erd svg .node").forEach((node) => {
-      const label = (node.textContent ?? "").trim();
-      if (label.includes("Redis")) {
-        node.classList.add("redis-node");
-      }
     });
 
     const erdKeywordTargets = document.querySelectorAll(
