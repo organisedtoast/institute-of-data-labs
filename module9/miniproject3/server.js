@@ -31,9 +31,19 @@ app.use("/api/watchlist", watchlistRoutes);
 // Central error handler (must be registered LAST)
 app.use(errorHandler);
 
-// Start the server and listen on the specified port. 
-// The port can be set in the .env file or defaults to 3000 if not specified.
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Start the server programmatically so tests or scripts can reuse the same app
+// instance without forcing a second copy of the server to boot automatically.
+async function startServer() {
+  const PORT = process.env.PORT || 3000;
+  await connectDB();
+
+  return app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, startServer };

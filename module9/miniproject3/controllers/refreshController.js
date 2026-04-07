@@ -9,6 +9,15 @@ const normalize = require("../services/normalizationService");
 const WatchlistStock = require("../models/WatchlistStock");
 const { resolveEffectiveValue } = require("../utils/effectiveValue");
 const { recalculateDerived } = require("../utils/derivedCalc");
+
+async function fetchWithContext(label, fetcher, tickerSymbol) {
+  try {
+    return await fetcher(tickerSymbol);
+  } catch (error) {
+    error.message = `ROIC ${label} fetch failed for ${tickerSymbol}: ${error.message}`;
+    throw error;
+  }
+}
  
 async function refreshStock(req, res, next) {
   try {
@@ -19,11 +28,11 @@ async function refreshStock(req, res, next) {
     // Fetch fresh data from ROIC
     const [profile, perShare, profitability, prices, earnings] =
       await Promise.all([
-        roicService.fetchCompanyProfile(ticker),
-        roicService.fetchAnnualPerShare(ticker),
-        roicService.fetchAnnualProfitability(ticker),
-        roicService.fetchStockPrices(ticker),
-        roicService.fetchEarningsCalls(ticker),
+        fetchWithContext("company profile", roicService.fetchCompanyProfile, ticker),
+        fetchWithContext("annual per-share", roicService.fetchAnnualPerShare, ticker),
+        fetchWithContext("annual profitability", roicService.fetchAnnualProfitability, ticker),
+        fetchWithContext("historical prices", roicService.fetchStockPrices, ticker),
+        fetchWithContext("earnings calls", roicService.fetchEarningsCalls, ticker),
       ]);
  
     const freshData = normalize.buildStockDocument({

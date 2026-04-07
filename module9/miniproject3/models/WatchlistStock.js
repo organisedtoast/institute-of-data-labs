@@ -6,7 +6,7 @@ const overridableField = {
   roicValue:       { type: mongoose.Schema.Types.Mixed, default: null },
   userValue:       { type: mongoose.Schema.Types.Mixed, default: null },
   effectiveValue:  { type: mongoose.Schema.Types.Mixed, default: null },
-  sourceOfTruth:   { type: String, enum: ["roic", "user"], default: "roic" },
+  sourceOfTruth:   { type: String, enum: ["roic", "user", "derived"], default: "roic" },
   lastOverriddenAt: { type: Date, default: null },
 };
  

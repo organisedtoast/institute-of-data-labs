@@ -6,19 +6,32 @@
 const roicService = require("../services/roicService");
 const normalize = require("../services/normalizationService");
 const WatchlistStock = require("../models/WatchlistStock");
+
+async function fetchWithContext(label, fetcher, tickerSymbol) {
+  try {
+    return await fetcher(tickerSymbol);
+  } catch (error) {
+    error.message = `ROIC ${label} fetch failed for ${tickerSymbol}: ${error.message}`;
+    throw error;
+  }
+}
  
 async function importStock(req, res, next) {
   try {
     const { tickerSymbol, investmentCategory, years = 10 } = req.body;
+
+    if (!tickerSymbol) {
+      return res.status(400).json({ error: "tickerSymbol is required" });
+    }
  
     // 1. Fetch raw data from all ROIC endpoints
     const [profile, perShare, profitability, prices, earnings] =
       await Promise.all([
-        roicService.fetchCompanyProfile(tickerSymbol),
-        roicService.fetchAnnualPerShare(tickerSymbol),
-        roicService.fetchAnnualProfitability(tickerSymbol),
-        roicService.fetchStockPrices(tickerSymbol),
-        roicService.fetchEarningsCalls(tickerSymbol),
+        fetchWithContext("company profile", roicService.fetchCompanyProfile, tickerSymbol),
+        fetchWithContext("annual per-share", roicService.fetchAnnualPerShare, tickerSymbol),
+        fetchWithContext("annual profitability", roicService.fetchAnnualProfitability, tickerSymbol),
+        fetchWithContext("historical prices", roicService.fetchStockPrices, tickerSymbol),
+        fetchWithContext("earnings calls", roicService.fetchEarningsCalls, tickerSymbol),
       ]);
  
     // 2. Normalise into our schema shape
