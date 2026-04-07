@@ -8,7 +8,8 @@
 // To run this test:
 // 1. Make sure your local MongoDB is running and accessible.
 // 2. Make sure your .env file has the correct PORT, MONGODB_URI, and ROIC_API_KEY.
-// 3. Run this test file with Node: `node e2e-live-import-crud.test.js`.
+// 3. Run this test file with Node: node --test tests/e2e-live-import-crud.test.js
+
 
 // Because this test uses a real live ticker (AAPL), it includes safety checks
 // to avoid accidentally deleting or overwriting a record that belongs to the user.
