@@ -74,7 +74,7 @@ function wrapImportedValue(value, sourceOfTruth = "roic") {
   };
 }
 
-// Because we do not yet have confirmed ROIC payload samples for Module 9, this
+// Because we do not yet have confirmed ROIC payload samples, this
 // helper looks for the "most likely" annual array using a few common key names.
 // If the endpoint already returns an array, we use it directly.
 function extractAnnualRows(payload) {
