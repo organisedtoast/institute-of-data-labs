@@ -9,7 +9,7 @@
 // That way, when you get real sample payloads later, you should only need to
 // adjust a few extractors instead of rewriting the whole service.
 
-const { selectPriceAfterEarningsCall } = require("../utils/priceSelector");
+const { selectPriceAfterAnchorDate } = require("../utils/priceSelector");
 
 // These are the endpoint names we want to record in sourceMeta so imported
 // documents show exactly which upstream datasets were used to construct them.
@@ -199,8 +199,8 @@ function getFiscalYear(row) {
   return Number.isInteger(numericYear) ? numericYear : null;
 }
 
-// Fiscal year end dates are stored on the annualData row itself and also used
-// to decide which earnings call belongs to that year.
+// Fiscal year end dates are stored on the annualData row itself and also serve
+// as the fallback market anchor when no earnings-call date exists for a year.
 function getFiscalYearEndDate(row) {
   const rawDate = pickFirstDefined(row, [
     "fiscalYearEndDate",
@@ -333,11 +333,12 @@ function normalizeEarningsCalls(earningsPayload) {
     .sort((left, right) => left.date.localeCompare(right.date));
 }
 
-// This helper implements the plan's earnings-call rule:
-// 1. Prefer the first call on or after fiscal-year end date.
-// 2. If no fiscal-year end date exists, or no later call exists, fall back to a
-//    call whose calendar year matches the fiscalYear label.
-function selectEarningsCallForYear({ fiscalYear, fiscalYearEndDate, normalizedCalls }) {
+// This helper chooses the best available post-fiscal-year anchor date.
+// 1. Prefer a real earnings-call date on or after the fiscal year end.
+// 2. Otherwise fall back to a call whose year matches the fiscal year label.
+// 3. If the earnings-call dataset has no suitable row, fall back to the annual
+//    period-end date so the app still has a consistent anchor for price lookup.
+function selectMarketAnchorDate({ fiscalYear, fiscalYearEndDate, normalizedCalls }) {
   if (fiscalYearEndDate) {
     const matchAfterYearEnd = normalizedCalls.find((call) => call.date >= fiscalYearEndDate);
     if (matchAfterYearEnd) {
@@ -354,7 +355,11 @@ function selectEarningsCallForYear({ fiscalYear, fiscalYearEndDate, normalizedCa
     return callYear === fiscalYear;
   });
 
-  return sameYearMatch ? sameYearMatch.date : null;
+  if (sameYearMatch) {
+    return sameYearMatch.date;
+  }
+
+  return fiscalYearEndDate || null;
 }
 
 // We keep yearly rows sorted newest-first so a years=10 limit returns the most
@@ -378,14 +383,14 @@ function buildAnnualEntry({
     ? getReturnOnInvestedCapital(profitabilityRow)
     : null;
 
-  const earningsCallDate = selectEarningsCallForYear({
+  const marketAnchorDate = selectMarketAnchorDate({
     fiscalYear,
     fiscalYearEndDate,
     normalizedCalls,
   });
 
-  const stockPrice = earningsCallDate
-    ? selectPriceAfterEarningsCall(earningsCallDate, normalizedPrices)
+  const stockPrice = marketAnchorDate
+    ? selectPriceAfterAnchorDate(marketAnchorDate, normalizedPrices)
     : null;
 
   const marketCap = sharesOutstanding !== null && stockPrice !== null
@@ -395,7 +400,7 @@ function buildAnnualEntry({
   return {
     fiscalYear,
     fiscalYearEndDate,
-    earningsCallDate: wrapImportedValue(earningsCallDate),
+    marketAnchorDate: wrapImportedValue(marketAnchorDate),
     stockPrice: wrapImportedValue(stockPrice),
     sharesOutstanding: wrapImportedValue(sharesOutstanding),
     marketCap: wrapImportedValue(marketCap, marketCap !== null ? "derived" : "roic"),

@@ -23,6 +23,10 @@
 // real local MongoDB and the real local Express server.
 require("dotenv").config();
 
+// Put this harness on its own port so it does not fight with a manually
+// running dev server or a leftover test process on port 3000.
+process.env.PORT = "3101";
+
 // Node's built-in assertion library gives us the checks that make a test pass
 // or fail. We use the "strict" version so comparisons behave predictably.
 const assert = require("node:assert/strict");
@@ -67,7 +71,7 @@ const TEST_COMPANY_OVERRIDE = "Stubbed Company Override";
 
 // This is the base URL for our HTTP requests into the real Express server.
 // We use 127.0.0.1 to avoid any machine-specific "localhost" resolution issues.
-const BASE_URL = `http://127.0.0.1:${process.env.PORT || 3000}`;
+const BASE_URL = `http://127.0.0.1:${process.env.PORT}`;
 
 // These names match the ROIC endpoint labels recorded by normalization.
 // We assert against them later to prove the import metadata was populated.
@@ -118,7 +122,7 @@ function buildProfitabilityRows() {
 
 // This helper creates daily stock-price rows in ascending date order.
 // Normalization uses this dataset to find the stock price that should be paired
-// with each earnings call date.
+// with each chosen market anchor date.
 function buildPriceRows() {
   return [
     { date: "2015-10-29", close: 100 },
@@ -135,8 +139,13 @@ function buildPriceRows() {
 }
 
 // This helper creates earnings call rows.
-// Normalization uses these dates to decide which stock price belongs to each
-// fiscal year and to populate earningsCallDate in annualData.
+// Notice that 2024 is intentionally missing.
+//
+// Why omit it?
+// This lets the test prove the new hybrid behavior:
+// - 2023 can still use a real earnings-call date
+// - 2024 must fall back to the annual period-end date
+// That mixed coverage is exactly the real-world problem we want to handle.
 function buildEarningsRows() {
   return [
     { date: "2015-10-28", fiscalYear: 2015 },
@@ -148,7 +157,6 @@ function buildEarningsRows() {
     { date: "2021-10-29", fiscalYear: 2021 },
     { date: "2022-10-28", fiscalYear: 2022 },
     { date: "2023-11-03", fiscalYear: 2023 },
-    { date: "2024-11-01", fiscalYear: 2024 },
   ];
 }
 
@@ -182,19 +190,14 @@ const stubbedRoicService = {
 };
 
 // The import controller requires roicService at module-load time.
-// That means we must install the stub BEFORE loading server.js.
-// If we loaded server.js first, the controller would already have captured the
-// real roicService and our test would not be deterministic.
-const roicServicePath = require.resolve("../services/roicService");
-require.cache[roicServicePath] = {
-  id: roicServicePath,
-  filename: roicServicePath,
-  loaded: true,
-  exports: stubbedRoicService,
-};
+// To keep the test deterministic, we load the real module here, replace its
+// exported functions with our stub implementations, and only then load
+// server.js. That way every later require() sees the patched version.
+const roicService = require("../services/roicService");
+Object.assign(roicService, stubbedRoicService);
 
-// Now that the stub is installed, loading server.js will cause the import
-// controller to use the stubbed ROIC service instead of the real one.
+// Now that the ROIC service exports are patched, loading server.js will cause
+// the import controller to use the stubbed behavior instead of the live API.
 const { startServer, stopServer } = require("../server");
 
 // Small helper for sending JSON HTTP requests to the real Express app.
@@ -312,7 +315,7 @@ test("stubbed ROIC import flows through normalization, MongoDB upsert, and follo
     // These checks prove normalization preserved the expected overridable-field
     // object structure for the yearly metrics.
     for (const fieldName of [
-      "earningsCallDate",
+      "marketAnchorDate",
       "stockPrice",
       "sharesOutstanding",
       "marketCap",
@@ -335,13 +338,22 @@ test("stubbed ROIC import flows through normalization, MongoDB upsert, and follo
 
     // These specific values prove the normalization logic produced the numbers
     // we expect from the stubbed upstream data.
-    assert.equal(firstAnnualEntry.earningsCallDate.effectiveValue, "2024-11-01");
+    //
+    // 2024 has no earnings-call row in the stub, so marketAnchorDate should
+    // fall back to the annual period-end date from the annual fundamentals.
+    assert.equal(firstAnnualEntry.marketAnchorDate.effectiveValue, "2024-09-28");
     assert.equal(firstAnnualEntry.stockPrice.effectiveValue, 190);
     assert.equal(firstAnnualEntry.sharesOutstanding.effectiveValue, 1000);
     assert.equal(firstAnnualEntry.marketCap.effectiveValue, 190000);
     assert.equal(firstAnnualEntry.marketCap.sourceOfTruth, "derived");
     assert.equal(firstAnnualEntry.returnOnInvestedCapital.effectiveValue, 0.31);
     assert.equal(firstAnnualEntry.returnOnInvestedCapital.sourceOfTruth, "roic");
+
+    // The second row still has an earnings-call record available, so it should
+    // use that real post-year-end date instead of the fiscal-year-end fallback.
+    const secondAnnualEntry = importedDoc.annualData[1];
+    assert.equal(secondAnnualEntry.fiscalYear, 2023);
+    assert.equal(secondAnnualEntry.marketAnchorDate.effectiveValue, "2023-11-03");
 
     // GET by ticker proves the imported record is readable through the normal
     // CRUD route after being written to MongoDB.

@@ -24,6 +24,12 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
+
+// Simple root route so visiting http://localhost:3000/ shows a friendly
+// confirmation message instead of Express's default "Cannot GET /" response.
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
  
 // Mount watchlist routes under /api/watchlist
 app.use("/api/watchlist", watchlistRoutes);

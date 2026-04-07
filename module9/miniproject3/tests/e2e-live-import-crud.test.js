@@ -19,6 +19,10 @@
 // PORT, MongoDB connection, and ROIC API key as the app itself.
 require("dotenv").config();
 
+// Put this harness on its own port so it does not collide with a dev server or
+// with the stubbed harness while they are run separately.
+process.env.PORT = "3102";
+
 // Node's built-in assertion library lets us say "this must be true".
 // If an assertion fails, the test fails and prints the message we provide.
 const assert = require("node:assert/strict");
@@ -33,7 +37,7 @@ const { startServer, stopServer } = require("../server");
 
 // This is the base URL for every HTTP request the test sends.
 // We use 127.0.0.1 instead of "localhost" to avoid any local DNS oddities.
-const BASE_URL = `http://127.0.0.1:${process.env.PORT || 3000}`;
+const BASE_URL = `http://127.0.0.1:${process.env.PORT}`;
 
 // We deliberately use one known live ticker for this end-to-end test.
 // AAPL is a good candidate because it is very likely to exist in the ROIC API
@@ -253,9 +257,12 @@ test("live ROIC import flows through normalization, MongoDB upsert, and follow-u
 
     // We inspect the first annual entry to make sure the important yearly
     // metrics were also normalized into the same overridable-field structure.
+    // marketAnchorDate is now a hybrid field:
+    // - earnings-call date when ROIC has it
+    // - otherwise the annual period-end date fallback
     const firstAnnualEntry = importedDoc.annualData[0];
     for (const fieldName of [
-      "earningsCallDate",
+      "marketAnchorDate",
       "stockPrice",
       "sharesOutstanding",
       "marketCap",

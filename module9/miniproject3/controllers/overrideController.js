@@ -17,7 +17,7 @@ async function setAnnualOverride(req, res, next) {
     const fiscalYear = parseInt(req.params.fiscalYear);
     const allowedMetrics = [
       "stockPrice", "sharesOutstanding",
-      "returnOnInvestedCapital", "earningsCallDate",
+      "returnOnInvestedCapital", "marketAnchorDate",
     ];
  
     const stock = await WatchlistStock.findOne({ tickerSymbol: ticker });
