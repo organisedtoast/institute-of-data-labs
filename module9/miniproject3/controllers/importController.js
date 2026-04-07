@@ -45,7 +45,7 @@ async function importStock(req, res, next) {
     const doc = await WatchlistStock.findOneAndUpdate(
       { tickerSymbol: tickerSymbol.toUpperCase() },
       stockData,
-      { upsert: true, new: true, runValidators: true }
+      { upsert: true, returnDocument: "after", runValidators: true }
     );
  
     res.status(201).json(doc);

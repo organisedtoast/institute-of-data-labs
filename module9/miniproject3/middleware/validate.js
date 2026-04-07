@@ -10,6 +10,56 @@ function validateTicker(req, res, next) {
   }
   next(); // Passes control to the next middleware or controller
 }
+
+function validateCreateStock(req, res, next) {
+  const { tickerSymbol, investmentCategory } = req.body;
+
+  if (!tickerSymbol || typeof tickerSymbol !== "string" || tickerSymbol.trim() === "") {
+    return res.status(400).json({ error: "tickerSymbol is required and must be a non-empty string." });
+  }
+
+  if (investmentCategory !== undefined && typeof investmentCategory !== "string") {
+    return res.status(400).json({ error: "investmentCategory must be a string." });
+  }
+
+  next();
+}
+
+function validateUpdateStock(req, res, next) {
+  const allowed = ["investmentCategory", "companyName"];
+  const providedKeys = Object.keys(req.body || {});
+  const unsupportedKeys = providedKeys.filter((key) => !allowed.includes(key));
+
+  if (providedKeys.length === 0) {
+    return res.status(400).json({
+      error: "At least one supported field is required.",
+      allowedFields: allowed,
+    });
+  }
+
+  if (unsupportedKeys.length > 0) {
+    return res.status(400).json({
+      error: "Unsupported update field(s).",
+      allowedFields: allowed,
+      unsupportedFields: unsupportedKeys,
+    });
+  }
+
+  if (
+    req.body.investmentCategory !== undefined &&
+    typeof req.body.investmentCategory !== "string"
+  ) {
+    return res.status(400).json({ error: "investmentCategory must be a string." });
+  }
+
+  if (req.body.companyName !== undefined) {
+    if (typeof req.body.companyName !== "string" || req.body.companyName.trim() === "") {
+      return res.status(400).json({ error: "companyName must be a non-empty string." });
+    }
+  }
+
+  next();
+}
  
 function validateFiscalYear(req, res, next) {
   const year = parseInt(req.params.fiscalYear);
@@ -19,4 +69,9 @@ function validateFiscalYear(req, res, next) {
   next();
 }
  
-module.exports = { validateTicker, validateFiscalYear };
+module.exports = {
+  validateTicker,
+  validateCreateStock,
+  validateUpdateStock,
+  validateFiscalYear,
+};

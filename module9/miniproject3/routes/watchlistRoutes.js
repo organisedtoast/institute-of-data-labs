@@ -12,6 +12,11 @@
 // Import necessary modules
 const express = require("express");
 const router = express.Router();
+const {
+  validateTicker,
+  validateCreateStock,
+  validateUpdateStock,
+} = require("../middleware/validate");
  
 // Import all controllers
 const { importStock } = require("../controllers/importController");
@@ -27,10 +32,10 @@ router.post("/import", importStock);
  
 // CRUD routes
 router.get("/", getAllStocks);
-router.get("/:ticker", getOneStock);
-router.post("/", createStock);
-router.patch("/:ticker", updateStock);
-router.delete("/:ticker", deleteStock);
+router.get("/:ticker", validateTicker, getOneStock);
+router.post("/", validateCreateStock, createStock);
+router.patch("/:ticker", validateTicker, validateUpdateStock, updateStock);
+router.delete("/:ticker", validateTicker, deleteStock);
  
 // Override and refresh routes
 router.patch("/:ticker/annual/:fiscalYear/overrides", setAnnualOverride);

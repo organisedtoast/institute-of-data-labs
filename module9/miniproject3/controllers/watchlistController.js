@@ -10,6 +10,18 @@
 
 const WatchlistStock = require("../models/WatchlistStock");
 
+function buildCompanyNameOverride(existingField, companyName) {
+  const trimmedName = companyName.trim();
+
+  return {
+    roicValue: existingField?.roicValue ?? null,
+    userValue: trimmedName,
+    effectiveValue: trimmedName,
+    sourceOfTruth: "user",
+    lastOverriddenAt: new Date(),
+  };
+}
+
 // POST /api/watchlist (manual shell creation)
 async function createStock(req, res, next) {
   try {
@@ -43,15 +55,39 @@ async function getOneStock(req, res, next) {
 // PATCH /api/watchlist/:ticker
 async function updateStock(req, res, next) {
   try {
-    const allowed = ["investmentCategory", "companyName"];
     const updates = {};
-    for (const key of allowed) {
-      if (req.body[key] !== undefined) updates[key] = req.body[key];
+
+    if (req.body.investmentCategory !== undefined) {
+      updates.investmentCategory = req.body.investmentCategory;
     }
+
+    if (req.body.companyName !== undefined) {
+      const existingStock = await WatchlistStock.findOne({
+        tickerSymbol: req.params.ticker.toUpperCase(),
+      });
+
+      if (!existingStock) {
+        return res.status(404).json({ error: "Stock not found" });
+      }
+
+      updates.companyName = buildCompanyNameOverride(
+        existingStock.companyName,
+        req.body.companyName
+      );
+
+      const doc = await WatchlistStock.findOneAndUpdate(
+        { tickerSymbol: req.params.ticker.toUpperCase() },
+        updates,
+        { returnDocument: "after", runValidators: true }
+      );
+
+      return res.json(doc);
+    }
+
     const doc = await WatchlistStock.findOneAndUpdate(
       { tickerSymbol: req.params.ticker.toUpperCase() },
       updates,
-      { new: true, runValidators: true }
+      { returnDocument: "after", runValidators: true }
     );
     if (!doc) return res.status(404).json({ error: "Stock not found" });
     res.json(doc);
