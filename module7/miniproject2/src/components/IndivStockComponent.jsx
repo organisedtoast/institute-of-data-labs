@@ -224,6 +224,9 @@ export default function IndivStockComponent({
 
   return (
     <Card
+      // The card itself gets a stable identifier so the E2E test can verify
+      // that the chosen stock really appeared after the user clicked ADD STOCK.
+      data-testid={`stock-card-${identifier}`}
       sx={{
         width: { xs: '100%', sm: 540, md: 600 },
         maxWidth: '100%',
@@ -256,7 +259,22 @@ export default function IndivStockComponent({
       ) : null}
 
       {/* Render the appropriate UI for loading, error, or success. */}
-      {cardBody}
+      <Box
+        // This one test hook changes with the card's current state.
+        // That helps the browser test diagnose whether the card is:
+        // - still loading
+        // - showing an error
+        // - or successfully rendering the chart
+        data-testid={
+          isLoading
+            ? `stock-card-loading-${identifier}`
+            : error
+              ? `stock-card-error-${identifier}`
+              : `stock-chart-${identifier}`
+        }
+      >
+        {cardBody}
+      </Box>
 
       <ChartDateRangeControls
         startDate={startDate}

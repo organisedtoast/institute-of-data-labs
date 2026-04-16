@@ -41,7 +41,9 @@ export default function StockSearchResults() {
   };
 
   return (
-    <Card sx={{ maxWidth: 960, mx: 'auto', mb: 3 }}>
+    // This container gets a test id so the browser test can first confirm
+    // that the whole search-results area is on screen.
+    <Card sx={{ maxWidth: 960, mx: 'auto', mb: 3 }} data-testid="stock-search-results">
       <CardContent>
         <Stack spacing={2}>
           <Box sx={{ textAlign: 'center' }}>
@@ -80,6 +82,9 @@ export default function StockSearchResults() {
                 return (
                   <Box
                     key={stock.identifier}
+                    // Example test id: "search-result-AAPL"
+                    // Including the ticker in the id lets the test target one specific row.
+                    data-testid={`search-result-${stock.identifier}`}
                     sx={{
                       display: 'flex',
                       flexDirection: { xs: 'column', sm: 'row' },
@@ -107,6 +112,9 @@ export default function StockSearchResults() {
 
                     <Button
                       variant="contained"
+                      // Example test id: "add-stock-AAPL"
+                      // This lets the test click the correct button for the chosen ticker.
+                      data-testid={`add-stock-${stock.identifier}`}
                       sx={{
                         // On small screens we always place the button underneath the text and center it.
                         // This avoids the previous "sometimes right, sometimes left" movement that happened

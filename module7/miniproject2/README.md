@@ -1,8 +1,9 @@
 # Stock Gossip Monitor
 
-A full-stack React application that lets you search for stocks, view their price charts, and track market data. 
+A full-stack React application that lets you search for stocks, view their price charts, and track market data.
 
 Built with React, Material-UI and ROIC stock market API.
+The project also includes a Playwright-based live end-to-end diagnostic test that checks whether ROIC data makes it all the way to the frontend.
 
 ---
 
@@ -16,6 +17,7 @@ Built with React, Material-UI and ROIC stock market API.
 - [Key Components](#-key-components)
 - [Hooks, Context & State Management](#-hooks-context--state-management)
 - [API Integrations & Data Fetching](#-api-integrations--data-fetching)
+- [ROIC Live E2E Test](#-roic-live-e2e-test)
 - [Styling](#-styling)
 - [Common Tasks for Beginners](#-common-tasks-for-beginners)
 - [Troubleshooting](#-troubleshooting)
@@ -31,6 +33,7 @@ Before you begin, ensure you have the following installed:
 
 - **Node.js** (version 18 or higher) - [Download here](https://nodejs.org/)
 - **npm** (comes with Node.js)
+- **Playwright browser binary** for E2E testing - install it once with `npm run test:e2e:install` when you want to run the live browser test
 
 To check if you have them installed, run these commands in your terminal:
 
@@ -53,9 +56,17 @@ npm --version
    npm install
    ```
 
-   This downloads all the libraries the app needs (React, Material-UI, Express, etc.).
+   This downloads all the libraries the app needs (React, Material-UI, Express, Playwright tooling, etc.).
 
-3. **Set up environment variables:**
+3. **Optional: install the Playwright browser used for E2E testing:**
+
+   ```bash
+   npm run test:e2e:install
+   ```
+
+   You only need this if you want to run the automated Playwright browser test.
+
+4. **Set up environment variables:**
 
    - Copy the `.env.example` file and rename it to `.env`
    - Open `.env` and add your ROIC.ai API key:
@@ -99,6 +110,10 @@ The app has two parts that need to run together:
 
    You should see the Stock Gossip Monitor home page!
 
+For normal development, you start the backend and frontend manually as shown above.
+For the Playwright live ROIC test, Playwright starts both services automatically.
+See [ROIC Live E2E Test](#-roic-live-e2e-test) for the full test workflow.
+
 ---
 
 ## 📁 Project Structure
@@ -131,8 +146,13 @@ miniproject2/
 │   │   └── Stocks.jsx                  # Stock cards page (/stocks)
 │   ├── App.jsx                         # Main app wrapper
 │   └── main.jsx                        # Entry point (starts React)
+├── tests/
+│   └── e2e/
+│       ├── roic-live.spec.js           # Playwright browser test for the full live ROIC user journey
+│       └── roicDiagnostics.js          # Diagnostic helpers that classify failures by backend/proxy/ROIC/UI stage
 ├── server.js                           # Express backend server
 ├── vite.config.js                      # Build tool configuration
+├── playwright.config.js                # Playwright configuration that starts the local servers for E2E tests
 ├── package.json                        # Lists all dependencies
 ├── index.html                          # HTML page that loads React
 └── .env.example                        # Template for environment variables
@@ -151,7 +171,8 @@ miniproject2/
 | **MUI X Charts** | Draws the stock price line charts |
 | **Express** | Node.js server that proxies API requests |
 | **Axios** | Makes HTTP requests to the backend |
-| **nodemon** | Auto-restarts the server when files change |
+| **nodemon** | Auto-restarts the backend server during normal development |
+| **Playwright** | Runs browser-based end-to-end tests against the live frontend/backend/ROIC flow |
 
 ---
 
@@ -163,6 +184,7 @@ miniproject2/
 - ➕ **Add/Remove Stocks** - Build your own watchlist of stock cards
 - 💾 **Persistent Storage** - Your added stocks are saved in the browser
 - 🏠 **Two Pages** - Home (sector overview) and Stocks (your watchlist)
+- 🧪 **Live ROIC Diagnostic E2E Test** - Automated Playwright coverage for the real search-to-chart journey and failure diagnosis
 
 ---
 
@@ -187,6 +209,8 @@ Navigation happens through:
 3. Results appear below the sector chart
 4. Click **"Add Stock"** to add it to your watchlist
 5. You're redirected to the **Stocks page** to see your new card
+
+This same search-and-add journey is also the path covered by the Playwright live E2E test, which uses the real navbar search box and stock-card flow instead of a mocked shortcut.
 
 ### Stock Cards
 
@@ -467,6 +491,14 @@ Let's trace what happens when a user adds a stock:
 
 This section explains how the app **talks to external services** to get real stock data.
 
+The repo also includes a Playwright diagnostic test that verifies this full path from a real browser:
+
+```text
+browser -> Vite /api proxy -> Express backend -> ROIC API -> frontend chart render
+```
+
+That test performs backend preflight checks before the browser journey begins, which helps identify whether a failure is in the backend, the proxy, the external API, or the UI rendering step.
+
 ---
 
 ### Why Do We Need a Backend Server?
@@ -628,6 +660,7 @@ export default defineConfig({
   - React code should not hard-code `http://localhost:3001` inside components
   - React code should not call `https://api.roic.ai/...` directly from the browser
   - This setup avoids browser CORS errors during local development and keeps the API key on the server
+  - The Playwright live test depends on this same proxy path when it checks the full browser flow
 
   ---
 
@@ -795,6 +828,28 @@ function priceFormatter(value) {
 
 ---
 
+### How Playwright Verifies This Flow
+
+The automated E2E test adds one more layer on top of the normal runtime flow:
+
+```text
+Playwright
+  -> opens the real frontend in a browser
+  -> runs preflight checks against the backend routes
+  -> uses the real navbar search for AAPL
+  -> clicks the real ADD STOCK button
+  -> confirms the stock card chart renders
+```
+
+This means the test is checking both:
+
+- the backend data path
+- the frontend user journey that displays that data
+
+For the full setup and command list, see [ROIC Live E2E Test](#-roic-live-e2e-test).
+
+---
+
 ### Environment Variables
 
 File: `.env`
@@ -820,6 +875,279 @@ const ROIC_API_KEY = process.env.ROIC_API_KEY;
 | Store `.env` in `.gitignore` | Commit `.env` to Git |
 | Use `.env.example` as a template | Hardcode keys in your code |
 | Keep keys on the server only | Put keys in React components |
+
+---
+
+## 🧪 ROIC Live E2E Test
+
+This project includes an **on-demand Playwright end-to-end test** that checks whether live ROIC data makes it all the way through the app and appears on the frontend.
+
+This section is the detailed guide for setup, commands, artifacts, and failure categories.
+Earlier sections of the README introduce where Playwright fits into the project; this section is the deeper walkthrough.
+
+The full chain looks like this:
+
+```text
+Playwright browser
+  -> React frontend
+  -> Vite /api proxy
+  -> Express backend
+  -> ROIC external API
+  -> stock card chart shown in the UI
+```
+
+This test is special because it does not only answer **"did it fail?"**
+It is also designed to help answer **"which part failed?"**
+
+### What The Live Test Does
+
+The test uses the ticker `AAPL` and performs this exact sequence:
+
+1. Starts the Express server automatically
+2. Starts the Vite frontend automatically
+3. Runs backend-only preflight checks:
+   - `GET /api/health`
+   - `GET /api/stocks/search?q=AAPL`
+   - `GET /api/stock-prices/AAPL`
+4. Opens the real frontend in a browser
+5. Types `AAPL` into the navbar search box
+6. Submits the search
+7. Waits for the real search result row to appear
+8. Clicks the real `ADD STOCK` button
+9. Waits for the stock card to appear
+10. Confirms the card finishes loading and shows a chart instead of an error or empty-data placeholder
+
+### Why This Test Is Separate From Normal Checks
+
+This test talks to the **real ROIC API**.
+That means it depends on live conditions such as:
+
+- internet access
+- DNS working correctly
+- a valid `ROIC_API_KEY`
+- ROIC uptime
+- ROIC quota or rate limits
+
+Because of that, this is an **opt-in diagnostic test**, not something you should rely on for every quick local check.
+
+### Files Used By The Test
+
+Main Playwright files:
+
+- `playwright.config.js`
+- `tests/e2e/roicDiagnostics.js`
+- `tests/e2e/roic-live.spec.js`
+
+Frontend components with test hooks:
+
+- `src/components/NavBar.jsx`
+- `src/components/StockSearchResults.jsx`
+- `src/components/IndivStockComponent.jsx`
+
+### One-Time Setup
+
+1. Install project dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Create your `.env` file if you have not already:
+
+   ```env
+   ROIC_API_KEY=your_actual_api_key_here
+   ```
+
+3. Install the Playwright Chromium browser used by the test:
+
+   ```bash
+   npm run test:e2e:install
+   ```
+
+If PowerShell blocks `npm`, use:
+
+```powershell
+npm.cmd run test:e2e:install
+```
+
+### How To Run The Live Test
+
+Run the standard headless version:
+
+```bash
+npm run test:e2e:roic-live
+```
+
+If you want to watch the browser while the test runs:
+
+```bash
+npm run test:e2e:roic-live:headed
+```
+
+If PowerShell blocks `npm`, use:
+
+```powershell
+npm.cmd run test:e2e:roic-live
+```
+
+or:
+
+```powershell
+npm.cmd run test:e2e:roic-live:headed
+```
+
+### Do I Need To Start The App First?
+
+No.
+Playwright starts both servers for you:
+
+- Express on `http://127.0.0.1:3001`
+- Vite on `http://127.0.0.1:4173`
+
+It waits for those services to be reachable before the browser test begins.
+
+### What A Passing Test Proves
+
+A passing run proves all of these worked together:
+
+- the frontend loaded
+- the backend started
+- the Vite `/api` proxy worked
+- the search endpoint returned valid data
+- the price endpoint returned valid data
+- the external ROIC API returned usable data
+- the frontend rendered that data in the stock card
+
+### Failure Categories
+
+The test reports a category label at the start of the failure message.
+That category is meant to tell you which link in the chain is broken.
+
+#### `frontend_boot_failed`
+
+Meaning:
+- the page shell did not render correctly
+
+Likely causes:
+- React failed during startup
+- the navbar search UI did not appear
+- the frontend page did not load into a usable state
+
+#### `vite_proxy_failed`
+
+Meaning:
+- the browser did not successfully complete the expected `/api` requests through Vite
+
+Likely causes:
+- Vite did not proxy `/api` correctly
+- the frontend could not reach the backend
+- the browser saw non-200 API responses
+
+#### `backend_health_failed`
+
+Meaning:
+- `/api/health` failed before the browser flow even began
+
+Likely causes:
+- Express did not start
+- wrong port
+- backend crash during startup
+
+#### `backend_search_failed`
+
+Meaning:
+- `/api/stocks/search` failed or returned the wrong shape
+
+Likely causes:
+- a bug in the backend search route
+- malformed JSON
+- search results did not include the expected ticker
+
+#### `backend_price_failed`
+
+Meaning:
+- `/api/stock-prices/:identifier` failed or returned the wrong shape
+
+Likely causes:
+- a bug in the backend price route
+- malformed price rows
+- missing `date` or numeric `close` fields
+
+#### `external_roic_failed`
+
+Meaning:
+- the local app reached the point of calling ROIC, but the external live dependency did not provide usable data
+
+Likely causes:
+- invalid API key
+- missing API key
+- quota exhausted
+- ROIC outage
+- DNS or network failure reaching `api.roic.ai`
+- ROIC returned an empty live payload
+
+#### `frontend_render_failed`
+
+Meaning:
+- the data chain worked far enough for the UI step, but the expected stock-card state did not appear correctly
+
+Likely causes:
+- the stock card never appeared
+- the card stayed stuck loading
+- the card showed an error
+- the chart did not appear
+- the empty-data placeholder text was shown instead
+
+### Example Failure Message
+
+Example:
+
+```text
+[external_roic_failed] Expected search endpoint to return HTTP 200 but received 502.
+Response body: {"message":"Unable to search stocks for \"AAPL\".","details":"getaddrinfo EAI_AGAIN api.roic.ai"}
+```
+
+This tells you the failure happened while trying to reach the external ROIC service, not while rendering the frontend itself.
+
+### Test Artifacts
+
+On failure, Playwright keeps helpful debugging artifacts such as:
+
+- screenshot
+- video
+- trace zip
+- preflight JSON summary
+
+These are especially useful when the test fails on a different machine than yours.
+
+### Manual Debugging Steps
+
+If the live test fails, try this sequence:
+
+1. Check that `.env` contains `ROIC_API_KEY`
+2. Check that your internet connection is working
+3. Start the backend manually:
+
+   ```bash
+   npm run server
+   ```
+
+4. In another terminal, test the backend routes directly:
+
+   ```bash
+   curl http://127.0.0.1:3001/api/health
+   curl "http://127.0.0.1:3001/api/stocks/search?q=AAPL"
+   curl http://127.0.0.1:3001/api/stock-prices/AAPL
+   ```
+
+5. If PowerShell blocks `npm`, switch to `npm.cmd`
+6. If Playwright says no browser is installed, run `npm run test:e2e:install`
+
+### Beginner Notes
+
+- `Playwright` is a tool that opens a real browser and behaves like a user.
+- `data-testid` is an attribute used to help automated tests find elements reliably.
+- `preflight` means "check important backend pieces first before testing the full browser journey."
 
 ---
 
@@ -959,6 +1287,10 @@ This keeps the refresh behavior consistent with normal app use, where newly adde
 | "Invalid API key" error | Verify your `.env` file has the correct key |
 | Search returns nothing | Check the ROIC.ai API quota or search term |
 | Charts not showing | Ensure stock has price data available |
+| `playwright: command not found` or browser missing | Run `npm run test:e2e:install` to install the Playwright Chromium browser |
+| PowerShell blocks `npm` scripts | Use `npm.cmd run ...` instead of `npm run ...` |
+| Live E2E test fails with `external_roic_failed` | The local app likely reached ROIC, but the external dependency failed; see the failure category guide in [ROIC Live E2E Test](#-roic-live-e2e-test) |
+| Live E2E test fails with `vite_proxy_failed` | The browser likely could not complete the expected `/api` calls through Vite; see the failure category guide in [ROIC Live E2E Test](#-roic-live-e2e-test) |
 
 ---
 
@@ -981,6 +1313,10 @@ This keeps the refresh behavior consistent with normal app use, where newly adde
 ### Express
 
 - [Express Quick Start](https://expressjs.com/en/starter/installing.html)
+
+### Playwright
+
+- [Playwright Documentation](https://playwright.dev/)
 
 ### ROIC.ai API
 

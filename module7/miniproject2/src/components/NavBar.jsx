@@ -179,13 +179,24 @@ export default function NavBar() {
               instead of overflowing past its neighbours. Without it, long content can push
               outside the toolbar even when `flex: 1` is present. */}
           <Box sx={{ flexGrow: 1, minWidth: 0, display: 'flex', justifyContent: 'flex-end' }}>
-          <Search onSubmit={handleSearchSubmit}>
+          {/* `data-testid` attributes are tiny labels used by automated tests.
+              They do not change what users see.
+              They simply give Playwright a reliable way to find this exact form later. */}
+          <Search onSubmit={handleSearchSubmit} data-testid="stock-search-form">
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search stocks..."
-              inputProps={{ 'aria-label': 'search' }}
+              // `InputBase` renders a wrapper element plus a real native `<input>` inside it.
+              // Playwright's `.fill()` must target the real input element, not the wrapper `<div>`.
+              //
+              // Putting `data-testid` inside `inputProps` sends that attribute down to the native input,
+              // which makes the E2E selector work the way a beginner would expect.
+              inputProps={{
+                'aria-label': 'search',
+                'data-testid': 'stock-search-input',
+              }}
               value={searchText}
               onChange={(event) => setSearchText(event.target.value)}
             />
